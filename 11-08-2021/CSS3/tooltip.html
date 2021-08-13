@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      border-bottom: 1px dotted black;
+    }
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 120px;
+      background-color: rgb(8, 189, 165);
+      color: black;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: 100%;
+      left: 50%;
+      margin-left: -60px;
+
+      opacity: 0;
+      transition: opacity 3s;
+    }
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+  <body style="text-align: center">
+    <h2>Lorem ipsum dolor sit amet.</h2>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, quo?</p>
+    <div class="tooltip">
+      <strong>Lorem ipsum dolor sit amet.</strong>
+      <span class="tooltiptext"
+        >Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est,
+        eum.</span
+      >
+    </div>
+  </body>
+</html>

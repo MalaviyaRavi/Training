@@ -1,0 +1,51 @@
+.navbar {
+  background-color: royalblue;
+  float: left;
+  width: 100%;
+  height: 30px;
+}
+.menu {
+  margin-left: 550px;
+  margin-top: 7px;
+}
+
+.navbar a {
+  text-decoration: none;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 18px;
+  color: white;
+  text-align: center;
+  display: inline;
+}
+
+a:hover {
+  background-color: whitesmoke;
+  color: black;
+}
+
+.card {
+  width: 300px;
+  margin: auto;
+  text-align: center;
+  border: 3px solid black;
+}
+
+.card a {
+  text-decoration: none;
+  padding: 12px;
+  color: whitesmoke;
+  background-color: royalblue;
+  text-align: center;
+  width: 100%;
+  font-size: 18px;
+}
+.price {
+  color: grey;
+  font-size: 22px;
+}
+
+img {
+  width: 300px;
+  height: 400px;
+}

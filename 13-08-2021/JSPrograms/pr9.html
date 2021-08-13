@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8" />
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+          />
+          <title>Document</title>
+        </head>
+        <body>
+          <h1>9. Take a number and find factorial of that number.</h1>
+          <h3><b>Output : </b></h3>
+
+          <script>
+            var number = Number(prompt("Enter your number"));
+            var result;
+            function fact(n) {
+              if (n == 1) return 1;
+              else {
+                return n * fact(n - 1);
+              }
+            }
+            result = fact(number);
+
+            document.write("<h3> " + result + "</h3>");
+          </script>
+        </body>
+      </html>
+    </h1>
+  </body>
+</html>

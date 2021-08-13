@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>
+      19. Take a number from the user. Take starting number & ending number from
+      the user. Generate multiplication table of that number.
+    </h1>
+
+    <script>
+      var input = Number(prompt("Enter your number"));
+      var start = Number(prompt("Enter Start Number"));
+      var end = Number(prompt("Enter End Number"));
+
+      var result;
+      for (let i = start; i <= end; i++) {
+        result = input * i;
+        document.write("<h3>" + input + " " + i + " " + result + "</h3>");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      .dataform {
+        border-style: solid;
+        border-color: black;
+        border-width: 1px;
+        border-radius: 13px;
+      }
+      .card {
+        border-style: solid;
+        border-color: black;
+        border-radius: 10px;
+        border-top: 15px solid black;
+        width: 70%;
+        text-align: center;
+        margin-left: 200px;
+        margin-bottom: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dataform">
+      <form action="post" enctype="application/x-www-form-urlencoded">
+        <h1 align="center" style="font-weight: bold">Fill Your Details Here</h1>
+
+        <fieldset class="card">
+          <legend><b>Peronal Informaion:</b></legend>
+          <table align="center" cellspacing="10" cellpadding="10">
+            <tr>
+              <td>
+                <fieldset>
+                  <legend>Your First Name *</legend>
+                  <input
+                    type="text"
+                    placeholder="Enter Your First Name"
+                    required
+                    autofocus
+                  />
+                </fieldset>
+              </td>
+              <td>
+                <fieldset>
+                  <legend>Your Middle Name</legend>
+                  <input type="text" placeholder="Enter Your Middle Name" />
+                </fieldset>
+              </td>
+              <td>
+                <fieldset>
+                  <legend>Your Last Name *</legend>
+                  <input
+                    type="text"
+                    placeholder="Enter Your Last Name"
+                    required
+                  />
+                </fieldset>
+              </td>
+              <td>
+                <fieldset>
+                  <legend>Your Email *</legend>
+                  <input
+                    type="email"
+                    placeholder="Enter Your Email "
+                    required
+                  />
+                </fieldset>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <fieldset>
+                  <legend>Your Contact Number *</legend>
+                  <input type="text" placeholder="Enter Your Contact" />
+                </fieldset>
+              </td>
+              <td>
+                <fieldset>
+                  <legend>Gender *</legend>
+                  Male :<input type="radio" name="gender" /> &nbsp; Female
+                  :<input type="radio" name="gender" />
+                </fieldset>
+              </td>
+              <td>
+                <fieldset>
+                  <legend>Birth Date *</legend>
+                  <input type="date" name="birthdate" required />
+                </fieldset>
+              </td>
+              <td>
+                <fieldset>
+                  <legend>Select your languages *</legend>
+                  <table align="center">
+                    <tr>
+                      <td>English</td>
+                      <td><input type="checkbox" /></td>
+                    </tr>
+                    <tr>
+                      <td>hindi</td>
+                      <td><input type="checkbox" /></td>
+                    </tr>
+                    <tr>
+                      <td>Gujrati</td>
+                      <td><input type="checkbox" /></td>
+                    </tr>
+                  </table>
+                </fieldset>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <fieldset>
+                  <legend>select city *</legend>
+                  <select name="city">
+                    <option value="">select</option>
+                    <option value="amr">Amreli</option>
+                    <option value="amd">Ahmedabad</option>
+                    <option value="srt">Surat</option>
+                  </select>
+                </fieldset>
+              </td>
+              <td>
+                <fieldset>
+                  <legend>select state *</legend>
+                  <select name="state">
+                    <option value="">Select</option>
+                    <option value="gujarat">Gujarat</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Keral">keral</option>
+                  </select>
+                </fieldset>
+              </td>
+              <td>
+                <fieldset>
+                  <legend>select country *</legend>
+                  <select name="country">
+                    <option value="">select</option>
+                    <option value="amr">America</option>
+                    <option value="india">india</option>
+                    <option value="Uk">Uk</option>
+                    <option value="canada">Canada</option>
+                  </select>
+                </fieldset>
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+
+        <fieldset class="card">
+          <legend><b>Educational Informaion:</b></legend>
+          <table align="center" cellspacing="10" cellpadding="10">
+            <tr>
+              <td>
+                <fieldset>
+                  <legend>SSC Details</legend>
+                  <table cellspacing="20" cellpadding="10">
+                    <tr>
+                      <td>
+                        <fieldset>
+                          <legend>Education Board *</legend>
+                          <select name="Univesity" required>
+                            <option value="">select</option>
+                            <option value="Gujrat Board">Gujrat Board</option>
+                            <option value="Keral Board">keral Board</option>
+                            <option value="Maharashtra">
+                              Maharashtra Board
+                            </option>
+                          </select>
+                        </fieldset>
+                      </td>
+                      <td>
+                        <fieldset>
+                          <legend>Percentage *</legend>
+                          <input
+                            type="number"
+                            aria-placeholder="Enter Your percentage"
+                            required
+                            min="0"
+                            max="100"
+                          />
+                        </fieldset>
+                      </td>
+                      <td>
+                        <fieldset>
+                          <legend>Year Of Passing *</legend>
+                          <select name="year" id="" required>
+                            <option value="">select</option>
+                            <option value="2015">2015</option>
+                            <option value="2015">2016</option>
+                            <option value="2015">2017</option>
+                            <option value="2015">2018</option>
+                            <option value="2015">2019</option>
+                            <option value="2015">2020</option>
+                            <option value="2015">2021</option>
+                          </select>
+                        </fieldset>
+                      </td>
+                    </tr>
+                  </table>
+                </fieldset>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <fieldset>
+                  <legend>HSC Details</legend>
+                  <table cellspacing="20" cellpadding="10">
+                    <tr>
+                      <td>
+                        <fieldset>
+                          <legend>Education Board *</legend>
+                          <select name="Univesity" required>
+                            <option value="">select</option>
+                            <option value="Gujrat Board">Gujrat Board</option>
+                            <option value="Keral Board">keral Board</option>
+                            <option value="Maharashtra">
+                              Maharashtra Board
+                            </option>
+                          </select>
+                        </fieldset>
+                      </td>
+                      <td>
+                        <fieldset>
+                          <legend>Percentage *</legend>
+                          <input
+                            type="number"
+                            aria-placeholder="Enter Your percentage"
+                            required
+                            min="0"
+                            max="100"
+                          />
+                        </fieldset>
+                      </td>
+                      <td>
+                        <fieldset>
+                          <legend>Year Of Passing *</legend>
+                          <select name="year" id="" required>
+                            <option value="">select</option>
+                            <option value="2015">2015</option>
+                            <option value="2015">2016</option>
+                            <option value="2015">2017</option>
+                            <option value="2015">2018</option>
+                            <option value="2015">2019</option>
+                            <option value="2015">2020</option>
+                            <option value="2015">2021</option>
+                          </select>
+                        </fieldset>
+                      </td>
+                    </tr>
+                  </table>
+                </fieldset>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <fieldset>
+                  <legend>Graduation Details</legend>
+                  <table cellspacing="20" cellpadding="10">
+                    <tr>
+                      <td>
+                        <fieldset>
+                          <legend>University *</legend>
+                          <select name="Univesity" required>
+                            <option value="">select</option>
+                            <option value="Nirma">Nirma University</option>
+                            <option value="DDU">DDU</option>
+                            <option value="GTU">GTU</option>
+                          </select>
+                        </fieldset>
+                      </td>
+                      <td>
+                        <fieldset>
+                          <legend>Percentage *</legend>
+                          <input
+                            type="number"
+                            placeholder="Enter Your percentage"
+                            required
+                            min="1"
+                            max="100"
+                          />
+                        </fieldset>
+                      </td>
+                      <td>
+                        <fieldset>
+                          <legend>Year Of Passing *</legend>
+                          <select name="year" id="" required>
+                            <option value="">select</option>
+                            <option value="2015">2015</option>
+                            <option value="2015">2016</option>
+                            <option value="2015">2017</option>
+                            <option value="2015">2018</option>
+                            <option value="2015">2019</option>
+                            <option value="2015">2020</option>
+                            <option value="2015">2021</option>
+                          </select>
+                        </fieldset>
+                      </td>
+                    </tr>
+                  </table>
+                </fieldset>
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+
+        <fieldset class="card">
+          <legend><b>Technical Skills:</b></legend>
+          <table align="center" cellspacing="10" cellpadding="10">
+            <tr>
+              <td>
+                <fieldset>
+                  <legend>Programming Languages *</legend>
+                  <select name="language" id="">
+                    <option value="">select</option>
+                    <option value="C">C++</option>
+                    <option value="C">C</option>
+                    <option value="java">java</option>
+                    <option value="python">python</option>
+                    <option value="js">javascript</option>
+                    &nbsp;&nbsp;<input type="button" name="Add" value="Add" />
+                  </select>
+                </fieldset>
+              </td>
+              <td>
+                <fieldset>
+                  <legend>Frameworks *</legend>
+                  <select name="Frameworks" id="">
+                    <option value="">select</option>
+                    <option value="node">Node</option>
+                    <option value="express">Express</option>
+                    <option value="React">React</option>
+                    <option value="Anguler">Anguler</option>
+                    <option value="Django">Django</option>
+                    <option value="Spring">Spring</option>
+                    &nbsp;&nbsp;<input type="button" name="Add" value="Add" />
+                  </select>
+                </fieldset>
+              </td>
+              <td>
+                <fieldset>
+                  <legend>Database *</legend>
+                  <select name="db" id="">
+                    <option value="">select</option>
+                    <option value="sql">Mysql</option>
+                    <option value="mongo">Mongodb</option>
+                    <option value="Redis">Redis</option>
+                    <option value="sqllite">Sqllite</option>
+                    <option value="ss">Sql server</option>
+                    &nbsp;&nbsp;<input type="button" name="Add" value="Add" />
+                  </select>
+                </fieldset>
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+
+        <fieldset class="card">
+          <legend><b>Add Project Details</b></legend>
+          <table align="center" cellspacing="10" cellpadding="10">
+            <tr>
+              <td>
+                <fieldset>
+                  <legend>Project Name *</legend>
+                  <input type="text" placeholder="enter project name" />
+                </fieldset>
+              </td>
+              <td>
+                <fieldset>
+                  <legend>Project Description *</legend>
+                  <textarea
+                    placeholder="Enter Description Here.."
+                    name="w3review"
+                    rows="4"
+                    cols="50"
+                  ></textarea>
+                </fieldset>
+              </td>
+              <td>
+                <fieldset>
+                  <legend>Project Folder Link *</legend>
+                  <input type="url" placeholder="enter project link here" />
+                </fieldset>
+              </td>
+              <td>
+                <input type="button" value="Add to list" name="Add to list" />
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+
+        <fieldset class="card">
+          <legend><b>Certificates & Experience </b></legend>
+          <table align="center" cellspacing="10" cellpadding="10">
+            <tr>
+              <td>
+                <fieldset>
+                  <legend>Company name</legend>
+                  <input type="text" placeholder="enter company name" />
+                </fieldset>
+              </td>
+              <td>
+                <fieldset>
+                  <legend>Joining Date</legend>
+                  <input type="Date" placeholder="enter Joining date" />
+                </fieldset>
+              </td>
+              <td>
+                <fieldset>
+                  <legend>Leaving Date</legend>
+                  <input type="date" placeholder="enter end date" />
+                </fieldset>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <fieldset>
+                  <legend>Reason For Leaving</legend>
+                  <textarea
+                    type="text"
+                    placeholder="enter reason here"
+                  ></textarea>
+                </fieldset>
+              </td>
+              <td>
+                <fieldset>
+                  <legend>Company Contact Details</legend>
+                  <textarea
+                    type="text"
+                    placeholder="enter company Details"
+                  ></textarea>
+                </fieldset>
+              </td>
+              <td>
+                <input type="button" name="Add To List" value="Add To List" />
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+
+        <table align="center" cellspacing="10" cellpadding="10">
+          <tr>
+            <td>
+              <input
+                type="submit"
+                style="
+                  background-color: black;
+                  color: white;
+                  border-radius: 7px;
+                  padding: 3px;
+                  font-size: 30px;
+                "
+              />
+            </td>
+            <td>
+              <input
+                type="reset"
+                style="
+                  background-color: black;
+                  color: white;
+                  border-radius: 7px;
+                  padding: 3px;
+                  font-size: 30px;
+                "
+              />
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </body>
+</html>

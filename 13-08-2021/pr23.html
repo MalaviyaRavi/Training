@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>
+      23. Take 5 numbers and calculate percentage. According to that percentage
+      print grade. <br />
+      • If marks <50 then Grade is F. • if marks >=50 <60 then Grade is D. • if
+      marks >=60 <70 then Grade is C. • if marks >=70 <80 then Grade is B. • if
+      marks >=80 <90 then Grade is A. • if marks >=90 then Grade is A+
+    </h1>
+
+    <script>
+      var mark1 = Number(prompt("Enter your mark 1"));
+      var mark2 = Number(prompt("Enter your mark 2"));
+      var mark3 = Number(prompt("Enter your mark 3"));
+      var mark4 = Number(prompt("Enter your mark 4"));
+      var mark5 = Number(prompt("Enter your mark 5"));
+      document.write("<h3> Mark 1 : " + mark1 + "</h3>");
+      document.write("<h3> Mark 2 : " + mark2 + "</h3>");
+      document.write("<h3> Mark 3 : " + mark3 + "</h3>");
+      document.write("<h3> Mark 4 : " + mark4 + "</h3>");
+      document.write("<h3> Mark 5 : " + mark5 + "</h3>");
+
+      var sum = mark1 + mark2 + mark3 + mark4 + mark5;
+      var percentage = sum / 5;
+      var result;
+
+      if (percentage < 50) result = "F";
+      else if (percentage >= 50 && percentage < 60) result = "D";
+      else if (percentage >= 60 && percentage < 70) result = "C";
+      else if (percentage >= 70 && percentage < 80) result = "B";
+      else if (percentage >= 80 && percentage < 90) result = "A";
+      else if (percentage > 90) result = "A+";
+
+      document.write("<h3> Result : " + result + "</h3>");
+    </script>
+  </body>
+</html>

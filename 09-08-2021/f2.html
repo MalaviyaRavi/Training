@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        background: #ff0099; /* fallback for old browsers */
+        background: -webkit-linear-gradient(
+          to right,
+          #493240,
+          #ff0099
+        ); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(
+          to right,
+          #493240,
+          #ff0099
+        ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      }
+      .save {
+        background-color: blue;
+        color: white;
+        font-weight: bold;
+        border-radius: 30px;
+        border-color: white;
+        font-size: 18px;
+        padding: 3px 10px;
+      }
+
+      .cancel {
+        background-color: white;
+        border-color: blue;
+        color: black;
+        border-radius: 30px;
+        font-size: 18px;
+        padding: 3px 7px;
+      }
+      .resize {
+        border-style: outset;
+        border-radius: 30px;
+        color: black;
+        font-weight: bold;
+        background-color: rgb(201, 224, 230);
+        padding: 5px 15px;
+      }
+    </style>
+    <title>Form Task 2</title>
+  </head>
+  <body style="background-color: rgb(243, 172, 139)">
+    <h2>
+      <b><i>KM Custom HTML Form Example Using AppleScript</i></b>
+    </h2>
+    <h2 style="margin-left: 200px">(by JMichaelTX)</h2>
+    <table border="1" cellspacing="0">
+      <tr>
+        <td><b>Name:</b></td>
+        <td><input type="text" /></td>
+      </tr>
+      <tr>
+        <td><b>Email:</b></td>
+        <td><input type="email" /></td>
+      </tr>
+      <tr>
+        <td><b>Password:</b></td>
+        <td><input type="password" /></td>
+      </tr>
+      <tr>
+        <td>
+          <p><b>Approval Required:</b></p>
+          <p>click on the button or text to<br />check/uncheck.</p>
+        </td>
+        <td><input type="checkbox" /> Do you approve?</td>
+      </tr>
+      <tr></tr>
+      <tr>
+        <td>
+          <p><b>Pic Your Favorite:</b></p>
+          <p>click on the button or text to <br />select.</p>
+        </td>
+        <td>
+          <input type="radio" value="choice" /> Choice A <br />
+          <input type="radio" value="choice" /> Choice B <br />
+          <input type="radio" value="choice" /> Choice C <br />
+        </td>
+      </tr>
+      <tr>
+        <td><b>Popup Menu:</b></td>
+        <td>
+          <select>
+            <option value="Texas --Tx">Texas --Tx</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <b>List</b>
+          <p>Setup Options:</p>
+          <ul>
+            <li>Number of rows to display</li>
+            <li>Allow Multi-select</li>
+          </ul>
+        </td>
+        <td>
+          <select multiple size="5">
+            <option value="">California -- CA</option>
+            <option value="">Colorado -- CO</option>
+            <option value="">Connecticut -- CN</option>
+            <option value="">Dalifornia -- DA</option>
+            <option value="">Dolorado -- DO</option>
+            <option value="">Dolorado -- DO</option>
+            <option value="">Dolorado -- DO</option>
+            <option value="">Dolorado -- DO</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><b>Field Ignored By KM</b></td>
+        <td>
+          <input type="text" value="10,384" />
+        </td>
+      </tr>
+      <tr>
+        <td><b>Text Area</b></td>
+        <td><textarea cols="40" rows="5"></textarea></td>
+      </tr>
+    </table>
+    <br />
+    <button class="save">save</button>
+    <button class="cancel">cancel</button>
+    <button class="resize">Resize</button>
+  </body>
+</html>

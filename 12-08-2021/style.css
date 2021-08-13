@@ -1,0 +1,710 @@
+/*
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+*/
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #2c3e50;
+  background: -webkit-linear-gradient(to right, #4ca1af, #2c3e50);
+  background: linear-gradient(to right, #4ca1af, #2c3e50);
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #3b3b3b;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0px;
+  padding: 0px;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+  font-family: "Arvo", serif;
+  font-weight: normal;
+  color: #018ad1;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 2.4em;
+}
+
+h3 {
+  font-size: 1.6em;
+}
+
+p,
+ul,
+ol {
+  margin-top: 0;
+  line-height: 180%;
+}
+
+ul,
+ol {
+}
+
+a {
+  text-decoration: none;
+  color: #0285ce;
+}
+
+a:hover {
+}
+
+/* Header */
+
+#header-wrapper {
+}
+
+#header {
+  clear: both;
+  width: 1000px;
+  margin: 0px auto;
+}
+
+/* Logo */
+
+#logo {
+  margin: 0px;
+  padding: 30px 0px;
+  color: #000000;
+}
+
+#logo h1,
+#logo p {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+#logo h1 {
+  margin: 0px;
+  padding: 0px;
+  text-transform: lowercase;
+  font-size: 3.8em;
+  color: #ffffff;
+}
+
+#logo h1 span {
+  color: #ffffff;
+}
+
+#logo p {
+  margin: 0px;
+  padding: 0px;
+  text-transform: uppercase;
+  font-family: "Arvo", serif;
+  color: #ffffff;
+}
+
+#logo p a {
+  color: #ffffff;
+}
+
+#logo a {
+  border: none;
+  background: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+/* Search */
+
+#search {
+  width: 320px;
+  height: 60px;
+  padding: 0px;
+}
+
+#search form {
+  margin: 0px;
+  padding: 0px;
+}
+
+#search fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+#search-text {
+  width: 250px;
+  outline: none;
+  background: #f5f0e7;
+  border: 1px solid #d7d0c0;
+  padding: 10px;
+  text-transform: lowercase;
+  font: normal 14px Arial, Helvetica, sans-serif;
+  color: #454545;
+}
+
+#search-submit {
+  width: 62px;
+  height: 22px;
+  display: none;
+  border: none;
+  color: #ffffff;
+}
+
+/* Menu */
+
+#menu-wrapper {
+  overflow: hidden;
+  height: 60px;
+  background: url(images/menu-wrapper.jpg) repeat-x left top;
+}
+
+#menu {
+  width: 1000px;
+  height: 55px;
+  margin: 0px auto;
+  padding: 0px;
+}
+
+#menu ul {
+  margin: 0;
+  padding: 0px;
+  list-style: none;
+  line-height: normal;
+  text-align: center;
+}
+
+#menu li {
+  display: inline-block;
+  border-right: 1px solid #ffffff;
+}
+
+#menu a {
+  display: block;
+  letter-spacing: 1px;
+  line-height: 55px;
+  padding: 0px 30px;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: "Arvo", serif;
+  font-size: 14px;
+  font-weight: normal;
+  color: #3b3b3b;
+  border: none;
+}
+
+#menu a:hover,
+#menu .current_page_item a {
+  text-decoration: none;
+}
+
+#menu .current_page_item a {
+}
+
+/* Page */
+
+#page {
+  overflow: hidden;
+  width: 920px;
+  margin: 0px auto;
+  padding: 30px 40px;
+  background: url(images/page-bg.png) repeat-y left top;
+}
+
+#page-bgtop {
+  width: 1000px;
+  height: 25px;
+  margin: 0px auto;
+  background: url(images/page-bgtop.png) no-repeat left top;
+}
+
+#page-bgbtm {
+  width: 1000px;
+  height: 35px;
+  margin: 0px auto;
+  background: url(images/page-bgbtm.png) no-repeat left top;
+}
+
+/* Content */
+
+#content {
+  float: left;
+  width: 580px;
+}
+
+.post {
+  margin-bottom: 15px;
+  border-bottom: 1px dashed #d8d8d8;
+}
+
+.post-bgtop {
+}
+
+.post-bgbtm {
+}
+
+.post .title {
+  height: 38px;
+  margin-bottom: 10px;
+  padding: 12px 0 0 0px;
+  font-size: 32px;
+}
+
+.post .title a {
+  border: none;
+  color: #018ad1;
+}
+
+.post .meta {
+  margin-bottom: 30px;
+  padding: 5px 0px 15px 0px;
+  text-align: left;
+  font-weight: normal;
+}
+
+.post .meta .date {
+  float: left;
+}
+
+.post .meta .posted {
+  float: right;
+}
+
+.post .meta a {
+}
+
+.post .entry {
+  padding: 0px 0px 20px 0px;
+  padding-bottom: 20px;
+  text-align: justify;
+}
+
+.links {
+  height: 30px;
+  padding: 30px 0px 0px 0px;
+  font-size: 14px;
+  font-weight: normal;
+  color: #1c1c1c;
+}
+
+/* Sidebar */
+
+#sidebar {
+  float: right;
+  width: 280px;
+  margin: 0px;
+  padding: 30px 0px 0px 0px;
+  color: #000000;
+}
+
+#sidebar ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#sidebar li {
+  margin: 0;
+  padding: 0;
+}
+
+#sidebar li ul {
+  margin: 0px 0px;
+  padding-bottom: 50px;
+}
+
+#sidebar li li {
+  border-bottom: 1px dashed #d8d8d8;
+  margin: 0px 0px;
+  padding: 5px 0px;
+  border-left: none;
+}
+
+#sidebar li li a {
+  color: #3b3b3b;
+}
+
+#sidebar li li span {
+  display: block;
+  padding: 0;
+  font-size: 11px;
+  font-style: italic;
+}
+
+#sidebar h2 {
+  padding-bottom: 20px;
+  font-size: 1.8em;
+  color: #018ad1;
+}
+
+#sidebar p {
+  margin: 0px 0px 40px 0px;
+  padding: 0px;
+  text-align: justify;
+}
+
+#sidebar a {
+  border: none;
+}
+
+#sidebar a:hover {
+  text-decoration: underline;
+}
+
+/* Calendar */
+
+#calendar {
+}
+
+#calendar_wrap {
+  padding: 20px;
+}
+
+#calendar table {
+  width: 100%;
+}
+
+#calendar tbody td {
+  text-align: center;
+}
+
+#calendar #next {
+  text-align: right;
+}
+
+/* Footer */
+
+#footer {
+  overflow: hidden;
+  height: 50px;
+  margin: 0 auto;
+  padding: 0px 0 15px 0;
+  font-family: "Arvo", serif;
+}
+
+#footer p {
+  margin: 0;
+  padding-top: 20px;
+  line-height: normal;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+  color: #f7f0f0;
+}
+
+#footer a {
+  color: #f3ebeb;
+}
+
+#banner {
+  width: 1000px;
+  margin: 0px auto;
+}
+
+/*About us */
+#team .column {
+  float: left;
+  width: 30%;
+  margin-bottom: 16px;
+  padding: 4px 8px;
+  margin: 5px 2px;
+}
+
+#team .card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin: 6px;
+}
+#team .card img {
+  width: 150px;
+  height: 250px;
+}
+#team .container p {
+  text-align: center;
+}
+#team .container h2 {
+  text-align: center;
+}
+
+.about-section {
+  padding: 50px;
+  text-align: center;
+  background: #4ca1af;
+  background: -webkit-linear-gradient(to right, #c4e0e5, #4ca1af);
+  background: linear-gradient(to right, #c4e0e5, #4ca1af);
+
+  color: black;
+  margin-top: 15px;
+}
+
+.title {
+  color: grey;
+}
+
+.button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  background-color: rgb(19, 136, 214);
+  color: rgb(252, 251, 250);
+  border-radius: 25px;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.button:hover {
+  background-color: rgb(15, 5, 155);
+  color: rgb(238, 235, 235);
+}
+
+/*Contact us form*/
+
+.form {
+  padding: 12px 24px 24px 24px;
+  margin: 48px 12px;
+  background: #4388b9;
+  border-radius: 4px;
+}
+#map {
+  margin: 5px 5px;
+  background: #4388b9;
+  border-radius: 7px;
+  border-color: #0285ce;
+  border-width: 2px;
+  border-style: inset;
+}
+.form h3 {
+  margin-bottom: 20px;
+}
+
+label {
+  font-size: 0.85em;
+  margin-left: 12px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+  font-weight: bold;
+}
+.form textarea {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+  font-weight: bold;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+  border: 1px solid green;
+}
+
+input[type="submit"] {
+  background: #92c5f0;
+  margin: 0 auto;
+  outline: 0;
+  color: rgba(3, 1, 1, 0.897);
+  border: 0;
+  padding: 12px 24px;
+  border-radius: 4px;
+
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  font-size: 25px;
+  font-weight: bolder;
+}
+
+input[type="submit"]:focus {
+  background: #a5d6a7;
+  color: whitesmoke;
+}
+
+input[type="submit"]:hover {
+  background: #f5f7f8;
+}
+
+.center {
+  text-align: center;
+}
+
+.fab {
+  background-color: #1582b4;
+  color: rgb(2, 12, 14);
+  padding: 7px;
+  border-radius: 50px;
+  font-size: 30px;
+  margin-top: 30px;
+}
+
+.social_media {
+  text-align: center;
+}
+
+/* CV Style */
+#cv {
+  overflow: auto;
+}
+.div1 {
+  width: 450px;
+  height: 650px;
+  border: 1.5px solid black;
+  float: left;
+  padding-top: 20px;
+  border-right: none;
+  background-color: #002c5a;
+}
+.div2 {
+  width: 450px;
+  padding-top: 20px;
+  height: 650px;
+  border: 1.5px solid black;
+  float: right;
+
+  background-color: #002c5a;
+}
+.div2 img {
+  margin-left: 36%;
+}
+.div2 h3 {
+  text-align: center;
+  color: #f9cf02;
+  font-family: monospace;
+}
+.div2 p {
+  text-align: center;
+  color: #fff;
+  font-family: Helvetica;
+  font-size: 15px;
+}
+.div2 ul {
+  text-align: center;
+  color: #fff;
+  font-family: Helvetica;
+}
+.div2 ol {
+  text-align: center;
+  color: #fff;
+  font-family: Helvetica;
+}
+
+.div2 ul li {
+  text-decoration: none;
+}
+.div2 ol li {
+  text-decoration: none;
+}
+.div1 h2 {
+  text-align: center;
+  color: #f9cf02;
+  font-family: monospace;
+}
+.div1 p {
+  text-align: center;
+  font-size: 15px;
+  font-family: Helvetica;
+  color: #fff;
+}
+
+/* gallery photo style */
+
+div.gallery {
+  margin-left: 45px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+
+  width: 400px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+
+  height: 300px;
+  border: 2px solid #7fc8a9;
+}
+
+div.gallery:hover {
+  border-image-source: linear-gradient(to left, #2193b0, #6dd5ed);
+  border-width: 10px;
+
+  border-image-slice: 1;
+}
+
+div.gallery img {
+  width: 400px;
+  height: 300px;
+}
+
+/*Sign up CSS */
+
+.signup .container {
+  padding: 50px;
+  background-color: lightblue;
+}
+
+.signup input[type="text"],
+input[type="email"],
+textarea,
+select {
+  width: 830px;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+.signup input[type="password"],
+input[type="date"],
+input[type="file"] {
+  width: 800px !important;
+
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+.signup div {
+  padding: 10px 0;
+}
+.signup hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+.signup .registerbtn {
+  background-color: #4caf50;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 830px;
+  opacity: 0.9;
+}
+.signup .registerbtn:hover {
+  opacity: 1;
+}

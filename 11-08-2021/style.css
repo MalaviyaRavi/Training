@@ -1,0 +1,532 @@
+/*
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+*/
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #243485;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #3b3b3b;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0px;
+  padding: 0px;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+  font-family: "Arvo", serif;
+  font-weight: normal;
+  color: #018ad1;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 2.4em;
+}
+
+h3 {
+  font-size: 1.6em;
+}
+
+p,
+ul,
+ol {
+  margin-top: 0;
+  line-height: 180%;
+}
+
+ul,
+ol {
+}
+
+a {
+  text-decoration: none;
+  color: #0285ce;
+}
+
+a:hover {
+}
+
+/* Header */
+
+#header-wrapper {
+}
+
+#header {
+  clear: both;
+  width: 1000px;
+  margin: 0px auto;
+}
+
+/* Logo */
+
+#logo {
+  margin: 0px;
+  padding: 30px 0px;
+  color: #000000;
+}
+
+#logo h1,
+#logo p {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+#logo h1 {
+  margin: 0px;
+  padding: 0px;
+  text-transform: lowercase;
+  font-size: 3.8em;
+  color: #ffffff;
+}
+
+#logo h1 span {
+  color: #ffffff;
+}
+
+#logo p {
+  margin: 0px;
+  padding: 0px;
+  text-transform: uppercase;
+  font-family: "Arvo", serif;
+  color: #ffffff;
+}
+
+#logo p a {
+  color: #ffffff;
+}
+
+#logo a {
+  border: none;
+  background: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+/* Search */
+
+#search {
+  width: 320px;
+  height: 60px;
+  padding: 0px;
+}
+
+#search form {
+  margin: 0px;
+  padding: 0px;
+}
+
+#search fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+#search-text {
+  width: 250px;
+  outline: none;
+  background: #f5f0e7;
+  border: 1px solid #d7d0c0;
+  padding: 10px;
+  text-transform: lowercase;
+  font: normal 14px Arial, Helvetica, sans-serif;
+  color: #454545;
+}
+
+#search-submit {
+  width: 62px;
+  height: 22px;
+  display: none;
+  border: none;
+  color: #ffffff;
+}
+
+/* Menu */
+
+#menu-wrapper {
+  overflow: hidden;
+  height: 60px;
+  background: url(images/menu-wrapper.jpg) repeat-x left top;
+}
+
+#menu {
+  width: 1000px;
+  height: 55px;
+  margin: 0px auto;
+  padding: 0px;
+}
+
+#menu ul {
+  margin: 0;
+  padding: 0px;
+  list-style: none;
+  line-height: normal;
+  text-align: center;
+}
+
+#menu li {
+  display: inline-block;
+  border-right: 1px solid #ffffff;
+}
+
+#menu a {
+  display: block;
+  letter-spacing: 1px;
+  line-height: 55px;
+  padding: 0px 30px;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: "Arvo", serif;
+  font-size: 14px;
+  font-weight: normal;
+  color: #3b3b3b;
+  border: none;
+}
+
+#menu a:hover,
+#menu .current_page_item a {
+  text-decoration: none;
+}
+
+#menu .current_page_item a {
+}
+
+/* Page */
+
+#page {
+  overflow: hidden;
+  width: 920px;
+  margin: 0px auto;
+  padding: 30px 40px;
+  background: url(images/page-bg.png) repeat-y left top;
+}
+
+#page-bgtop {
+  width: 1000px;
+  height: 25px;
+  margin: 0px auto;
+  background: url(images/page-bgtop.png) no-repeat left top;
+}
+
+#page-bgbtm {
+  width: 1000px;
+  height: 35px;
+  margin: 0px auto;
+  background: url(images/page-bgbtm.png) no-repeat left top;
+}
+
+/* Content */
+
+#content {
+  float: left;
+  width: 580px;
+}
+
+.post {
+  margin-bottom: 15px;
+  border-bottom: 1px dashed #d8d8d8;
+}
+
+.post-bgtop {
+}
+
+.post-bgbtm {
+}
+
+.post .title {
+  height: 38px;
+  margin-bottom: 10px;
+  padding: 12px 0 0 0px;
+  font-size: 32px;
+}
+
+.post .title a {
+  border: none;
+  color: #018ad1;
+}
+
+.post .meta {
+  margin-bottom: 30px;
+  padding: 5px 0px 15px 0px;
+  text-align: left;
+  font-weight: normal;
+}
+
+.post .meta .date {
+  float: left;
+}
+
+.post .meta .posted {
+  float: right;
+}
+
+.post .meta a {
+}
+
+.post .entry {
+  padding: 0px 0px 20px 0px;
+  padding-bottom: 20px;
+  text-align: justify;
+}
+
+.links {
+  height: 30px;
+  padding: 30px 0px 0px 0px;
+  font-size: 14px;
+  font-weight: normal;
+  color: #1c1c1c;
+}
+
+/* Sidebar */
+
+#sidebar {
+  float: right;
+  width: 280px;
+  margin: 0px;
+  padding: 30px 0px 0px 0px;
+  color: #000000;
+}
+
+#sidebar ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#sidebar li {
+  margin: 0;
+  padding: 0;
+}
+
+#sidebar li ul {
+  margin: 0px 0px;
+  padding-bottom: 50px;
+}
+
+#sidebar li li {
+  border-bottom: 1px dashed #d8d8d8;
+  margin: 0px 0px;
+  padding: 5px 0px;
+  border-left: none;
+}
+
+#sidebar li li a {
+  color: #3b3b3b;
+}
+
+#sidebar li li span {
+  display: block;
+  padding: 0;
+  font-size: 11px;
+  font-style: italic;
+}
+
+#sidebar h2 {
+  padding-bottom: 20px;
+  font-size: 1.8em;
+  color: #018ad1;
+}
+
+#sidebar p {
+  margin: 0px 0px 40px 0px;
+  padding: 0px;
+  text-align: justify;
+}
+
+#sidebar a {
+  border: none;
+}
+
+#sidebar a:hover {
+  text-decoration: underline;
+}
+
+/* Calendar */
+
+#calendar {
+}
+
+#calendar_wrap {
+  padding: 20px;
+}
+
+#calendar table {
+  width: 100%;
+}
+
+#calendar tbody td {
+  text-align: center;
+}
+
+#calendar #next {
+  text-align: right;
+}
+
+/* Footer */
+
+#footer {
+  overflow: hidden;
+  height: 50px;
+  margin: 0 auto;
+  padding: 0px 0 15px 0;
+  font-family: "Arvo", serif;
+}
+
+#footer p {
+  margin: 0;
+  padding-top: 20px;
+  line-height: normal;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+  color: #a0a0a0;
+}
+
+#footer a {
+  color: #8a8a8a;
+}
+
+#banner {
+  width: 1000px;
+  margin: 0px auto;
+}
+
+/*About us */
+.column {
+  float: left;
+  width: 30%;
+  margin-bottom: 16px;
+  padding: 4px 8px;
+  margin: 5px 2px;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin: 6px;
+}
+.card img {
+  width: 150px;
+  height: 250px;
+}
+.container p {
+  text-align: center;
+}
+.container h2 {
+  text-align: center;
+}
+
+.about-section {
+  padding: 50px;
+  text-align: center;
+  background: #4ca1af;
+  background: -webkit-linear-gradient(to right, #c4e0e5, #4ca1af);
+  background: linear-gradient(to right, #c4e0e5, #4ca1af);
+
+  color: black;
+  margin-top: 15px;
+}
+
+.title {
+  color: grey;
+}
+
+.button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  background-color: rgb(19, 136, 214);
+  color: rgb(252, 251, 250);
+  border-radius: 25px;
+}
+
+.button:hover {
+  background-color: rgb(15, 5, 155);
+  color: rgb(238, 235, 235);
+}
+
+/*Contact us form*/
+
+.form {
+  padding: 12px 24px 24px 24px;
+  margin: 48px 12px;
+  background: #e3f2fd;
+  border-radius: 4px;
+}
+.form h3 {
+  margin-bottom: 20px;
+}
+
+/* Add styles to 'label' selector */
+label {
+  font-size: 0.85em;
+  margin-left: 12px;
+  font-size: 15px;
+}
+
+/* Add styles to 'input' and 'textarea' selectors */
+input[type="text"],
+input[type="email"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+/* Add styles to show 'focus' of selector */
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+  border: 1px solid green;
+}
+
+/* Add styles to the submit button */
+input[type="submit"] {
+  background: #64b5f6;
+  margin: 0 auto;
+  outline: 0;
+  color: white;
+  border: 0;
+  padding: 12px 24px;
+  border-radius: 4px;
+
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+input[type="submit"]:focus {
+  background: #a5d6a7;
+  color: whitesmoke;
+}
+
+/* Style 'hover' property */
+input[type="submit"]:hover {
+  background: #2196f3;
+}
+
+/* Align items to center of the 'div' with the class 'center' */
+.center {
+  text-align: center;
+}

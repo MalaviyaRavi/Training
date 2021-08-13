@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>
+      15. Take 3 numbers and find greatest number using nested IF….ELSE
+      statement.
+    </h1>
+    <h3><number2>Output : </b></h3>
+
+    <script>
+        var number1 = Number(prompt("Enter your number 1"));
+        var number2 = Number(prompt("Enter your number 2"));
+        var number3 = Number(prompt("Enter your number 3"));
+        var result;
+        document.write("<h3> Number 1 : " + number1 + "</h3>");
+        document.write("<h3> Number 2 :" + number2 + "</h3>");
+        document.write("<h3> Number 3 :" + number3 + "</h3>");
+
+        if(number1>number2)
+        {
+            if(number1>number3)
+            {
+                result="number1";
+            }
+            else{
+                result="number3";
+            }
+        }
+        else{
+            if(number2>number3){
+                result="number2";
+            }
+            else{
+                result="number3";
+             }
+        }
+
+        document.write("<h3> " + result + " is greater </h3>");
+    </script>
+  </body>
+</html>

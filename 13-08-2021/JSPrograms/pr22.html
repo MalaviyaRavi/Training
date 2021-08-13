@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>
+      22. Make a simple calculator using switch case. a. 1.Addition b.
+      2.Subtraction c. 3.Multiplication d. 4.Division
+    </h1>
+
+    <script>
+      var number1 = Number(prompt("Enter your number 1"));
+      var number2 = Number(prompt("Enter your number 2"));
+      var op = prompt("Enter your Operation like + , - , * , /");
+
+      document.write(op);
+      document.write(typeof op);
+      document.write("<h3> Number 1 : " + number1 + "</h3>");
+      document.write("<h3> Number 2 :" + number2 + "</h3>");
+      document.write("<h3> operation :" + op + "</h3>");
+      var result;
+
+      if (number2 != 0) {
+        switch (op) {
+          case "+":
+            result = number1 + number2;
+            break;
+          case "-":
+            result = number1 - number2;
+            break;
+          case "*":
+            result = number1 * number2;
+            break;
+          case "/":
+            result = number1 / number2;
+            break;
+
+          default:
+            result = "Enter Valid Operation";
+        }
+      } else {
+        result = "Enter valid Number";
+      }
+
+      document.write("<h3> Result :" + result + "</h3>");
+    </script>
+  </body>
+</html>
