@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-weight: bold;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Array Functions</h1>
+    <h3><b>Output : </b></h3>
+
+    <script>
+      var arr = ["3", "7", "11", "13"];
+      var arr1 = [11, 22, 33, 44, 55];
+      var arr2 = [1, 2, 3, 4, 5, 6, 7];
+      document.write(arr.reverse() + "<br>");
+      document.write(arr.sort().reverse() + "<br>");
+      document.write(arr.sort() + "<br>");
+      document.write(arr.concat(arr1) + "<br>");
+      document.write(arr.indexOf("11") + "<br>");
+      document.write(arr2.lastIndexOf(7) + "<br>");
+      document.write(arr.join("-") + "<br>");
+      document.write(arr1.push(66) + "<br>");
+      document.write(arr1 + "<br>");
+      document.write(arr1.pop() + "<br>");
+      document.write(arr1 + "<br>");
+      document.write(arr.fill("ravi") + "<br>");
+
+      var newarr = arr2.map((value) => {
+        return value * value;
+      });
+      document.write(newarr + "<br>");
+
+      var even = arr2.filter((value) => {
+        return value % 2 != 0;
+      });
+      document.write(even + "<br>");
+
+      var sum = arr2.reduce((acc, value) => {
+        return (acc = acc + value);
+      });
+      document.write(sum + "<br>");
+    </script>
+  </body>
+</html>

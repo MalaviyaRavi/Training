@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-weight: bold;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Date & Time Functions</h1>
+    <h3><b>Output : </b></h3>
+
+    <h4>Date Functions</h4>
+
+    <script>
+      var d = new Date();
+      var date, month, year;
+      date = d.getDate();
+      month = d.getMonth() + 1;
+      year = d.getFullYear();
+      document.write(date + "-" + month + "-" + year + "<br>");
+      document.write(d.toString());
+      document.write(d.toJSON());
+    </script>
+    <h4>Time Functions</h4>
+
+    <script>
+      var time = new Date();
+      var h, m, s;
+      h = time.getHours();
+      m = time.getMinutes();
+      s = time.getSeconds();
+
+      document.write(h + ":" + m + ":" + s + "<br>");
+      document.write(time.toLocaleTimeString());
+      document.write(time.toTimeString());
+    </script>
+  </body>
+</html>
