@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: sans-serif;
+        background-color: rgb(11, 118, 133);
+      }
+      .container {
+        padding: 50px;
+        background-color: lightblue;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      input[type="password"],
+      textarea,
+      select {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 22px 0;
+        display: inline-block;
+        border: none;
+        background: #f1f1f1;
+      }
+      .gender {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 22px 0;
+        display: inline-block;
+        border: none;
+        background: #f1f1f1;
+      }
+      input[type="text"]:focus,
+      input[type="number"]:focus,
+      input[type="password"]:focus,
+      select:focus {
+        background-color: orange;
+        outline: none;
+      }
+      div {
+        padding: 10px 0;
+      }
+      hr {
+        border: 1px solid #f1f1f1;
+        margin-bottom: 25px;
+      }
+      .registerbtn {
+        background-color: #4caf50;
+        color: white;
+        padding: 16px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        opacity: 0.9;
+      }
+      .registerbtn:hover {
+        opacity: 1;
+      }
+      span {
+        width: auto;
+        height: auto;
+        font-size: 13px;
+
+        background-color: rgb(241, 123, 123);
+      }
+    </style>
+  </head>
+  <body>
+    <form>
+      <div class="container">
+        <center><h1>Student Registeration Form</h1></center>
+        <hr />
+        <label> Firstname </label><br />
+        <span id="firstname"></span>
+        <input
+          type="text"
+          name="firstname"
+          placeholder="Firstname"
+          onblur="validateFields(event)"
+        />
+        <label> Middlename: </label><br />
+        <span id="middlename"></span>
+        <input
+          type="text"
+          name="middlename"
+          placeholder="Middlename"
+          onblur="validateFields(event)"
+        />
+        <label> Lastname: </label><br />
+        <span id="lastname"></span>
+        <input
+          type="text"
+          name="lastname"
+          placeholder="Lastname"
+          onblur="validateFields(event)"
+        />
+        <div>
+          <label> Course : </label><br />
+          <span id="course"></span>
+
+          <select name="course" onblur="validateDropdown(event)">
+            <option value="Course">Course</option>
+            <option value="BCA">BCA</option>
+            <option value="BBA">BBA</option>
+            <option value="B.Tech">B.Tech</option>
+            <option value="MBA">MBA</option>
+            <option value="MCA">MCA</option>
+            <option value="M.Tech">M.Tech</option>
+          </select>
+        </div>
+        <div class="gender">
+          <label> Gender : </label><br />
+          <span id="gender"></span>
+          <input
+            type="radio"
+            value="Male"
+            name="gender"
+            onblur="validateRadio(event)"
+          />
+          Male
+          <input
+            type="radio"
+            value="Female"
+            name="gender"
+            onblur="validateRadio(event)"
+          />
+          Female
+          <input
+            type="radio"
+            value="Other"
+            name="gender"
+            onblur="validateRadio(event)"
+          />
+          Other
+        </div>
+        <label> Phone : </label><br />
+        <span id="phone"></span>
+
+        <input
+          type="number"
+          name="phone"
+          placeholder="phone no."
+          size="10"
+          onblur="validateFields(event)"
+        />
+
+        <label for="email"><b>Email</b></label
+        ><br />
+        <span id="email"></span>
+        <input
+          type="text"
+          placeholder="Enter Email"
+          name="email"
+          onblur="validateFields(event)"
+        />
+
+        <label for="psw"><b>Password</b></label>
+        <span id="password"></span>
+        <input
+          type="password"
+          placeholder="Enter Password"
+          name="password"
+          onblur="validatePassword(event)"
+        />
+
+        <label for="psw-repeat"><b>Re-type Password</b></label>
+        <span id="password-repeat"></span>
+        <input
+          type="password"
+          placeholder="Retype Password"
+          name="password-repeat"
+          onblur="validatePassword(event)"
+        />
+        <button
+          type="submit"
+          class="registerbtn"
+          onsubmit="submitValidation(this)"
+        >
+          Register
+        </button>
+      </div>
+    </form>
+
+    <script src="signup.js"></script>
+  </body>
+</html>

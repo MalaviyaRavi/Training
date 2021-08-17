@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: sans-serif;
+        background-color: rgb(11, 118, 133);
+      }
+      .container {
+        padding: 50px;
+        background-color: lightblue;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      input[type="password"],
+      input[type="submit"],
+      textarea,
+      select {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 22px 0;
+        display: inline-block;
+        border: none;
+        background: #f1f1f1;
+      }
+      .gender {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 22px 0;
+        display: inline-block;
+        border: none;
+        background: #f1f1f1;
+      }
+      input[type="text"]:focus,
+      input[type="number"]:focus,
+      input[type="password"]:focus,
+      select:focus {
+        background-color: orange;
+        outline: none;
+      }
+      div {
+        padding: 10px 0;
+      }
+      hr {
+        border: 1px solid #f1f1f1;
+        margin-bottom: 25px;
+      }
+      .registerbtn {
+        background-color: #4caf50;
+        color: white;
+        padding: 16px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        opacity: 0.9;
+      }
+      .registerbtn:hover {
+        opacity: 1;
+      }
+      span {
+        width: auto;
+        height: auto;
+        font-size: 13px;
+
+        background-color: rgb(241, 123, 123);
+      }
+    </style>
+  </head>
+  <body>
+    <form onsubmit="return submitValidation()">
+      <div class="container">
+        <center><h1>Student Registeration Form</h1></center>
+        <hr />
+        <label> Firstname </label><br />
+        <span id="firstname"></span>
+        <input type="text" name="firstname" placeholder="Firstname" />
+        <label> Middlename: </label><br />
+        <span id="middlename"></span>
+        <input type="text" name="middlename" placeholder="Middlename" />
+        <label> Lastname: </label><br />
+        <span id="lastname"></span>
+        <input type="text" name="lastname" placeholder="Lastname" />
+
+        <label> Phone : </label><br />
+        <span id="phone"></span>
+
+        <input type="number" name="phone" placeholder="phone no." size="10" />
+
+        <label for="email">Email</label><br />
+        <span id="email"></span>
+        <input type="text" placeholder="Enter Email" name="email" />
+
+        <label for="psw">Password</label><br />
+        <span id="password"></span>
+        <input type="password" placeholder="Enter Password" name="password" />
+
+        <label for="psw-repeat">Re-type Password</label><br />
+        <span id="password_repeat"></span>
+        <input
+          type="password"
+          placeholder="Retype Password"
+          name="password_repeat"
+        />
+        <input type="submit" value="Submit" />
+      </div>
+    </form>
+
+    <script src="validate.js"></script>
+  </body>
+</html>
