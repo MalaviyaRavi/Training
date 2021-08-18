@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo With localStorage</title>
+    <style>
+      .card {
+        margin-left: 500px;
+        margin-top: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <input type="text" id="name" placeholder="Enter Your Task" /><br />
+      <br />
+      <button id="add" style="margin-left: 40px">Add New Task</button>
+      <br />
+      <ol id="list"></ol>
+      <button id="clear" style="margin-left: 50px; display: none">
+        Clear All Tasks
+      </button>
+      <br />
+    </div>
+
+    <script>
+      var data = JSON.parse(localStorage.getItem("data"));
+      if (data != null) {
+        for (let i in data.tasks) {
+          document
+            .getElementById("list")
+            .appendChild(document.createElement("li")).innerText =
+            data.tasks[i];
+        }
+      } else {
+        let obj = {
+          tasks: [],
+        };
+        localStorage.setItem("data", JSON.stringify(obj));
+      }
+      if (data.tasks.length) {
+        document.getElementById("clear").style.display = "block";
+      }
+      function addTask() {
+        var input = document.getElementById("name").value.trim();
+        if (input != "") {
+          document
+            .getElementById("list")
+            .appendChild(document.createElement("li")).innerText = input;
+
+          let data = JSON.parse(localStorage.getItem("data"));
+          data.tasks.push(input);
+          localStorage.setItem("data", JSON.stringify(data));
+          document.getElementById("name").value = "";
+          document.getElementById("clear").style.display = "block";
+        }
+      }
+
+      document.getElementById("clear").addEventListener("click", () => {
+        document.getElementById("list").innerText = "";
+        localStorage.removeItem("data");
+        document.getElementById("clear").style.display = "none";
+        let obj = {
+          tasks: [],
+        };
+        localStorage.setItem("data", JSON.stringify(obj));
+      });
+
+      document.getElementById("add").addEventListener("click", addTask);
+    </script>
+  </body>
+</html>

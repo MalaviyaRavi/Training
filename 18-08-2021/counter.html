@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Counter</title>
+  </head>
+  <body>
+    <div class="container">
+      <h3 style="margin-left: 120px; font-size: 30px" id="number"></h3>
+      <button id="inc">Increament</button>
+      <button id="dec">Decreament</button>
+      <button id="reset">Reset</button>
+    </div>
+
+    <script>
+      let count = Number(localStorage.getItem("item"));
+      document.getElementById("number").innerText = count == null ? 0 : count;
+
+      document.getElementById("inc").addEventListener("click", () => {
+        var counter = Number(document.getElementById("number").innerText);
+
+        counter = counter + 1;
+        localStorage.setItem("counter", counter);
+        document.getElementById("number").innerText = counter;
+      });
+
+      document.getElementById("dec").addEventListener("click", () => {
+        var counter = Number(document.getElementById("number").innerText);
+
+        counter = counter - 1;
+        localStorage.setItem("counter", counter);
+        document.getElementById("number").innerText = counter;
+      });
+
+      document.getElementById("reset").addEventListener("click", () => {
+        var counter = Number(document.getElementById("number").innerText);
+
+        counter = 0;
+        localStorage.setItem("counter", counter);
+        document.getElementById("number").innerText = counter;
+      });
+    </script>
+  </body>
+</html>

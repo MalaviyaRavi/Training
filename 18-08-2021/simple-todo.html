@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple-Todo</title>
+    <style>
+      .card {
+        margin-left: 500px;
+        margin-top: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <input type="text" id="name" placeholder="Enter Your Task" /><br />
+      <br />
+      <button id="add" style="margin-left: 40px">Add Task</button>
+      <br />
+
+      <ol id="list"></ol>
+      <button id="clear" style="margin-left: 40px; display: none">
+        Clear Tasks
+      </button>
+      <br />
+    </div>
+
+    <script>
+      document.getElementById("clear").addEventListener("click", function () {
+        document.getElementById("list").innerText = "";
+        document.getElementById("clear").style.display = "none";
+      });
+
+      function addTask() {
+        var task = document.getElementById("name").value.trim();
+        if (task.length != 0) {
+          document
+            .getElementById("list")
+            .appendChild(document.createElement("li")).innerText = task;
+        }
+        document.getElementById("clear").style.display = "block";
+        document.getElementById("name").value = "";
+      }
+      document.getElementById("add").addEventListener("click", addTask);
+    </script>
+  </body>
+</html>
