@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Html Slider</title>
+    <style>
+      img {
+        width: 270px;
+        height: 150px;
+      }
+
+      .slider {
+        text-align: center;
+        margin-top: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slider">
+      <div class="img">
+        <img src="" alt="image" id="image" />
+      </div>
+      <div class="btns">
+        <button id="prev">Previous</button>
+        <button id="next">Next</button>
+      </div>
+    </div>
+
+    <script>
+      var images = [
+        "https://images.unsplash.com/photo-1597283712405-819a6021326c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80",
+        "https://images.unsplash.com/photo-1612151855475-877969f4a6cc?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aGQlMjBpbWFnZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        "https://images.unsplash.com/photo-1605985527064-98adb1b7a1b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDV8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
+        "https://images.unsplash.com/photo-1613974700256-1d8e096d19bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDEwfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
+      ];
+      var index = 0;
+
+      function displaySlide(n) {
+        if (n > 3) {
+          n = 0;
+          index = 0;
+        }
+        if (n < 0) {
+          n = images.length - 1;
+          index = images.length - 1;
+        }
+        document.getElementById("image").src = images[n];
+      }
+
+      document.addEventListener("load", displaySlide(index));
+
+      document.getElementById("prev").addEventListener("click", function () {
+        index = index - 1;
+        console.log(index);
+        displaySlide(index);
+      });
+      document.getElementById("next").addEventListener("click", function () {
+        index = index + 1;
+        console.log(index);
+        displaySlide(index);
+      });
+    </script>
+  </body>
+</html>

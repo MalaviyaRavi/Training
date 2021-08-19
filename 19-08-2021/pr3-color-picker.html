@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Picker</title>
+    <style>
+      .card {
+        margin-top: 130px;
+        margin-left: 200px;
+      }
+      #output {
+        border: 2px solid black;
+        height: 173px;
+        width: 173px;
+      }
+      input {
+        width: 173px;
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <label for="color">Choose Color</label><br />
+      <input type="color" id="color" /><br />
+      <div id="output"></div>
+    </div>
+
+    <script>
+      document.getElementById("color").addEventListener("change", function () {
+        var colorValue = document.getElementById("color").value;
+        document.getElementById("output").style.backgroundColor = colorValue;
+      });
+    </script>
+  </body>
+</html>

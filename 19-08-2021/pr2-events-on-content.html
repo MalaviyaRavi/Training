@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event On Event</title>
+    <style>
+      #card {
+        text-align: center;
+        width: 270px;
+        margin-left: 400px;
+        margin-top: 100px;
+        border: 2px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="card">
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit
+      excepturi, ullam totam eaque alias explicabo aspernatur fugit qui,
+      dignissimos error officia voluptate debitis soluta delectus voluptatum
+      natus praesentium repellendus ab!
+    </div>
+
+    <script>
+      var divObj = document.getElementById("card");
+
+      divObj.addEventListener("mouseover", function () {
+        divObj.style.fontFamily = "sans-serif";
+        divObj.style.border = "2px dashed black";
+        divObj.style.borderRadius = "15px";
+        divObj.style.boxShadow = "5px 10px 10px 10px orange";
+      });
+
+      divObj.addEventListener("mouseout", function () {
+        divObj.style.fontFamily = "serif";
+        divObj.style.border = "1px solid black";
+        divObj.style.borderRadius = "0px";
+        divObj.style.boxShadow = "5px 10px 10px 10px green";
+      });
+
+      divObj.addEventListener("click", function () {
+        divObj.style.marginLeft = "600px";
+      });
+
+      divObj.addEventListener("contextmenu", function () {
+        divObj.style.marginLeft = "400px";
+      });
+    </script>
+  </body>
+</html>

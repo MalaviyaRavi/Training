@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CountDown</title>
+    <style>
+      .card {
+        margin-left: 550px;
+        margin-top: 100px;
+        width: 300px;
+        height: 300px;
+
+        border-radius: 7px;
+        padding: 0px;
+      }
+      #count {
+        text-align: Center;
+        height: 173px;
+
+        background: #4b6cb7;
+        background: -webkit-linear-gradient(to right, #182848, #4b6cb7);
+        background: linear-gradient(to right, #182848, #4b6cb7);
+      }
+      p {
+        border: 2px solid gray;
+        width: 90px;
+        height: 70px;
+        padding-top: 10px;
+        border-radius: 25px;
+        font-size: 40px;
+        margin-left: 100px;
+        background: #5f2c82;
+        background: -webkit-linear-gradient(to right, #49a09d, #5f2c82);
+        background: linear-gradient(to right, #49a09d, #822c6d);
+
+        color: rgb(248, 250, 237);
+        box-sizing: border-box;
+      }
+      .btns {
+        display: flex;
+        padding-top: 10px;
+        background-color: cadetblue;
+        align-items: center;
+        width: auto;
+        height: 30px;
+      }
+      .start {
+        padding-left: 50px;
+      }
+      .stop {
+        padding-left: 20px;
+      }
+      #start {
+        background-color: #4caf50; /* Green */
+        border: 2px solid black;
+        border-radius: 20px;
+        color: white;
+        padding: 10px 25px;
+        text-align: center;
+
+        font-size: 16px;
+      }
+      #stop {
+        background-color: #4caf50; /* Green */
+        border: 2px solid black;
+        border-radius: 20px;
+        color: white;
+        padding: 10px 25px;
+        text-align: center;
+
+        font-size: 16px;
+      }
+      #reset {
+        margin-left: 105px;
+        background-color: #4caf50; /* Green */
+        border: 2px solid black;
+        border-radius: 20px;
+        margin-top: 10px;
+        color: white;
+        padding: 10px 25px;
+        text-align: center;
+
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div id="count">
+        <p id="number">3</p>
+      </div>
+
+      <div class="btns">
+        <div class="start"><button id="start">Start</button></div>
+        <div class="stop"><button id="stop">Stop</button></div>
+      </div>
+      <div class="reset"><button id="reset">Reset</button></div>
+    </div>
+
+    <script>
+      var x = prompt("Enter Digit For CountDown..!!");
+      document.getElementById("number").innerText = x;
+
+      var count = Number(document.getElementById("number").innerText);
+
+      var stopFlag = true;
+
+      function startCountDown() {
+        if (stopFlag == true) {
+          stopFlag = false;
+          runTime();
+        }
+      }
+
+      function stopCountDown() {
+        if (stopFlag == false) {
+          stopFlag = true;
+        }
+      }
+
+      function runTime() {
+        if (stopFlag == false) {
+          count = count - 1;
+          if (count < 0) {
+            stopCountDown();
+            document.getElementById("start").disabled = true;
+            document.getElementById("stop").disabled = true;
+            document.getElementById("start").style.backgroundColor = "#8feba3";
+            document.getElementById("start").style.backgroundColor = "#8feba3";
+          }
+          document.getElementById("number").innerText = count;
+          setTimeout("runTime()", 1000);
+        }
+      }
+
+      document.getElementById("reset").addEventListener("click", function () {
+        location.reload();
+      });
+
+      document
+        .getElementById("start")
+        .addEventListener("click", startCountDown);
+
+      document.getElementById("stop").addEventListener("click", stopCountDown);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: Calibri, Helvetica, sans-serif;
+        background-color: pink;
+      }
+      .container {
+        padding: 50px;
+        background-color: lightblue;
+      }
+
+      input[type="text"],
+      input[type="password"],
+      input[type="file"] {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 22px 0;
+        display: inline-block;
+        border: none;
+        background: #f1f1f1;
+      }
+
+      div {
+        padding: 10px 0;
+      }
+      hr {
+        border: 1px solid #f1f1f1;
+        margin-bottom: 25px;
+      }
+      .registerbtn {
+        background-color: #4caf50;
+        color: white;
+        padding: 16px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        opacity: 0.9;
+        font-size: 15px;
+        width: 1415px;
+      }
+      .registerbtn:hover {
+        opacity: 1;
+      }
+      label {
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <form>
+      <div class="container">
+        <center><h1>Student Registeration Form</h1></center>
+        <hr />
+        <label id="firstname"> Firstname </label>
+        <input
+          type="text"
+          name="firstname"
+          placeholder="Firstname"
+          size="15"
+          required
+          class="input"
+        />
+
+        <label id="middlename"> Middlename: </label>
+        <input
+          type="text"
+          name="middlename"
+          placeholder="Middlename"
+          size="15"
+          required
+          class="input"
+        />
+        <label id="lastname"> Lastname: </label>
+        <input
+          type="text"
+          name="lastname"
+          placeholder="Lastname"
+          size="15"
+          required
+          class="input"
+        />
+
+        <label id="phone"> Phone : </label>
+
+        <input
+          type="text"
+          name="phone"
+          placeholder="phone no."
+          size="10"
+          required
+          class="input"
+        />
+        <label id="country"><b>Country</b></label>
+        <input
+          type="text"
+          placeholder="Enter your Country"
+          name="country"
+          required
+          class="input"
+        />
+        <label id="state"><b>State</b></label>
+        <input
+          type="text"
+          placeholder="Enter your state"
+          name="state"
+          required
+          class="input"
+        />
+
+        <label id="city"><b>City</b></label>
+        <input
+          type="text"
+          placeholder="Enter your city"
+          name="city"
+          required
+          class="input"
+        />
+
+        <label id="email"><b>Email</b></label>
+        <input
+          type="text"
+          placeholder="Enter Email"
+          name="email"
+          required
+          class="input"
+        />
+
+        <label id="psw"><b>Password</b></label>
+        <input
+          type="password"
+          placeholder="Enter Password"
+          name="psw"
+          required
+          class="input"
+        />
+
+        <label id="psw-repeat"><b>Re-type Password</b></label>
+        <input
+          type="password"
+          placeholder="Retype Password"
+          name="psw-repeat"
+          required
+          class="input"
+        />
+        <label id="file"><b>Choose File</b></label>
+        <input
+          type="file"
+          placeholder="choose file"
+          name="file"
+          required
+          class="input"
+        />
+
+        <button type="submit" class="registerbtn" id="submit">Register</button>
+      </div>
+    </form>
+
+    <script>
+      document.querySelectorAll("input").forEach((item) => {
+        item.addEventListener("focus", () => {
+          item.style.backgroundColor = "#7C83FD";
+          document.getElementById(item.name).style.fontSize = "25px";
+          document.getElementById(item.name).style.fontWeight = "Bold";
+          document.getElementById(item.name).style.color = "#00416A";
+          item.style.borderColor = "white";
+        });
+      });
+      document.querySelectorAll("input").forEach((item) => {
+        item.addEventListener("blur", () => {
+          item.style.backgroundColor = "white";
+          document.getElementById(item.name).style.fontSize = "20px";
+          document.getElementById(item.name).style.fontWeight = "normal";
+          document.getElementById(item.name).style.color = "#000000";
+        });
+      });
+
+      document
+        .getElementById("submit")
+        .addEventListener("mouseover", function () {
+          var btn = document.getElementById("submit");
+          btn.style.backgroundColor = "#00416A";
+          btn.style.fontSize = "20px";
+          btn.style.fontWeight = "bold";
+        });
+
+      document
+        .getElementById("submit")
+        .addEventListener("mouseout", function () {
+          var btn = document.getElementById("submit");
+          btn.style.backgroundColor = "#4caf50";
+          btn.style.fontSize = "15px";
+          btn.style.fontWeight = "normal";
+        });
+    </script>
+  </body>
+</html>

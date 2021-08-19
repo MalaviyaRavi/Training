@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stop Propagation</title>
+    <style>
+      #d3 {
+        height: 200px;
+        width: 200px;
+        border: 1px solid black;
+        background-color: rgb(218, 51, 10);
+        text-align: center;
+      }
+
+      #d2 {
+        height: 100px;
+        width: 100px;
+        border: 1px solid black;
+        background-color: rgb(243, 242, 236);
+        text-align: center;
+        margin-left: 48px;
+        margin-top: 48px;
+      }
+      #d1 {
+        height: 50px;
+        width: 50px;
+        border: 1px solid black;
+        background-color: rgb(25, 58, 3);
+        text-align: center;
+        margin-left: 23px;
+        margin-top: 23px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="d3">
+      <div id="d2">
+        <div id="d1"></div>
+      </div>
+    </div>
+
+    <ol id="list"></ol>
+
+    <script>
+      document.getElementById("d3").addEventListener("click", function () {
+        document
+          .getElementById("list")
+          .appendChild(document.createElement("li")).innerText =
+          "Orange Clicked";
+      });
+
+      document.getElementById("d2").addEventListener("click", function (event) {
+        event.stopPropagation();
+        document
+          .getElementById("list")
+          .appendChild(document.createElement("li")).innerText =
+          "White Clicked";
+      });
+
+      document.getElementById("d1").addEventListener("click", function () {
+        document
+          .getElementById("list")
+          .appendChild(document.createElement("li")).innerText =
+          "Green Clicked";
+      });
+    </script>
+  </body>
+</html>
