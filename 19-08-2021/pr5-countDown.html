@@ -123,7 +123,7 @@
       function runTime() {
         if (stopFlag == false) {
           count = count - 1;
-          if (count < 0) {
+          if (count <= 0) {
             stopCountDown();
             document.getElementById("start").disabled = true;
             document.getElementById("stop").disabled = true;
