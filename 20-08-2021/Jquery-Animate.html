@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>jQuery UI Effects - Animate demo</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+      .toggler {
+        width: 500px;
+        height: 200px;
+        position: relative;
+      }
+      #button {
+        padding: 0.5em 1em;
+        text-decoration: none;
+        background-color: yellow;
+      }
+      #effect {
+        width: 240px;
+        height: 135px;
+        padding: 0.4em;
+        position: relative;
+        background: #fff;
+      }
+      #effect h3 {
+        margin: 0;
+        padding: 0.4em;
+        text-align: center;
+      }
+    </style>
+    <script>
+      $(function () {
+        var state = true;
+        $("#button").click(function () {
+          if (state) {
+            $("#effect").animate(
+              {
+                backgroundColor: "#aa0000",
+                color: "#fff",
+                width: 500,
+              },
+              1000
+            );
+          } else {
+            $("#effect").animate(
+              {
+                backgroundColor: "#fff",
+                color: "#000",
+                width: 240,
+              },
+              1000
+            );
+          }
+          state = !state;
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="toggler">
+      <div id="effect" style="background-color: blue">
+        <h3>Animate</h3>
+        <p>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga,
+          soluta.
+        </p>
+      </div>
+    </div>
+    <button id="button">Toggle</button>
+  </body>
+</html>

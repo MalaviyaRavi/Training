@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>The jQuery Example</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="text/javascript" language="javascript">
+      $(document).ready(function () {
+        $("div").click(function () {
+          $(this).before('<div class="div"></div>');
+        });
+      });
+    </script>
+
+    <style>
+      .div {
+        margin: 10px;
+        padding: 12px;
+        border: 2px solid #666;
+        width: 60px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p>Click on any div</p>
+    <span id="result"> </span>
+
+    <div class="div" style="background-color: blue"></div>
+    <div class="div" style="background-color: green"></div>
+    <div class="div" style="background-color: red"></div>
+  </body>
+</html>

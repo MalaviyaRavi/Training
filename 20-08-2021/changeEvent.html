@@ -1,0 +1,33 @@
+<!DOCTYPE html>    
+<html lang="en">    
+<head>    
+  <meta charset="utf-8">    
+  <title>change Event</title>    
+  <style>    
+  div {    
+    color: red;    
+  }    
+  </style>    
+   <script
+   src="https://code.jquery.com/jquery-3.6.0.js"
+   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+   crossorigin="anonymous"
+ ></script>
+<body>    
+ <select id="se" name="actors" >    
+    <option selected="selected">Select</option>   
+  <option >Amreli</option> 
+  <option>Surat</option>    
+  <option>Amhmedabad</option>    
+  <option>Bhavanagar</option>    
+  <option>Rajkot</option>    
+  <option>Gandhinagar</option>    
+</select>    
+<div id="loc"></div>    
+ <script>    
+$( "select" ) .change(function () {    
+document.getElementById("loc").innerHTML="You selected: "+document.getElementById("se").value;  
+});  
+</script>    
+ </body>    
+</html>    
