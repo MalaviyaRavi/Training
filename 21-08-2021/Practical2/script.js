@@ -45,7 +45,7 @@ $(function () {
     messages: {
       name: {
         required: "Please provide a firstname",
-        minlength: "Your password must be at least 5 characters long",
+        minlength: "Your name must be at least 5 characters long",
       },
       "Contact Number": {
         required: "Please provide a contact Number",
