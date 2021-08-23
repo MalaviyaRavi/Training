@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="page.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="theme.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="calendar.min.js"></script>
+    <script src="https://unpkg.com/codeflask/build/codeflask.min.js"></script>
+    <title>Calender</title>
+    <style>
+      h1 {
+        display: inline;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="calendar-wrapper" id="calendar-wrapper"></div>
+      <h1>Selected Date :</h1>
+      &nbsp;
+      <h1 id="selected_date"></h1>
+    </main>
+  </body>
+  <script>
+    $(document).ready(function () {
+      $(".calendar-wrapper").calendar({
+        date: new Date(),
+
+        prevButton: "Prev",
+        nextButton: "Next",
+        highlightSelectedWeekday: true,
+        highlightSelectedWeek: true,
+        startOnMonday: false,
+
+        showTodayButton: true,
+        onClickDate: function (date) {
+          $("#calendar-wrapper").updateCalendarOptions({
+            date: date,
+          });
+
+          var calendar = $(".calendar-wrapper").calendar();
+
+          $("#selected_date").text(
+            calendar.getSelectedDate() +
+              " Type" +
+              typeof calendar.getSelectedDate()
+          );
+        },
+      });
+    });
+  </script>
+</html>

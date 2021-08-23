@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chosen:</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"
+      type="text/javascript"
+    ></script>
+    <style>
+      .card {
+        display: flex;
+        flex-direction: row;
+        margin-left: 20%;
+      }
+      .right {
+        margin-left: 10%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="left">
+        <select class="option">
+          <option>Nodejs</option>
+          <option>Anguler</option>
+          <option>React</option>
+          <option>Django</option>
+          <option>Spring</option>
+          <option>Laravel</option>
+        </select>
+      </div>
+
+      <div class="right">
+        <select multiple class="option">
+          <option>Nodejs</option>
+          <option>Anguler</option>
+          <option>React</option>
+          <option>Django</option>
+          <option>Spring</option>
+          <option>Laravel</option>
+        </select>
+      </div>
+    </div>
+  </body>
+  <script>
+    $(document).ready(function () {
+      $(".option").chosen({ width: "370px" });
+    });
+  </script>
+</html>
