@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <script>
+      class Cal1 {
+        constructor(initialValue) {
+          this.result = initialValue;
+          return this;
+        }
+        add(value) {
+          this.result = this.result + value;
+          return this;
+        }
+        sub(value) {
+          this.result = this.result - value;
+          return this;
+        }
+        mul(value) {
+          this.result = this.result * value;
+          return this;
+        }
+        div(value) {
+          this.result = this.result / value;
+          return this;
+        }
+      }
+      var obj = new Cal1(5).add(3).mul(2);
+      document.write(obj.result);
+
+      /*  function Cal2(initialValue) {
+          this.result = initialValue;
+          this.add = function (value) {
+            this.result = this.result + value;
+            return this;
+          };
+
+          this.sub = function (value) {
+            this.result = this.result - value;
+            return this;
+          };
+          this.mul = function (value) {
+            this.result = this.result * value;
+            return this;
+          };
+          this.div = function (value) {
+            this.result = Math.floor(this.result / value);
+            return this;
+          };
+        }*/
+
+      //var obj = new Cal2(5).add(3).mul(2);
+      // console.log(obj.result);
+
+      function Calc(initialValue) {
+        var Cal = {
+          result: initialValue,
+          add: function (value) {
+            this.result = this.result + value;
+            return this;
+          },
+          sub: function (value) {
+            this.result = this.result - value;
+            return this;
+          },
+          mul: function (value) {
+            this.result = this.result * value;
+            return this;
+          },
+          div: function (value) {
+            this.result = Math.floor(this.result / value);
+            return this;
+          },
+          toString: function () {
+            if (this.result == Infinity) {
+              return "you can not provide division operation value 0.";
+            }
+            return this.result;
+          },
+        };
+        return Cal;
+      }
+
+      var obj = Calc(10).add(5).mul(2).div(0);
+      alert(obj);
+
+      /* var Cal4 = function (initialValue) {
+          this.result = initialValue;
+          this.add = function (value) {
+            this.result = this.result + value;
+
+            return this;
+          };
+
+          this.mul = function (value) {
+            this.result = this.result * value;
+
+            return this;
+          };
+          this.sub = function (value) {
+            this.result = this.result - value;
+
+            return this;
+          };
+
+          this.div = function (value) {
+            this.result = Math.floor(this.result / value);
+
+            return this;
+          };
+        };
+
+        var obj = new Cal4(5);
+        console.log(obj);*/
+    </script>
+  </body>
+</html>
