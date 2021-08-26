@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <title>Jquery Selectors</title>
+  </head>
+  <body>
+    <h1>Jquery Selectors</h1>
+    <ul id="list">
+      <li class="list1">list1</li>
+      <li class="list2">list2</li>
+      <li id="list3">list3</li>
+    </ul>
+
+    <p>second paragraph contents</p>
+    <br />
+
+    <div id="div1" style="border: 1px solid #000">
+      <p>first paragraph contents</p>
+      <p>second paragraph contents</p>
+    </div>
+    <hr />
+
+    <div id="div2" style="border: 1px solid #000">
+      <p>this element is a direct child of div element</p>
+      <div>
+        <p>this element is direct child of aside element</p>
+      </div>
+    </div>
+
+    <hr />
+
+    <div id="div3" style="border: 1px solid #000">
+      <p>this element is a direct child of div element</p>
+    </div>
+    <p>This element is immediately preceded by a sibling of div element</p>
+
+    <hr />
+    <div id="div4" style="border: 1px solid #000">
+      <p>this element is a direct child of div element</p>
+      <p>Upper sibling1</p>
+    </div>
+    <p>sibling1</p>
+    <p>sibling2</p>
+
+    <hr />
+
+    <table border="1" style="width: 300px">
+      <tr>
+        <td>Content 1</td>
+        <td>Content 2</td>
+      </tr>
+      <tr>
+        <td>Content 3</td>
+        <td>Content 4</td>
+      </tr>
+      <tr>
+        <td>Content 5</td>
+        <td>Content 6</td>
+      </tr>
+      <tr>
+        <td>Content 7</td>
+        <td>Content 8</td>
+      </tr>
+      <tr>
+        <td>Content 3</td>
+        <td>Content 4</td>
+      </tr>
+      <tr>
+        <td>Content 5</td>
+        <td>Content 6</td>
+      </tr>
+      <tr>
+        <td>Content 7</td>
+        <td>Content 8</td>
+      </tr>
+    </table>
+
+    <hr />
+    <div class="div6">
+      <p>Hello1</p>
+      <p>Hello2</p>
+      <p>Hello3</p>
+      <p>Hello4</p>
+      <p>Hello5</p>
+    </div>
+
+    <br />
+
+    <div>abc def ghi</div>
+    <div>fgi ddef abc</div>
+    <div>xyz mr mr mr</div>
+
+    <br />
+
+    <div class="div8">
+      <p>Hello world</p>
+      <p></p>
+      <p>zsfzxjkl xyz</p>
+    </div>
+
+    <div class="div9">
+      <p>first paragraph</p>
+      <p class="param" style="display: none">second paragraph</p>
+      <p>third paragraph</p>
+    </div>
+
+    <div class="div10">
+      <p>first paragraph</p>
+      <p>second paragraph</p>
+      <p style="display: none">third paragraph</p>
+    </div>
+
+    <hr />
+
+    <h1>Attribute</h1>
+
+    <div class="div11">
+      <p class="waram">second paragraph</p>
+      <p class="param">third paragraph</p>
+      <p class="braam">fourth paragraph</p>
+      <p class="heading">second paragraph</p>
+      <p class="braam">third paragraph</p>
+      <p class="param">fourth paragraph</p>
+    </div>
+
+    <h1>Child Filter</h1>
+
+    <div class="div12" style="border: 1px solid #000">
+      <h3>Footer heading</h3>
+      <p>first paragraph contents...</p>
+      <p>second paragraph contents..</p>
+      <p>third paragraph contents..</p>
+      <p>forth paragraph contents..</p>
+      <p>fifth paragraph contents..</p>
+    </div>
+
+    <h1>Form Selector</h1>
+
+    <div class="div13">
+      <form action="">
+        Name: <input type="text" name="name" /><br />
+        Password: <input type="password" name="password" /><br />
+
+        <input type="checkbox" name="vehicle" value="Bike" /> Cricket
+        <input type="checkbox" name="vehicle" value="Car" checked="checked" />
+
+        <select name="country">
+          <option value="india">India</option>
+          <option value="singapore" selected="selected">Singapore</option>
+          <option value="england">England</option>
+          <option value="france">France</option>
+        </select>
+
+        <input type="button" value="Button" />
+        <input type="reset" value="Reset" disabled="disabled" />
+        <input type="submit" name="submit" />
+      </form>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $("*").css("font-weight", "bold");
+        $(".list1, .list2").css("color", "blue");
+        $("#list3").css("color", "red");
+
+        $("#div1 p").css("color", "red");
+        $("#div2 > p").css("color", "red");
+        $("#div3 + p").css("color", "red");
+
+        $("#div4 ~ p").css("color", "blue");
+
+        $("tr:even").css("color", "red");
+        $("tr:odd").css("color", "orange");
+        $(".div6 p:eq(2)").css("color", "green");
+        $(".div6 p:lt(2)").css("color", "yellow");
+
+        $(":header").css({ background: "#ccc", color: "blue" });
+
+        //Content Filter
+        $(".div8 p:empty")
+          .text("this is empty!")
+          .css("background", "rgb(255,220,200)");
+        $("div:contains('abc')").css("text-decoration", "underline");
+
+        $(".div9 p:hidden").css("color", "green");
+
+        $(".div10 :visible").css("color", "purple");
+
+        //Attribute
+        $(".div11 p[class$='ram']").css("color", "green");
+        $(".div11 p[class~='heading']").css("color", "red");
+
+        $(".div12 p:first-child").css("color", "red");
+        $(".div h3:only-child").css("color", "green");
+        $(".div12 p:last-child").css("color", "yellow");
+        $(".div12 p:nth-child(4)").css("color", "pink");
+
+        //form
+        $(":selected").css("background-color", "yellow");
+        $(":checked")
+          .wrap("<span></span>")
+          .parent()
+          .css("background-color", "blue");
+        $(":enabled").css("background-color", "green");
+      });
+    </script>
+  </body>
+</html>
