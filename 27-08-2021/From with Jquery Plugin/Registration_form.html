@@ -1,0 +1,237 @@
+<html>
+  <head>
+    <title>Registration Form</title>
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"
+    />
+    <link
+      href="./css/signup.css"
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="./css//jquery.timeselector.css" />
+    <link rel="stylesheet" href="./dist/css/lightbox.css" />
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"
+      type="text/javascript"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"
+      type="text/javascript"
+    ></script>
+
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script>
+
+    <script src="./js/jquery.timeselector.js"></script>
+    <script src="./dist/js/lightbox.js"></script>
+
+    <script type="text/javascript" src="./js/main.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2 class="title">Registration</h2>
+      <form action="#" name="registration">
+        <label>First Name</label>
+        <input
+          type="text"
+          name="firstname"
+          id="firstname"
+          placeholder="Enter your name here"
+        />
+
+        <label>Enter Mobile Number</label>
+        <input type="text" name="Mobile" placeholder="+918758223351" />
+        <label>Enter Your Email</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="abc@gmail.com"
+        />
+        <label>Enter Your Address Here</label>
+        <textarea
+          onkeyup="countCharacters(this)"
+          name="address"
+          id="address"
+          maxlength="160"
+          placeholder="Enter Your Address Here"
+        ></textarea>
+        <div id="charNum"></div>
+
+        <label>Choose Your City</label>
+        <div id="city">
+          <select class="option" name="city">
+            <option value="" selected>Select Your City</option>
+            <option value="Amreli">Amreli</option>
+            <option value="Surat">Surat</option>
+            <option value="Ahmedabad">Ahmedabad</option>
+            <option value="Vadodara">Vadodara</option>
+            <option value="Bhavnagar">Bhavnagar</option>
+          </select>
+        </div>
+
+        <div class="self">
+          <label>About yourself</label>
+          <textarea
+            name="yourself"
+            id="yourself"
+            cols="50"
+            rows="10"
+          ></textarea>
+        </div>
+
+        <div id="dob">
+          <label>Date Of Birth</label>
+          <input
+            type="text"
+            id="datepicker"
+            placeholder="Select Your Date Of Birthdate"
+            name="dob"
+            required
+          />
+        </div>
+        <div id="time">
+          <label>Time Picker</label>
+          <input
+            type="text"
+            id="timepicker"
+            placeholder="Select time"
+            name="timepicker"
+            required
+          />
+        </div>
+
+        <label>Hobby</label>
+        <div id="hobby">
+          <select
+            class="hobyOption"
+            name="hobby"
+            data-placeholder="Select your hobbies"
+            multiple
+          >
+            <option value="Amreli">Music</option>
+            <option value="Surat">Read Spiritual Books</option>
+            <option value="Ahmedabad">Maths Puzzle</option>
+            <option value="Vadodara">Cricket</option>
+            <option value="Bhavnagar">Programming</option>
+          </select>
+        </div>
+
+        <div class="intro">
+          <label>Introduction</label>
+          <textarea
+            name="introduction"
+            id="introduction"
+            class="ckeditor"
+            cols="50"
+            rows="10"
+          ></textarea>
+        </div>
+
+        <button type="submit">Register</button>
+      </form>
+    </div>
+
+    <!--LightBox View-->
+    <div class="gallery">
+      <div class="pic">
+        <a
+          class="example-image-link"
+          href="https://images.unsplash.com/photo-1629362050072-97b15dacf395?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDl8Sjl5clBhSFhSUVl8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+          data-lightbox="roadtrip"
+          ><img
+            class="example-image"
+            src="https://images.unsplash.com/photo-1629362050072-97b15dacf395?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDl8Sjl5clBhSFhSUVl8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        /></a>
+      </div>
+
+      <div class="pic">
+        <a
+          class="example-image-link"
+          href="https://images.unsplash.com/photo-1622849026560-7e723676e3d1?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDEwfEo5eXJQYUhYUlFZfHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+          data-lightbox="roadtrip"
+          ><img
+            class="example-image"
+            src="https://images.unsplash.com/photo-1622849026560-7e723676e3d1?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDEwfEo5eXJQYUhYUlFZfHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        /></a>
+      </div>
+
+      <div class="pic">
+        <a
+          class="example-image-link"
+          href="https://images.unsplash.com/photo-1617096199821-6273169505cf?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDEzfEo5eXJQYUhYUlFZfHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+          data-lightbox="roadtrip"
+          ><img
+            class="example-image"
+            src="https://images.unsplash.com/photo-1617096199821-6273169505cf?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDEzfEo5eXJQYUhYUlFZfHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        /></a>
+      </div>
+
+      <div class="pic">
+        <a
+          class="example-image-link"
+          href="https://images.unsplash.com/photo-1628911773925-2586d87f2b5c?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDE5fEo5eXJQYUhYUlFZfHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+          data-lightbox="roadtrip"
+          ><img
+            class="example-image"
+            src="https://images.unsplash.com/photo-1628911773925-2586d87f2b5c?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDE5fEo5eXJQYUhYUlFZfHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        /></a>
+      </div>
+
+      <div class="pic">
+        <a
+          class="example-image-link"
+          href="https://images.unsplash.com/photo-1628911772801-99aa42a1d2c7?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDIwfEo5eXJQYUhYUlFZfHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+          data-lightbox="roadtrip"
+          ><img
+            class="example-image"
+            src="https://images.unsplash.com/photo-1628911772801-99aa42a1d2c7?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDIwfEo5eXJQYUhYUlFZfHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        /></a>
+      </div>
+
+      <div class="pic">
+        <a
+          class="example-image-link"
+          href="https://images.unsplash.com/photo-1580983219883-8463619d50e5?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDM0fEo5eXJQYUhYUlFZfHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+          data-lightbox="roadtrip"
+          ><img
+            class="example-image"
+            src="https://images.unsplash.com/photo-1580983219883-8463619d50e5?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDM0fEo5eXJQYUhYUlFZfHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        /></a>
+      </div>
+    </div>
+  </body>
+  <!--Full CK-->
+
+  <script>
+    function countCharacters(element) {
+      var len = element.value.length;
+      var maxlen = 160;
+
+      if (len >= maxlen) {
+        element.value = element.value.substring(0, maxlen);
+        $("#charNum").text("You Have Exceed Character Limit(160)");
+      } else {
+        $("#charNum").text(
+          "You Have Entered Total Characters: " + len + "/" + (maxlen - len)
+        );
+      }
+    }
+  </script>
+</html>

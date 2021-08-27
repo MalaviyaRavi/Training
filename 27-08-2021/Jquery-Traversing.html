@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <script src="/Jquery-Traversing.js"></script>
+    <style>
+      .m6 {
+        display: block;
+        font-size: 20px;
+        position: relative;
+        border: 2px solid black;
+        color: black;
+        padding: 10px;
+        margin: 17px;
+      }
+    </style>
+
+    <title>Jquery Traversing</title>
+  </head>
+  <body>
+    <div class="m1" style="border: 2px solid blue">
+      <p>Click me to find out if I my parent is a div element.</p>
+    </div>
+
+    <hr />
+    <br />
+
+    <div class="m2">
+      <p><b> The original array is: </b> [55, 12, 49, 89, 34, 88]</p>
+      <p>Click the following button to see the effect.</p>
+      <button>Click me</button>
+      <p id="p1"></p>
+    </div>
+
+    <hr />
+    <br />
+
+    <div class="m3">
+      <p>My name is Donald (index 0).</p>
+      <p>Donald Duck (index 1).</p>
+      <p>I live in Duckburg (index 2).</p>
+      <p>My best friend is Mickey (index 3).</p>
+    </div>
+
+    <hr />
+    <br />
+
+    <div class="m4">
+      <p>A p element.</p>
+      <p>Another p element.</p>
+
+      <span>A span element.</span>
+      <span>A span element.</span><br /><br />
+    </div>
+
+    <hr />
+    <br />
+
+    <div class="m5"><em>Hello world! What a beautiful day!</em></div>
+    <button class="contents">contents()</button>
+
+    <hr />
+    <br />
+
+    <ul>
+      <li>First element</li>
+      <li>Second element</li>
+      <li>Third element</li>
+      <li>Fourth element</li>
+    </ul>
+    <button onclick="fun()">Each()</button>
+    <script>
+      function fun() {
+        $(document).ready(function () {
+          $("li").each(function () {
+            alert($(this).text());
+          });
+        });
+      }
+    </script>
+
+    <hr />
+    <br />
+
+    <div class="m6">
+      <div>
+        div1
+        <div class="r6">
+          div2
+          <ul>
+            ul
+            <h2>
+              Heading h2
+              <p>Paragraph element</p>
+            </h2>
+          </ul>
+        </div>
+        <div>hello world</div>
+      </div>
+    </div>
+    <button id="closest">Closest</button>
+    <button id="siblings">siblings</button>
+    <button id="parent">parent</button>
+
+    <div class="m7">
+      <h1>Heading h1</h1>
+      <h2>Heading h2</h2>
+      <ul>
+        ul element
+      </ul>
+      <span> span </span>
+      <p>Paragraph element</p>
+      <h3>Heading h3</h3>
+    </div>
+    <button id="nextuntil">nextuntil</button>
+  </body>
+</html>

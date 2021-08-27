@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <script src="./Jquery-Manipulation.js"></script>
+    <title>Jquery Manipulation</title>
+  </head>
+  <body>
+    <h1>Insertion Around</h1>
+
+    <p id="wrapcontent">Hello Guys!</p>
+
+    <button id="wrap">Wrap</button>
+
+    <div class="m1">
+      <p>Hello Guys!</p>
+      <p>This is javatpoint.com</p>
+      <button>WrapInner</button>
+    </div>
+
+    <hr />
+    <br />
+    <h1>Insertion Inside</h1>
+    <div class="m2">
+      <p>Hello Guys!</p>
+      <p>This is javatpoint.com</p>
+      <p id="title">Hello everyone</p>
+    </div>
+    <button id="prepend">prepend</button>
+    <button id="append">appendTo</button>
+    <button id="after">After</button>
+    <button id="before">InsertBefore</button>
+
+    <hr />
+    <br />
+
+    <h1>DOM removel</h1>
+
+    <div class="m3">
+      <div style="height: 150px; background-color: yellow">
+        Twinkle, twinkle, little star,<br />
+        How I wonder what you are!<br />
+        Up above the world so high,<br />
+        Like a diamond in the sky.<br />
+        Twinkle, twinkle, little star,<br />
+        How I wonder what you are!<br />
+        <p><b>This poem is written inside the div.</b></p>
+      </div>
+      <p>This paragraph is written outside the div.</p>
+      <button id="empty">Empty</button>
+    </div>
+
+    <div class="m4">
+      <h4>Detach Method</h4>
+      <p>
+        This is a paragraph. Lorem ipsum dolor, sit amet consectetur adipisicing
+        elit. Incidunt, quaerat.
+      </p>
+
+      <button id="btn1">Remove p element</button>
+      <button id="btn2">Restore p element</button>
+    </div>
+
+    <div style="border: 1px solid" class="m5">
+      <p>The first paragraph in div.</p>
+      <p>The last paragraph in the div.</p>
+    </div>
+    <button class="replaceAll">replaceAll</button>
+  </body>
+</html>
