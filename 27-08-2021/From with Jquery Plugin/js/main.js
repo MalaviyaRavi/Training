@@ -10,10 +10,11 @@ $(document).ready(function () {
     width: "660px",
     no_results_text: "Oops, nothing found!",
   });
-
+  $(window).on("load", function () {
+    CKEDITOR.replace("introduction");
+    ClassicEditor.create(document.querySelector("#yourself"), {});
+  });
   //CKEditor
-  CKEDITOR.replace("introduction");
-  ClassicEditor.create(document.querySelector("#yourself"), {});
 
   //Datepicker
   $("#datepicker").datepicker({
