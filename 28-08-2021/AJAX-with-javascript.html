@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AJAX</title>
+  </head>
+  <body>
+    <h3>AJAX with javascript</h3>
+    <button id="textdatabtn" type="submit">getTextData</button>
+    <button id="jsondatabtn" type="submit">getJsonData</button>
+
+    <ul id="products"></ul>
+  </body>
+  <script>
+    document
+      .getElementById("textdatabtn")
+      .addEventListener("click", getProductsFromText);
+    document
+      .querySelector("#jsondatabtn")
+      .addEventListener("click", getProductsFromJson);
+    //get data from text file
+    function getProductsFromText() {
+      //console.log("clicked");
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", "products.txt", true);
+      xhr.onreadystatechange = function () {
+        var node = null;
+
+        if (xhr.readyState === XMLHttpRequest.LOADING) {
+        }
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            //console.log(xhr);
+            //console.log(xhr.responseText);
+            let productData = xhr.responseText;
+            const products = productData.split(" ");
+            //console.log(products);
+
+            for (const product of products) {
+              node = document.createElement("li");
+              node.appendChild(document.createTextNode(product));
+              document.querySelector("#products").appendChild(node);
+            }
+          } else {
+            node = document.createElement("li");
+            node.appendChild(
+              document.createTextNode("Failed to load data from text")
+            );
+            document.querySelector("#products").appendChild(node);
+          }
+        }
+      };
+      xhr.send();
+    }
+
+    //get data from json file
+    function getProductsFromJson() {
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", "products.json", true);
+      xhr.responseType = "json";
+      //xhr.overrideMimeType("application/json");
+
+      xhr.onload = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          var node = null;
+          if (xhr.status === 200) {
+            let products = xhr.response.products;
+            console.log(products);
+
+            for (const product of products) {
+              node = document.createElement("li");
+              node.appendChild(document.createTextNode(product));
+              document.querySelector("#products").appendChild(node);
+            }
+          } else {
+            node = document.createElement("li");
+            node.appendChild(
+              document.createTextNode("Failed to load data from json")
+            );
+            document.querySelector("#products").appendChild(node);
+          }
+        }
+      };
+      xhr.send();
+    }
+  </script>
+</html>
