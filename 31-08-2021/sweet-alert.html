@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <style>
+      .card {
+        width: 200px;
+        height: 100px;
+        margin: auto;
+        background-color: rgb(5, 69, 85);
+        text-align: center;
+        padding-top: 10px;
+      }
+      #click,
+      #name {
+        width: 100px;
+        height: 35px;
+        font-size: 25px;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 7px;
+      }
+      h3 {
+        color: white;
+      }
+
+      #click:hover,
+      #name:hover {
+        background-color: rgb(103, 114, 3);
+        color: black;
+      }
+    </style>
+
+    <title>Sweet-Alert</title>
+  </head>
+  <body>
+    <div class="card">
+      <button id="click">Delete</button><br />
+      <hr />
+      <button id="name">Insert</button>
+    </div>
+  </body>
+  <script>
+    $(document).ready(function () {
+      $("#click").click("click", function () {
+        swal({
+          title: "Are you sure?",
+          text: "Once deleted, you will not be able to recover this file!",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        }).then((willDelete) => {
+          if (willDelete) {
+            swal("Poof! Your file has been deleted!", {
+              icon: "success",
+            });
+          } else {
+            swal("Your file is safe!");
+          }
+        });
+      });
+      $("#name").click("click", function () {
+        swal("Enter Your Name:", {
+          content: "input",
+        }).then((value) => {
+          swal(`Your name: ${value}`);
+        });
+      });
+    });
+  </script>
+</html>

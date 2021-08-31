@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/jquery.toast.css" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <script src="./js/jquery.toast.js"></script>
+    <style>
+      button {
+        font-size: 25px;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 7px;
+        margin-top: 30px;
+      }
+      button:hover {
+        background-color: rgb(103, 114, 3);
+        color: black;
+      }
+    </style>
+    <title>Toast</title>
+  </head>
+  <body style="margin: 0; padding: 0">
+    <div class="card">
+      <button class="update">Update Profile</button>
+      <button class="warning">Warning</button>
+      <button class="admin">Make Admin</button>
+    </div>
+  </body>
+  <script>
+    $(document).ready(function () {
+      $(".update").click("click", function () {
+        $.toast({
+          heading: "Success",
+          text: "Profile has been updated successfully ;",
+          icon: "warning",
+          hideAfter: 5000,
+          showHideTransition: "fade",
+          allowToastClose: true,
+          stack: 3,
+          position: "top-center",
+          icon: "success",
+          textAlign: "center",
+          //bgColor: "#FF1356",
+          //textColor: "white",
+        });
+      });
+
+      $(".warning").click("click", function () {
+        $.toast({
+          heading: "Warning",
+          text: "Profile has been updated successfully ;",
+          icon: "warning",
+          hideAfter: 5000,
+          showHideTransition: "fade",
+          allowToastClose: true,
+          stack: 3,
+          position: "top-center",
+          icon: "warning",
+          textAlign: "center",
+          //bgColor: "#FF1356",
+          //textColor: "white",
+        });
+      });
+
+      $(".admin").click("click", function () {
+        $.toast({
+          text: "You are admin now!",
+          heading: "Note",
+          icon: "info",
+          showHideTransition: "fade",
+          allowToastClose: true,
+          hideAfter: 3000,
+          stack: 5,
+          position: "top-center",
+
+          textAlign: "left",
+          loader: true,
+          loaderBg: "#9EC600",
+        });
+      });
+    });
+  </script>
+</html>
