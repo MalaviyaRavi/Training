@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .dropdowns {
+        margin: auto;
+        border: 2px solid blue;
+        border-radius: 3px;
+        width: 370px;
+        height: 200px;
+        text-align: center;
+        padding-top: 17px;
+        margin-top: 25px;
+      }
+      select {
+        font-size: 15px;
+        font-weight: bold;
+        padding: 3px;
+      }
+    </style>
+    <title>Dependent Dropdown</title>
+  </head>
+  <body>
+    <div class="dropdowns">
+      <select name="state" id="state">
+        <option value="">Select state</option>
+      </select>
+      <select name="city" id="city">
+        <option value="">Select city</option>
+      </select>
+    </div>
+  </body>
+</html>
+
+<script>
+  $(document).ready(function () {
+    load_json_data("state");
+
+    function load_json_data(id, parent_id) {
+      var html_code = "";
+      $.getJSON("state-city.json", function (data) {
+        html_code += '<option value="">Select ' + id + "</option>";
+        $.each(data, function (key, value) {
+          if (id == "state") {
+            if (value.parent_id == "0") {
+              html_code +=
+                '<option value="' + value.id + '">' + value.name + "</option>";
+            }
+          } else {
+            if (value.parent_id == parent_id) {
+              html_code +=
+                '<option value="' + value.id + '">' + value.name + "</option>";
+            }
+          }
+        });
+        $("#" + id).html(html_code);
+      });
+    }
+
+    $(document).on("change", "#state", function () {
+      var state_id = $(this).val();
+      if (state_id != "") {
+        load_json_data("city", state_id);
+      } else {
+        $("#city").html('<option value="">Select city</option>');
+      }
+    });
+  });
+</script>

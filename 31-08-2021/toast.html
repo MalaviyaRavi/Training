@@ -55,7 +55,14 @@
       $(".warning").click("click", function () {
         $.toast({
           heading: "Warning",
-          text: "Profile has been updated successfully ;",
+          text:
+            " Error Occured " +
+            "\n URL: " +
+            options.url +
+            "\n Status: " +
+            xhr.status +
+            " " +
+            xhr.statusText,
           icon: "warning",
           hideAfter: 5000,
           showHideTransition: "fade",

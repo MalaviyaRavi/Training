@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        $("button").click(function () {
+          jQuery.ajax({
+            url: "demo.txt",
+            type: "GET",
+            success: function (data) {
+              $("#para").html(data);
+            },
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <button>Click me</button>
+    <p id="para"></p>
+  </body>
+</html>

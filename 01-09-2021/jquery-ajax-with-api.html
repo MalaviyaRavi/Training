@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/jquery.toast.css" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <script src="./js/jquery.toast.js"></script>
+    <title>AJAX WITH API</title>
+  </head>
+  <body>
+    <button id="postBtn">Show Posts</button>
+    <table id="posts" border="1" cellpadding="2" align="center"></table>
+  </body>
+</html>
+<script>
+  $(document).ready(function () {
+    $("#postBtn").click("click", function () {
+      $.getJSON(
+        "https://jsonplaceholder.typicode.com/posts",
+        function (posts, status, xhr) {
+          console.log(posts);
+          var table = document.getElementById("posts");
+          var tr;
+          var rowCount = 0;
+          for (let post of posts) {
+            var row = table.insertRow(rowCount);
+            var cell0 = row.insertCell(0);
+            var cell1 = row.insertCell(1);
+            var cell2 = row.insertCell(2);
+            var cell3 = row.insertCell(3);
+            var cell4 = row.insertCell(4);
+            if (rowCount == 0) {
+              cell0.innerHTML = "<b>index</b>";
+              cell1.innerHTML = "<b>userId<b/>";
+              cell2.innerHTML = "<b>id</b>";
+              cell3.innerHTML = "<b>title<b/>";
+              cell4.innerHTML = "<b>body<b/>";
+            } else {
+              cell0.innerHTML = rowCount;
+              cell1.innerHTML = post.userId;
+              cell2.innerHTML = post.id;
+              cell3.innerHTML = post.title;
+              cell4.innerHTML = post.body;
+            }
+            rowCount++;
+          }
+        }
+      );
+    });
+    $(document).ajaxSuccess(function () {
+      $.toast({
+        heading: "Success",
+        text: "Posts has been loaded successfully ;",
+        icon: "success",
+        hideAfter: 3000,
+        showHideTransition: "fade",
+        allowToastClose: true,
+        stack: 3,
+        position: "top-center",
+
+        textAlign: "center",
+      });
+    });
+
+    $(document).ajaxError(function (event, xhr, options) {
+      $.toast({
+        heading: "Error",
+        text:
+          " Error Occured in loding data " +
+          "\n URL: " +
+          options.url +
+          "\n Status: " +
+          xhr.status +
+          " " +
+          xhr.statusText,
+        icon: "error",
+        hideAfter: 3000,
+        showHideTransition: "fade",
+        allowToastClose: true,
+        stack: 3,
+        position: "top-center",
+
+        textAlign: "center",
+        bgColor: " #cc0000",
+      });
+    });
+  });
+</script>
