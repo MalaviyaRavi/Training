@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head'); %>
+  </head>
+  <body>
+    <!-- navbar  -->
+    <%- include('./partials/navbar'); %>
+
+    <!-- login form  -->
+    <div class="container-fluid mt-5">
+      <div class="row justify-content-evenly">
+        <div class="col-4 border p-3">
+          <form action="/login" method="POST">
+            <h3 class="text-center mb-3">Login Here</h3>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+              />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- bootstrap script  -->
+    <%- include('./partials/script'); %>
+  </body>
+</html>
