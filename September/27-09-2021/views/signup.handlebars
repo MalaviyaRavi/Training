@@ -1,0 +1,138 @@
+{{> header}}
+
+<div class="container-fluid vh-100">
+    <div class="" style="margin-top:30px">
+        <div class=" row rounded d-flex justify-content-center">
+            <div class="col-12 mb-3">
+                 <div class="text-center">
+                    <h3 class="text-primary">Create Account</h3>
+                </div>
+                {{#if isError}}
+               <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    <div>
+                        {{error}}
+                    </div>
+                </div>
+                {{/if}}
+            </div>
+
+            <form action="/signup" autocomplete="off" method="Post" enctype="multipart/form-data">
+         <div class="row justify-content-evenly">
+
+             
+
+                <div class="col-md-5 shadow-lg p-5 bg-light">
+               
+                    
+
+                             <label for="name" class="form-label">Name</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary"><i
+                                        class="bi bi-person-plus-fill text-white"></i></span>
+                                <input type="text" class="form-control" placeholder="Name" name="name">
+                            </div>
+                        
+                            <label for="username" class="form-label">Username</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary"><i
+                                        class="bi bi-person-plus-fill text-white"></i></span>
+                                <input type="text" class="form-control" placeholder="Username" name="username">
+                            </div>
+                            
+                            <label for="email" class="form-label">Email</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary"><i class="bi bi-envelope text-white"></i></span>
+                                <input type="text" class="form-control" placeholder="Email" name="email">
+                            </div>
+
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary"><i class="bi bi-key-fill text-white"></i></span>
+                                <input type="password" class="form-control" placeholder="password" name="password">
+                            </div>
+
+                            <label for="password" class="form-label">Repeat Password</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary"><i class="bi bi-key-fill text-white"></i></span>
+                                <input type="password" class="form-control" placeholder="repeat password" name="password2">
+                            </div>
+
+                            <label for="gender" class="form-label">Gender</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary mr-2"><i class="bi bi-gender-female text-white"></i></span>
+                              &nbsp;&nbsp;   Male<input type="radio" class="form-check-input mx-3"  name="gender" value="male"> 
+                                Female<input type="radio" class="form-check-input mx-3"  name="gender" value="female">
+                            </div>
+
+                         
+
+
+
+
+
+
+                       
+                </div>
+
+                 <div class="col-md-5 shadow-lg p-5 bg-light">
+
+                            
+
+
+                            <label for="dob" class="form-label">Date Of Birth</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary"><i class="bi bi-calendar-month text-white"></i></span>
+                                <input type="date" class="form-control"  name="dob">
+                            </div>
+
+
+                            <label for="address" class="form-label">Address</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary"><i class="bi bi-file-text-fill text-white"></i></span>
+                                <textarea type="address" class="form-control" rows="5" placeholder="address" name="address"></textarea>
+                            </div>
+
+                            <label for="address" class="form-label">City</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary"><i class="bi bi-geo-fill text-white"></i></span>
+                                <select class="form-select" name="city" aria-label="Default select example">
+                                    <option selected value="">Select City</option>
+                                    <option value="Ahmedabad">Ahmedabad</option>
+                                    <option value="Surat">Surat</option>
+                                    <option value="Amreli">Amreli</option>
+                                </select>
+                                
+                            </div>
+
+                            <label for="profile" class="form-label">Profile Pictures</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary"><i class="bi bi-image-fill text-white"></i></span>
+                                <input type="file" class="form-control"  name="profile" id="profile" name="profile">
+                            </div>
+
+
+                 </div>
+
+
+
+
+                <div class="d-grid col-7 mt-3 mx-auto">
+                    <button class="btn btn-primary" type="submit"><span></span> Sign up</button>
+                </div>
+                <p class="text-center mt-3">Already have an account?
+                    <a class="text-primary" href="/login">Sign in</a>
+                </p>
+           
+                     
+        </div>
+         </form>
+
+           
+         </div>
+        
+    </div>
+</div>
+
+
+{{> footer}}

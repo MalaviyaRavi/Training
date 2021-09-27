@@ -1,0 +1,25 @@
+
+<section class= "mt-5">
+  <div class="container">
+    <div class="row justify-content-evenly">
+      <div class="col-md-6 text-center">
+        <h1 class="text-center">Hi,<br />I am Youe Helper</h1>
+        <p class="text-center">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet soluta
+          veniam voluptate aliquam deleniti labore quod quis illum, sapiente nam
+          nesciunt magni voluptatibus voluptatem incidunt placeat consequuntur
+          quaerat voluptatum expedita!</p>
+        
+
+       {{#if isLogin}}
+            <a type="button" class="btn btn-dark btn-lg " href="/task">Manage Your Daily Todos!</a>
+            {{else}}
+            <a type="button" class="btn btn-dark btn-lg " href="/signup">Manage Your Daily Todos!</a>
+            {{/if}}
+
+      </div>
+      <div class="col-md-6">
+        <img src="https://images.unsplash.com/photo-1586863065451-6a82fa7e81b9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="..." />
+      </div>
+ 
+  </div>
+</section>

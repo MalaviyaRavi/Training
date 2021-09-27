@@ -1,0 +1,73 @@
+{{> header}}
+
+<div class="container-fluid vh-100">
+    <div class="" style="margin-top:30px">
+        <div class="rounded d-flex justify-content-center">
+            <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
+                <div class="text-center">
+                    <h3 class="text-primary">Create Account</h3>
+                </div>
+                {{#if isError}}
+               <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    <div>
+                        {{error}}
+                    </div>
+                </div>
+                {{/if}}
+                <div class="p-4">
+                    <form action="/signup" autocomplete="off" method="Post">
+                        <label for="username" class="form-label">Username</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i
+                                    class="bi bi-person-plus-fill text-white"></i></span>
+                            <input type="text" class="form-control" placeholder="Username" name="username">
+                        </div>
+                        
+                        <label for="email" class="form-label">Email</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="bi bi-envelope text-white"></i></span>
+                            <input type="text" class="form-control" placeholder="Email" name="email">
+                        </div>
+
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="bi bi-key-fill text-white"></i></span>
+                            <input type="password" class="form-control" placeholder="password" name="password">
+                        </div>
+
+                        <label for="password" class="form-label">Repeat Password</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="bi bi-key-fill text-white"></i></span>
+                            <input type="password" class="form-control" placeholder="repeat password" name="password2">
+                        </div>
+
+                        <label for="dob" class="form-label">Date Of Birth</label>
+                        <div class="input-append date mb-3" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">  <input class="span2" size="16" type="text" value="12-02-2012">  <span class="add-on"><i class="icon-th"></i></span>
+                        </div>
+
+                        <label for="address" class="form-label">Address</label>
+                        <span class="input-group-text bg-primary"><i class="bi bi-key-fill text-white"></i></span>
+                        <textarea name="address" id="address" class="input-append date mb-3" rows="10"></textarea>
+
+
+
+
+
+
+
+                        <div class="d-grid col-12 mx-auto">
+                            <button class="btn btn-primary" type="submit"><span></span> Sign up</button>
+                        </div>
+                        <p class="text-center mt-3">Already have an account?
+                            <a class="text-primary" href="/login">Sign in</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{> footer}}

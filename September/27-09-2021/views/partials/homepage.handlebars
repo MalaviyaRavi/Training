@@ -1,0 +1,25 @@
+
+<section class= "mt-5">
+  <div class="container">
+    <div class="row justify-content-evenly">
+      <div class="col-md-6 text-center">
+        <h1 class="text-center">Shopping Hub</h1>
+        <p class="text-center">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet soluta
+          veniam voluptate aliquam deleniti labore quod quis illum, sapiente nam
+          nesciunt magni voluptatibus voluptatem incidunt placeat consequuntur
+          quaerat voluptatum expedita!</p>
+        
+
+       {{#if isLogin}}
+            <a type="button" class="btn btn-dark btn-lg " href="/products">Start Your Shopping Here</a>
+            {{else}}
+            <a type="button" class="btn btn-dark btn-lg " href="/signup">Start Your Shopping Here</a>
+            {{/if}}
+
+      </div>
+      <div class="col-md-6">
+        <img class="img-fluid" src="https://images.unsplash.com/photo-1513884923967-4b182ef167ab?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=870&q=80" alt="..." />
+      </div>
+ 
+  </div>
+</section>

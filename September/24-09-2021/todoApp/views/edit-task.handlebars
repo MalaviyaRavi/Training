@@ -1,0 +1,48 @@
+{{> header}}
+
+<div class="container-fluid vh-100">
+    <div class="" style="margin-top:30px">
+        <div class="rounded d-flex justify-content-center">
+            <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
+                <div class="text-center">
+                    <h3 class="text-primary">Edit Task Details</h3>
+                </div>
+                {{#if isError}}
+               <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    <div>
+                        {{error}}
+                    </div>
+                </div>
+                {{/if}}
+                <div class="p-0">
+                    <form action="/edit-task/{{id}}" autocomplete="off" method="Post">
+                      
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="bi bi-textarea-t text-white"></i></span>
+                            <input type="text" class="form-control" placeholder="Title" name="title" value={{title}}>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="bi bi-file-text-fill text-white"></i></span>
+                            <textarea rows="5" class="form-control" placeholder="Description" name="description">{{description}}</textarea>
+                        </div>
+                        
+
+                      
+
+
+
+
+
+                        <div class="d-grid col-12 mx-auto">
+                            <button class="btn btn-primary" type="submit"><span></span> Save Task</button>
+                        </div>
+                      
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{> footer}}

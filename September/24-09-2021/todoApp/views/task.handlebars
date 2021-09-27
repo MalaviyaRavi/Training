@@ -1,0 +1,64 @@
+{{> header}}
+
+
+
+<div class="container">
+    <div class="d-grid col-8 mx-auto mt-5">
+         
+        <a class="btn btn-primary" href="/add-task">Add Task</a>
+    </div>
+    <div class="row mt-3">
+        
+        
+        <div class="d-grid col-8 mx-auto">
+            <table class="table table-striped border">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                           
+                            <th scope="col">Title</th>
+                            <th scope="col">Description</th>
+                            
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                            
+                         
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        {{#if countTask}}
+                            {{#each task}}
+                                <tr>
+                                    <td> {{@index}}</td>
+                                    <td>{{title}}</td>
+                                    <td>{{description}}</td>
+                                   
+                                    <td><a type="button" class="btn btn-primary px-3 me-2" href="/edit-task/{{_id}}">
+              Edit
+            </a></td>
+
+            <td><a type="button" class="btn btn-primary px-3 me-2" href="/delete/{{_id}}">
+              Delete
+            </a></td>
+                                </tr>
+                            {{/each}}
+
+                        {{else}} 
+                                <tr>
+                                    <td colspan="2">No Task </td>
+                                </tr>  
+                         {{/if}}   
+                            
+                        
+                        
+
+                        
+                        
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{> footer}}
