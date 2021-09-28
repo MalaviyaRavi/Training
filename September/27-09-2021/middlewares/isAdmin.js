@@ -8,12 +8,6 @@ exports.isAdmin = function (req, res, next) {
         if (user.isAdmin == true) {
           return next();
         }
-
-        return res.render("login", {
-          isError: true,
-          error: "please login as admin",
-          title: "Login",
-        });
       })
       .catch((err) => next(err));
   }
