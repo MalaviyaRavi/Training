@@ -3,11 +3,14 @@ var createError = require("http-errors");
 
 async function connectDB() {
   try {
-    await mongoose.connect("mongodb://localhost:27017/ecom");
+    await mongoose.connect("mongodb://ecom:ecom@localhost:27017/ecom", /*{user : "admin", pass:"admin"}*/);
     console.log("Database Connected");
   } catch (error) {
-    next(createError(500));
+    console.log("Error in Database Connection");
   }
 }
+
+
+
 
 connectDB();
