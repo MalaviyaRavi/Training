@@ -35,16 +35,14 @@
       <div class="collapse navbar-collapse" id="navbarButtonsExample">
         <!-- Left links -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          {{#if isLogin}}
           <li class="nav-item">
-            <a class="nav-link" href="/products">All-Products</a>
+            <a class="nav-link" href="/admin/products">All-Products</a>
           </li>
 
-
-
-          {{!-- <li class="nav-item">
+          <li class="nav-item">
             <a class="nav-link" href="/admin/add-product">Add Product</a>
-          </li> --}}
-
+          </li>
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
@@ -52,6 +50,11 @@
               Category
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+
+
+              {{/if}}
+
 
 
 
@@ -63,19 +66,17 @@
 
         <div class="d-flex align-items-center">
           {{#if isLogin}}
-          <a type="button" class="btn btn-primary px-3 me-2" href="/profile">
+          <a type="button" class="btn btn-primary px-3 me-2" href="/admin/profile">
             Profile
           </a>
-          <a type="button" class="btn btn-primary px-3 me-2" href="/logout">
+          <a type="button" class="btn btn-primary px-3 me-2" href="/admin/logout">
             Logout
           </a>
           {{else}}
-          <a type="button" class="btn btn-primary px-3 me-2" href="/login">
+          <a type="button" class="btn btn-primary px-3 me-2" href="/admin/login">
             Login
           </a>
-          <a type="button" class="btn btn-primary me-3" href="/signup">
-            Sign up for free
-          </a>
+
           {{/if}}
 
 
@@ -100,7 +101,7 @@
 
         for (let category of data) {
           console.log("hi" + category);
-          let category_link = `<li><a class="dropdown-item" href = "/products/?category=${category._id}">${category.category_name}</a></li>`
+          let category_link = `<li><a class="dropdown-item" href = "/admin/products/?category=${category._id}">${category.category_name}</a></li>`
           jQuery(".dropdown-menu").append(category_link);
 
         }

@@ -10,7 +10,10 @@ exports.getLogin = function (req, res, next) {
   if (req.session.userid) {
     isLogin = true;
   }
-  res.render("login", { title: "Login", isLogin: isLogin });
+  res.render("login", {
+    title: "Login",
+    isLogin: isLogin,
+  });
 };
 
 exports.postLogin = function (req, res, next) {
@@ -71,7 +74,10 @@ exports.getSignup = function (req, res, next) {
   if (req.session.userid) {
     isLogin = true;
   }
-  res.render("signup", { title: "Register", isLogin: isLogin });
+  res.render("signup", {
+    title: "Register",
+    isLogin: isLogin,
+  });
 };
 
 exports.postSignup = function (req, res, next) {
@@ -218,7 +224,11 @@ exports.getProfile = function (req, res, next) {
   User.findOne({ _id: userid })
     .lean()
     .then((user) => {
-      res.render("profile", { user: user, title: "Profile", isLogin: isLogin });
+      res.render("profile", {
+        user: user,
+        title: "Profile",
+        isLogin: isLogin,
+      });
     });
 };
 
@@ -321,7 +331,10 @@ exports.getChangePassword = function (req, res, next) {
   if (req.session.userid) {
     isLogin = true;
   }
-  res.render("change-password", { title: "Change Password", isLogin: isLogin });
+  res.render("change-password", {
+    title: "Change Password",
+    isLogin: isLogin,
+  });
 };
 
 exports.postChangePassword = function (req, res, next) {
@@ -395,7 +408,11 @@ exports.getForgotPassword = function (req, res, next) {
   if (req.session.userid) {
     isLogin = true;
   }
-  res.render("forgot-password", { title: "Forgot Password", isLogin: isLogin });
+  res.render("forgot-password", {
+    title: "Forgot Password",
+    isLogin: isLogin,
+    isAdmin: req.session.isAdmin,
+  });
 };
 
 exports.postForgotPassword = async function (req, res, next) {

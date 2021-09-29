@@ -6,9 +6,14 @@ const {
   deleteProduct,
   getEditProduct,
   postEditProduct,
+  getAdminLogin,
+  postAdminLogin,
 } = require("../controllers/admin-controllers");
 const { isAdmin } = require("../middlewares/isAdmin");
 const router = express.Router();
+
+router.get("/admin/login", getAdminLogin);
+router.post("/admin/login", postAdminLogin);
 
 router.get("/admin/add-product", getAddProduct);
 router.post("/admin/add-product", postAddProduct);

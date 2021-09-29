@@ -1,9 +1,79 @@
 const mongoose = require("mongoose");
 const path = require("path");
 const Product = require("../models/Product");
-const User = require("../models/User");
+const Admin = require("../models/Admin");
+const bcrypt = require("bcryptjs");
+
+exports.getAdminLogin = function (req, res, next) {
+  let isLogin = false;
+  if (req.session.adminid) {
+    isLogin = true;
+  }
+  res.render("admin-login", {
+    title: "Login",
+    isLogin: isLogin,
+  });
+};
+
+exports.postAdminLogin = function (req, res, next) {
+  let isLogin = false;
+
+  if (req.session.adminid) {
+    isLogin = true;
+  }
+  let { email, password } = req.body;
+  email = email.trim();
+  password = password.trim();
+  if (!email || !password) {
+    return res.render("admin-login", {
+      title: "Login",
+      error: "Please Fill Up All Fields",
+      isError: true,
+      isLogin: isLogin,
+    });
+  }
+
+  Admin.findOne({ email: email })
+    .then((user) => {
+      if (!user) {
+        return res.render("admin-login", {
+          title: "Login",
+          error: "Email Or Password Invalid",
+          isError: true,
+          isLogin: isLogin,
+        });
+      }
+      bcrypt
+        .compare(password, user.password)
+        .then((result) => {
+          console.log(result);
+          if (result != true) {
+            return res.render("admin-login", {
+              error: "Email Or Password Invalid",
+              isError: true,
+              isLogin: isLogin,
+              title: "Login",
+            });
+          }
+
+          req.session.adminid = user.id;
+          res.redirect("/admin/products");
+        })
+        .catch((err) => {
+          next(err);
+        });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
 
 exports.getProducts = function (req, res, next) {
+  let isLogin = false;
+  if (req.session.adminid) {
+    isLogin = true;
+  }
+
   const categoryid = req.query.category;
   console.log(categoryid);
   if (!categoryid) {
@@ -18,6 +88,8 @@ exports.getProducts = function (req, res, next) {
         res.render("products/admin-products", {
           products: products,
           numOfProducts: numOfProducts,
+          numOfProject: products.length,
+          isLogin: isLogin,
         });
       })
       .catch((err) => {
@@ -35,6 +107,8 @@ exports.getProducts = function (req, res, next) {
         res.render("products/admin-products", {
           products: products,
           numOfProducts: numOfProducts,
+          numOfProject: products.length,
+          isLogin: isLogin,
         });
       })
       .catch((err) => {
@@ -44,7 +118,10 @@ exports.getProducts = function (req, res, next) {
 };
 
 exports.getAddProduct = function (req, res, next) {
-  res.render("products/add-product", { title: "Add-product" });
+  res.render("products/add-product", {
+    title: "Add-product",
+    isLogin: isLogin,
+  });
 };
 
 exports.postAddProduct = function (req, res, next) {
@@ -61,6 +138,7 @@ exports.postAddProduct = function (req, res, next) {
         isError: true,
         error: "Error in Product Picture Upload",
         title: "Add-Product",
+        isLogin: isLogin,
       });
     }
 
@@ -105,7 +183,10 @@ exports.getEditProduct = function (req, res, next) {
     .lean()
     .then((product) => {
       console.log(product);
-      res.render("products/edit-product", { product: product });
+      res.render("products/edit-product", {
+        product: product,
+        isLogin: isLogin,
+      });
     })
     .catch((err) => next(err));
 };
@@ -124,6 +205,7 @@ exports.postEditProduct = function (req, res, next) {
           isError: true,
           error: "Error in Product Picture Upload",
           title: "Edit-Product",
+          isLogin: isLogin,
         });
       }
       let image_name = fileobj.name;
