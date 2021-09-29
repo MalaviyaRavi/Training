@@ -2,7 +2,7 @@
 
 <div class="container">
     {{#each products}}
-    <div class="row justify-content-evenly">
+    <div class="row justify-content-evenly m-3">
         <div class="col-5 shadow-lg p-5 bg-light">
             <img src="/products/{{product_image}}" class="img-fluid" alt="">
         </div>
@@ -11,10 +11,14 @@
             <p class="text-center">{{product_detail}}</p>
             <p class="text-center"><b>Price : &#x20b9; {{product_price}}</b></p>
             <p class="text-center">Quantity : {{product_qty}}</p>
+            <p class="text-center">Category : {{product_category.category_name}}</p>
+
+
             <div class="text-center">
                 <a class="btn btn-success" href="/admin/edit-product/{{_id}}">Edit Product</a>
                 <a class="btn btn-danger" href="/admin/delete-product/{{_id}}">Delete Product</a>
             </div>
+
 
 
         </div>

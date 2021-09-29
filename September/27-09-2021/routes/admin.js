@@ -13,7 +13,7 @@ const router = express.Router();
 router.get("/admin/add-product", getAddProduct);
 router.post("/admin/add-product", postAddProduct);
 
-router.get("/admin/products", isAdmin, getProducts);
+router.get("/admin/products", getProducts);
 
 router.get("/admin/delete-product/:id", deleteProduct);
 

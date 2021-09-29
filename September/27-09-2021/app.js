@@ -10,6 +10,7 @@ const fileUpload = require("express-fileupload");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/user");
 var adminRouter = require("./routes/admin");
+var productRouter = require("./routes/product");
 
 var app = express();
 require("./db");
@@ -47,6 +48,7 @@ app.use(
 app.use(indexRouter);
 app.use(usersRouter);
 app.use(adminRouter);
+app.use(productRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

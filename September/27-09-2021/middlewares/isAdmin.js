@@ -6,9 +6,16 @@ exports.isAdmin = function (req, res, next) {
     User.findOne({ _id: req.session.userid })
       .then((user) => {
         if (user.isAdmin == true) {
+          req.session.isAdmin = true;
           return next();
+        } else {
+          req.session.destroy(() => {
+            res.redirect("/login");
+          });
         }
       })
       .catch((err) => next(err));
+  } else {
+    res.redirect("/login");
   }
 };

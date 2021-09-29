@@ -1,22 +1,46 @@
+const mongoose = require("mongoose");
 const path = require("path");
 const Product = require("../models/Product");
 const User = require("../models/User");
 
 exports.getProducts = function (req, res, next) {
-  Product.find()
-    .lean()
-    .then((products) => {
-      let numOfProducts = products.length;
-      console.log(numOfProducts);
+  const categoryid = req.query.category;
+  console.log(categoryid);
+  if (!categoryid) {
+    Product.find()
+      .populate("product_category")
+      .lean()
+      .then((products) => {
+        console.log(products);
+        let numOfProducts = products.length;
+        console.log(numOfProducts);
 
-      res.render("products/admin-products", {
-        products: products,
-        numOfProducts: numOfProducts,
+        res.render("products/admin-products", {
+          products: products,
+          numOfProducts: numOfProducts,
+        });
+      })
+      .catch((err) => {
+        next(err);
       });
-    })
-    .catch((err) => {
-      next(err);
-    });
+  } else {
+    Product.find({ product_category: categoryid })
+      .populate("product_category")
+      .lean()
+      .then((products) => {
+        console.log(products);
+        let numOfProducts = products.length;
+        console.log(numOfProducts);
+
+        res.render("products/admin-products", {
+          products: products,
+          numOfProducts: numOfProducts,
+        });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
 };
 
 exports.getAddProduct = function (req, res, next) {
@@ -40,14 +64,18 @@ exports.postAddProduct = function (req, res, next) {
       });
     }
 
-    let { product_name, product_detail, product_price, product_qty } = req.body;
+    let { product_name, product_detail, product_price, product_qty, category } =
+      req.body;
     let image_name = fileobj.name;
+
+    console.log(req.body);
 
     Product.create({
       product_name,
       product_detail,
       product_price,
       product_qty,
+      product_category: category,
       product_image: image_name,
     })
       .then((product) => {
