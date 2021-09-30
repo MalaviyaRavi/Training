@@ -16,6 +16,13 @@ router.get("/dashboard", function (req, res, next) {
   }
 });
 
+router.get("/add-product", (req, res, next) => {
+  if (req.session.adminid) {
+    return res.render("add_product");
+  }
+  res.redirect("/");
+});
+
 router.post("/", (req, res, next) => {
   let { username, password } = req.body;
   Admin.findOne({ username: username })

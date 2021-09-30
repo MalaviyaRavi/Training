@@ -1,0 +1,122 @@
+<div class="container-fluid vh-100">
+    <div class="" style="margin-top:30px">
+        <div class=" row rounded d-flex justify-content-center">
+            <div class="col-12 mb-3">
+                <div class="text-center">
+                    <h3 class="text-primary">Add Product</h3>
+                </div>
+                {{#if isError}}
+                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                        <use xlink:href="#exclamation-triangle-fill" />
+                    </svg>
+                    <div>
+                        {{error}}
+                    </div>
+                </div>
+                {{/if}}
+            </div>
+
+            <form autocomplete="off" method="POST" enctype="multipart/form-data">
+                <div class="row justify-content-evenly">
+
+
+
+                    <div class="col-md-5 shadow-lg p-5 bg-light">
+
+
+
+                        <label for="name" class="form-label">Product Name</label>
+                        <div class="input-group mb-3">
+
+                            <input type="text" class="form-control" placeholder="Product Name" name="product_name">
+                        </div>
+
+                        <label for="product_detail" class="form-label">Product Detail</label>
+                        <div class="input-group mb-3">
+
+                            <textarea type="text" class="form-control" placeholder="product detail"
+                                name="product_detail" rows="5"></textarea>
+                        </div>
+
+                        <label for="price" class="form-label">Product Price</label>
+                        <div class="input-group mb-3">
+
+                            <input type="text" class="form-control" placeholder="Product Price" name="product_price">
+                        </div>
+
+                        <label for="password" class="form-label">Quantity</label>
+                        <div class="input-group mb-3">
+
+                            <input type="text" class="form-control" placeholder="Product Quantity" name="product_qty">
+                        </div>
+
+                        <label for="category" class="form-label">Category</label>
+                        <div class="input-group mb-3">
+                            <select class="form-select category" aria-label="Default select example" name="category">
+                                <option selected>Select Category</option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <label for="password" class="form-label">Product Images</label>
+                        <div class="input-group mb-3">
+
+                            <input type="file" class="form-control" placeholder="Product Image" name="productImg">
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <div class="d-grid col-7 mt-3 mx-auto">
+                            <button class="btn btn-primary" type="submit"><span></span>Add Product</button>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+            </form>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+
+<script>
+    /*  $.noConflict();
+      jQuery(document).ready(function () {
+          jQuery.getJSON("http://localhost:3000/category", (data, textStatus) => {
+              console.log(data);
+              for (let category_object of data) {
+                  console.log("hi" + category_object);
+                  let category_link = `<option value=${category_object._id}> ${category_object.category_name} </option>`
+                  jQuery(".category").append(category_link);
+              }
+          })
+      })*/
+</script>
