@@ -12,7 +12,11 @@ router.get("/", function (req, res, next) {
   if (req.session.adminid) {
     isLogin = true;
   }
-  res.render("index", { isLogin: isLogin, title: "Admin Dashboard" });
+  if (!req.session.adminid) {
+    return res.render("index", { isLogin: isLogin, title: "Admin Dashboard" });
+  } else {
+    res.redirect("/dashboard");
+  }
 });
 
 router.post("/", (req, res, next) => {
@@ -48,39 +52,73 @@ router.get("/dashboard", function (req, res, next) {
   }
 
   if (req.session.adminid) {
-    const categoryid = req.query.category;
-    console.log(categoryid);
-    if (!categoryid) {
-      Product.find()
+    if (req.query.search) {
+      let query = req.query.search;
+      console.log("Query" + query);
+      Product.find({ product_name: { $regex: query, $options: "i" } })
+
+        .lean()
+        .then((products) => {
+          let numofProduct = products.length;
+          let numofpages = Math.floor(numofProduct / 2);
+          let pages = Array.from(Array(numofpages + 1).keys());
+          console.log(pages);
+
+          if (products.length != 0) {
+            return res.render("dashboard", {
+              products: products,
+              isLogin: isLogin,
+              title: "Admin Dashboard",
+              numofProduct: numofProduct,
+              pages: pages,
+            });
+          }
+          res.redirect("/dashboard");
+        })
+        .catch((err) => {
+          next(err);
+        });
+    } else if (req.query.category) {
+      const categoryid = req.query.category;
+
+      Product.find({ product_category: categoryid })
         .populate("product_category")
         .lean()
         .then((products) => {
-          console.log(products);
-          let numOfProducts = products.length;
-          console.log(numOfProducts);
+          let numofProduct = products.length;
 
+          let numofpages = Math.floor(numofProduct / 2);
+          let pages = Array.from(Array(numofpages + 1).keys());
+
+          console.log(pages);
           res.render("dashboard", {
             products: products,
             isLogin: isLogin,
             title: "Admin Dashboard",
+            numofProduct: numofProduct,
+            pages: pages,
           });
         })
         .catch((err) => {
           next(err);
         });
     } else {
-      Product.find({ product_category: categoryid })
+      Product.find()
         .populate("product_category")
         .lean()
         .then((products) => {
-          console.log(products);
-          let numOfProducts = products.length;
-          console.log(numOfProducts);
+          let numofProduct = products.length;
+          let numofpages = Math.floor(numofProduct / 2);
+          let pages = Array.from(Array(numofpages + 1).keys());
+          console.log(pages);
 
+          console.log(pages.length);
           res.render("dashboard", {
             products: products,
             isLogin: isLogin,
             title: "Admin Dashboard",
+            numofProduct: numofProduct,
+            pages: pages,
           });
         })
         .catch((err) => {
@@ -282,6 +320,19 @@ router.get("/logout", (req, res, next) => {
     }
     res.redirect("/");
   });
+});
+
+router.post("/search", (req, res, next) => {
+  let isLogin = false;
+  if (req.session.adminid) {
+    isLogin = true;
+  }
+  if (req.session.adminid) {
+    let searchText = req.body.search;
+    res.redirect("/dashboard?search=" + searchText);
+  } else {
+    res.redirect("/");
+  }
 });
 
 module.exports = router;

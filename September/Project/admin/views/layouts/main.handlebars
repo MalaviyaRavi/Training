@@ -66,8 +66,8 @@
 
         </ul>
 
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <form action="/search" class="d-flex" method="POST">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
 
@@ -114,7 +114,12 @@
       href="/dashboard/?category=${category._id}">${category.category_name}</a></li>`
           jQuery(".dropdown-menu").append(category_link);
         }
-      })
+      });
+
+
+
+
+
     })
   </script>
 
