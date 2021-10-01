@@ -4,6 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var exphbs = require("express-handlebars");
+const fileupload = require("express-fileupload");
 const expressSession = require("express-session")({
   secret: "secret",
   resave: false,
@@ -12,11 +13,9 @@ const expressSession = require("express-session")({
     maxAge: 1000 * 60 * 7,
   },
 });
-const passport = require("passport");
-const mongoose = require("mongoose");
-const passportLocalMongoose = require("passport-local-mongoose");
 
 var indexRouter = require("./routes/index");
+const { allowedNodeEnvironmentFlags } = require("process");
 
 var app = express();
 
@@ -34,16 +33,13 @@ app.engine(
     partialsDir: [path.join(__dirname, "views/partials")],
   })
 );
-
+app.use(fileupload());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(expressSession);
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use("/", indexRouter);
 

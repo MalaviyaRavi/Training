@@ -65,7 +65,7 @@
                         <label for="password" class="form-label">Product Images</label>
                         <div class="input-group mb-3">
 
-                            <input type="file" class="form-control" placeholder="Product Image" name="productImg">
+                            <input type="file" class="form-control" placeholder="Product Image" name="image">
                         </div>
 
 
@@ -108,15 +108,15 @@
     crossorigin="anonymous"></script>
 
 <script>
-    /*  $.noConflict();
-      jQuery(document).ready(function () {
-          jQuery.getJSON("http://localhost:3000/category", (data, textStatus) => {
-              console.log(data);
-              for (let category_object of data) {
-                  console.log("hi" + category_object);
-                  let category_link = `<option value=${category_object._id}> ${category_object.category_name} </option>`
-                  jQuery(".category").append(category_link);
-              }
-          })
-      })*/
+    $.noConflict();
+    jQuery(document).ready(function () {
+        jQuery.getJSON("http://localhost:3000/category", (data, textStatus) => {
+            console.log(data);
+            for (let category_object of data) {
+                console.log("hi" + category_object);
+                let category_link = `<option value=${category_object._id}> ${category_object.category_name} </option>`
+                jQuery(".category").append(category_link);
+            }
+        })
+    })
 </script>
