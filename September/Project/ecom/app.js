@@ -4,6 +4,15 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const hbs = require("express-handlebars");
+const fileupload = require("express-fileupload");
+const expressSession = require("express-session")({
+  secret: "secret",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 7,
+  },
+});
 
 const indexRouter = require("./routes/index-routes");
 const productRouter = require("./routes/product-routes");
