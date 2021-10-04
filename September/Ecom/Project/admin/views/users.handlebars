@@ -1,0 +1,39 @@
+<div class="container mt-5">
+    <div class="row justify-content-evenly">
+        <div class="col-10">
+            <table class="table table-dark table-hover ">
+                <thead>
+                    <tr>
+                        <th scope="col">Index</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Mobile No.</th>
+
+                        <th scope="col">Gender</th>
+                        <th scope="col">Addreess</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each users}}
+
+                    <tr>
+                        <td>{{@index}}</td>
+                        <td>{{first_name}}</td>
+                        <td>{{last_name}}</td>
+                        <td>{{username}}</td>
+                        <td>{{email}}</td>
+                        <td>{{mnumber}}</td>
+                        <td>{{gender}}</td>
+                        <td>{{address}}</td>
+                    </tr>
+
+                    {{/each}}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
