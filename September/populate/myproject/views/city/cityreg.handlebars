@@ -1,0 +1,42 @@
+<html>
+<body>
+    <form method="post">
+        <h1>Add City Record</h1>
+        <table>
+            <tr>
+                <td>City Name</td>
+                <td> <input type="text" placeholder="Enter City" name="city_name"></td>
+            </tr>
+            <tr>
+                <td>State</td>
+                <td> 
+                    <select name="_state">
+                   {{#each mydata}}
+                        
+                            <option value='{{_id}}'>{{state_name}}</option>
+                           
+                           {{/each}}
+                        </select>
+                </td>
+            </tr>
+           
+        <tr>
+                <td>Country</td>
+                <td> 
+                    <select name="_country">
+                   {{#each mycountry}}
+                        
+                            <option value='{{_id}}'>{{c_name}}</option>
+                           
+                           {{/each}}
+                        </select>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="submit"></td>
+                <td><input type="reset"></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

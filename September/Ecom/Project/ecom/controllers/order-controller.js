@@ -14,8 +14,9 @@ exports.postCreateOrder = function (req, res, next) {
   let amount = req.body.totalAmount;
   console.log(typeof amount);
   const inputObj = {
-    amount: req.body.totalAmount,
+    amount: amount,
     currency: "INR",
+    receipt: "",
   };
   res.redirect("/user/cart");
 };
