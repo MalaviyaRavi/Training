@@ -67,3 +67,21 @@
 
     </div>
 </div>
+
+<script>
+    $.noConflict();
+    jQuery(document).ready(function () {
+        jQuery.getJSON("http://localhost:3007/category", (data, textStatus) => {
+            console.log(data);
+            for (let category_object of data) {
+                console.log("hi" + category_object);
+                let category_link = `
+  <option value="${category_object._id}">
+    ${category_object.category_name}
+  </option>
+  `
+                jQuery(".category").append(category_link);
+            }
+        })
+    })
+</script>

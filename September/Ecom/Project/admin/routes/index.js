@@ -260,6 +260,7 @@ router.get("/edit-product/:id", (req, res, next) => {
         console.log(product);
         res.render("edit_product", {
           product: product,
+          
           isLogin: isLogin,
           title: "Edit Product",
         });

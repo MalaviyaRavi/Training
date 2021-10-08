@@ -113,7 +113,7 @@
 <script>
     $.noConflict();
     jQuery(document).ready(function () {
-        jQuery.getJSON("http://localhost:3000/category", (data, textStatus) => {
+        jQuery.getJSON("http://localhost:3007/category", (data, textStatus) => {
             console.log(data);
             for (let category_object of data) {
                 console.log("hi" + category_object);
