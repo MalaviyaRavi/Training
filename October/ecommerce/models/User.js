@@ -2,29 +2,24 @@ const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
   username: String,
-  email: String,
-  password: String,
-  gender: String,
-  role: {
+  useremail: String,
+  userpassword: String,
+
+  usergender: {
     type: String,
-    enum: ["user", "admin"],
   },
-  profile_image: {
+  userphoto: {
     type: String,
     default: "admin.png",
   },
-  contact_number: String,
-  area: {
+
+  userrole: {
+    type: String,
+    enum: ["user", "admin"],
+  },
+  _area: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "area",
-  },
-  city: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "city",
-  },
-  state: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "state",
   },
 });
 

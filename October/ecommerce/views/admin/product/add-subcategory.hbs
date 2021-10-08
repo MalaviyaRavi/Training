@@ -1,0 +1,83 @@
+{{> header}}
+
+{{> sidebar}}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row  mb-3 mt-2">
+                <div class="col-2"></div>
+
+                <div class="col-8">
+                    <h1>Add SubCategory</h1>
+                </div>
+
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row ">
+
+            <div class="col-2"></div>
+
+            <div class="col-md-8">
+                <div class="card card-primary">
+                    <div class="card-header text-center">
+
+                        <h3 class="card-title">Add Subategory</h3>
+
+
+                    </div>
+                    <form action="" method="post">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="inputName">Subategory Name</label>
+                                <input type="text" id="inputName" class="form-control" name="subcategoryname">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputStatus">Category</label>
+                                <select id="inputStatus" class="form-control custom-select" name="_category">
+                                    <option selected disabled>Select one</option>
+                                    {{#each categories}}
+
+                                    <option value={{_id}}>{{categoryname}}</option>
+
+                                    {{/each}}
+
+                                </select>
+                            </div>
+
+
+
+
+
+
+
+                            <div class="form-group text-center">
+
+                                <input type="submit" value="Add Subcategory" class="btn btn-success float-center">
+                            </div>
+
+
+                        </div>
+                    </form>
+                    <!-- /.card-body -->
+                </div>
+
+
+
+            </div>
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+
+
+{{> footer}}

@@ -95,7 +95,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Products</h3>
+                            <h3 class="card-title">Categories</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -103,43 +103,35 @@
                                 <thead>
                                     <tr>
                                         <th>Index</th>
-                                        <th>Name</th>
-                                        <th>Details</th>
-                                        <th>Price</th>
-                                        <th>SubCategory</th>
+                                        <th>Category Name</th>
+
                                         <th>Edit</th>
                                         <th>Delete</th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {{#each categories}}
                                     <tr>
-                                        <td>1</td>
+                                        <td>{{@index}}</td>
                                         <td>
-                                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Unde, excepturi.
+                                            {{categoryname}}
                                         </td>
-                                        <td>
-                                            <p>
-                                                Lorem ipsum dolor sit amet consectetur
-                                                adipisicing elit. Unde architecto
-                                                corporis debitis error ullam consectetur assumenda? Eligendi nostrum
-                                                possimus eos.</p>
-                                        </td>
-                                        <td> 4</td>
-                                        <td>X</td>
-                                        <th class="text-center"><a href="" class="btn btn-primary ">Edit</a></th>
-                                        <th class="text-center"><a href="" class="btn btn-danger">Delete</a></th>
-                                    </tr>
 
+                                        <th class="text-center"><a href="/admin/category/edit/{{_id}}"
+                                                class="btn btn-primary ">Edit</a></th>
+                                        <th class="text-center"><a href="/admin/category/delete/{{_id}}"
+                                                class="btn btn-danger">Delete</a></th>
+                                    </tr>
+                                    {{/each}}
 
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th>Index</th>
-                                        <th>Name</th>
-                                        <th>Details</th>
-                                        <th>Price</th>
-                                        <th>SubCategory</th>
+                                        <th>Category Name</th>
+
+
                                         <th>Edit</th>
                                         <th>Delete</th>
                                     </tr>

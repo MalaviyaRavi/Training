@@ -1,0 +1,99 @@
+{{> header}}
+
+{{> sidebar}}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row  mb-3 mt-2">
+                <div class="col-2"></div>
+
+                <div class="col-8">
+                    <h1>Add Product</h1>
+                </div>
+
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row ">
+
+            <div class="col-2"></div>
+
+            <div class="col-md-8">
+                <div class="card card-primary">
+                    <div class="card-header text-center">
+
+                        <h3 class="card-title">Add Product</h3>
+
+
+                    </div>
+                    <form action="" method="post">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="inputName">Product Name</label>
+                                <input type="text" id="inputName" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputDescription">Product Detail</label>
+                                <textarea id="inputDescription" class="form-control" rows="4"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputStatus">Category</label>
+                                <select id="inputStatus" class="form-control custom-select">
+                                    <option selected disabled>Select one</option>
+                                    <option>On Hold</option>
+                                    <option>Canceled</option>
+                                    <option>Success</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputStatus">SubCategory</label>
+                                <select id="inputStatus" class="form-control custom-select">
+                                    <option selected disabled>Select one</option>
+                                    <option>On Hold</option>
+                                    <option>Canceled</option>
+                                    <option>Success</option>
+                                </select>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="inputClientCompany">Price</label>
+                                <input type="text" id="inputClientCompany" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputClientCompany">Product Images</label>
+                                <input type="file" id="inputClientCompany" class="form-control" multiple>
+                            </div>
+
+
+                            <div class="form-group text-center">
+
+                                <input type="submit" value="Add Product" class="btn btn-success float-center">
+                            </div>
+
+
+                        </div>
+                    </form>
+                    <!-- /.card-body -->
+                </div>
+
+
+
+            </div>
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+
+
+{{> footer}}

@@ -10,6 +10,9 @@ const flash = require("connect-flash");
 
 //routes
 const adminIndexRouter = require("./routes/admin/index");
+const adminProductRouter = require("./routes/admin/product");
+const admincategoryRouter = require("./routes/admin/category");
+const adminSubcategoryRouter = require("./routes/admin/subcategory");
 
 var app = express();
 
@@ -53,7 +56,11 @@ app.use(fileupload());
 
 app.use(express.static(path.join(__dirname, "public")));
 
+//admin routers
 app.use("/admin", adminIndexRouter);
+app.use("/admin/product", adminProductRouter);
+app.use("/admin/category", admincategoryRouter);
+app.use("/admin/subcategory", adminSubcategoryRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

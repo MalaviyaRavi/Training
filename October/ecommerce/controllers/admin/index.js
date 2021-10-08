@@ -14,16 +14,16 @@ exports.getLogin = function (req, res, next) {
 
 exports.postLogin = async function (req, res, next) {
   const { email, password } = req.body;
-  const user = await User.findOne({ email: email });
+  const user = await User.findOne({ useremail: email });
   if (!user) {
     req.flash("error", "email or password invalid!!");
     return res.redirect("/admin/login");
   }
-  if (password != user.password) {
+  if (password != user.userpassword) {
     req.flash("error", "email or password invalid!!");
     return res.redirect("/admin/login");
   }
-  if (user.role != "admin") {
+  if (user.userrole != "admin") {
     req.flash("error", "you are not admin");
     return res.redirect("/admin/login");
   }
