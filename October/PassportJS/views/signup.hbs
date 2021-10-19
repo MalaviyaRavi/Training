@@ -72,4 +72,21 @@
 
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+
+
+
+        $('.form-control').on('keyup', function () {
+            //console.log($(this).closest('div.text-danger').length)
+            //$( "'#"+$(this).attr('id')+"'").closest( "div.text-danger" )
+            $(this).parent('.mb-3').children('span').remove()
+        });
+
+    })
+
+</script>
 {{> footer}}
