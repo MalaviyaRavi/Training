@@ -17,8 +17,11 @@ let {
 const flash = require("connect-flash");
 
 var indexRouter = require("./routes/index");
+const User = require("./models/user-model");
 
 var app = express();
+const http = require("http").createServer(app);
+global.io = require("socket.io")(http);
 
 async function connectDb() {
   try {
@@ -61,6 +64,7 @@ app.use(
     saveUninitialized: true,
   })
 );
+
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -68,6 +72,25 @@ app.use(passport.session());
 require("./passport");
 
 app.use("/", indexRouter);
+
+io.on("connection", async (socket) => {
+  let sessionid = global.sessionid;
+
+  await User.findOneAndUpdate(
+    { sessionid },
+    { $push: { socketids: socket.id } }
+  );
+  socket.broadcast.emit("new connection");
+
+  socket.on("disconnect", async () => {
+    // console.log("disconnecting", socket.id);
+    io.emit("oneuserleft");
+    await User.findOneAndUpdate(
+      { sessionid },
+      { $pull: { socketids: socket.id } }
+    );
+  });
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -85,4 +108,6 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
-module.exports = app;
+http.listen(3737, "127.0.0.1");
+
+// module.exports = app

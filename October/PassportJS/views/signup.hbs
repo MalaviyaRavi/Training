@@ -60,6 +60,69 @@
                 {{/if}}
             </div>
 
+
+            <div class="mb-3">
+                <lable class="form-label">Adharcard Number</lable>
+                <input type="text" name="adhar" id="" class="form-control" autocomplete="off">
+                {{#if errors.adhar}}
+                <span style="color: red;">{{errors.adhar.[0]}}</span><br>
+                {{!-- {{#each errors.username}}
+                <span style="color: red;">{{this}}</span><br>
+                {{/each}} --}}
+                {{/if}}
+
+            </div>
+
+            <div class="mb-3">
+                <lable class="form-label">PAN Number</lable>
+                <input type="text" name="pan" id="" class="form-control" autocomplete="off">
+                {{#if errors.pan}}
+                <span style="color: red;">{{errors.pan.[0]}}</span><br>
+                {{!-- {{#each errors.username}}
+                <span style="color: red;">{{this}}</span><br>
+                {{/each}} --}}
+                {{/if}}
+
+            </div>
+
+
+
+            <div class="mb-3">
+                <lable class="form-label">Passport Number</lable>
+                <input type="text" name="passport" id="" class="form-control" autocomplete="off">
+                {{#if errors.passport}}
+                <span style="color: red;">{{errors.passport.[0]}}</span><br>
+                {{!-- {{#each errors.username}}
+                <span style="color: red;">{{this}}</span><br>
+                {{/each}} --}}
+                {{/if}}
+
+            </div>
+
+            <div class="mb-3">
+                <lable class="form-label">Mobile Number</lable>
+                <input type="text" name="mobile" id="" class="form-control" autocomplete="off">
+                {{#if errors.mobile}}
+                <span style="color: red;">{{errors.mobile.[0]}}</span><br>
+                {{!-- {{#each errors.username}}
+                <span style="color: red;">{{this}}</span><br>
+                {{/each}} --}}
+                {{/if}}
+
+            </div>
+
+            <div class="mb-3">
+                <lable class="form-label">GST Number</lable>
+                <input type="text" name="gst" id="gst" class="form-control" autocomplete="off">
+                {{#if errors.gst}}
+                <span style="color: red;">{{errors.gst.[0]}}</span><br>
+                {{!-- {{#each errors.username}}
+                <span style="color: red;">{{this}}</span><br>
+                {{/each}} --}}
+                {{/if}}
+
+            </div>
+
             <div>
                 <input type="submit" class="btn btn-success" value="Register">
             </div>
@@ -70,7 +133,21 @@
             </p>
         </form>
 
+
+
     </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="

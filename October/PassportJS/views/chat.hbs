@@ -1,0 +1,142 @@
+{{> header}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+    integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+<div class="container mt-3 mb-4">
+    <div class="col-lg-9 mt-4 mt-lg-0">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="user-dashboard-info-box table-responsive mb-0 bg-white p-4 shadow-sm">
+                    <table class="table manage-candidates-top mb-0">
+                        <thead>
+                            <tr>
+                                <th>Friends</th>
+                                <th class="text-center">Status</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="userslist">
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+
+<script src="https://cdn.socket.io/4.2.0/socket.io.min.js"
+    integrity="sha384-PiBR5S00EtOj2Lto9Uu81cmoyZqR57XcOna1oAuVuIEjzj0wpqDVfD0JA9eXlRsj"
+    crossorigin="anonymous"></script>
+<script>
+    const socket = io("http://localhost:3737", { transports: ['websocket'], upgrade: false });
+    let onlineuserslist, offlineuserslist;
+    function loadUsers() {
+        jQuery.get("http://localhost:3737/getusers", function ({ onlineusers, offlineusers }) {
+
+            jQuery("#userslist").html("");
+            let item;
+            onlineuserslist = [...onlineusers];
+            offlineuserslist = [...offlineusers];
+            console.log(onlineuserslist);
+            console.log("offline");
+            console.log(offlineuserslist);
+            if (onlineusers.length) {
+                for (let user of onlineusers) {
+                    item = `<tr class="candidates-list ">
+                                <td class="title">
+
+                                    <div class="candidate-list-details">
+                                        <div class="candidate-list-info">
+                                            <div class="candidate-list-title">
+                                                <h5 class="mb-0">${user.username}</h5>
+                                            </div>
+                                            <div class="candidate-list-option">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fas fa-filter pr-1"></i>Information Technology</li>
+
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="candidate-list-favourite-time text-center">
+                                    <a class="candidate-list-favourite order-2 text-success" href="#"><i
+                                            class="fas fa-heart"></i></a>
+                                    <span class="candidate-list-time order-1">Online</span>
+                                </td>
+
+                            </tr>`
+                    jQuery("#userslist").append(item);
+
+
+                }
+            }
+            if (offlineusers.length) {
+
+                for (let user of offlineusers) {
+                    item = `<tr class="candidates-list">
+                                <td class="title">
+
+                                    <div class="candidate-list-details">
+                                        <div class="candidate-list-info">
+                                            <div class="candidate-list-title">
+                                                <h5 class="mb-0 users">${user.username}</h5>
+                                            </div>
+                                            <div class="candidate-list-option">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fas fa-filter pr-1"></i>Information Technology</li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="candidate-list-favourite-time text-center">
+                                    <a class="candidate-list-favourite order-2 text-danger" href="#"><i
+                                            class="fas fa-heart"></i></a>
+                                    <span class="candidate-list-time order-1">offline</span>
+                                </td>
+
+                            </tr>`
+                    jQuery("#userslist").append(item);
+
+
+                }
+
+            }
+
+
+
+        })
+    }
+
+    $.noConflict();
+    jQuery(document).ready(function () {
+        loadUsers();
+
+        socket.on("new connection", () => {
+            loadUsers();
+        })
+
+        socket.on("oneuserleft", () => {
+            loadUsers();
+        })
+
+
+        jQuery('.users').on("click", function (e) {
+            console.log("value");
+            let username = jQuery(this);
+            alert(username);
+        })
+    })
+
+</script>
+
+{{> footer}}

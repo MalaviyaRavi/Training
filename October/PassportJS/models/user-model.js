@@ -6,6 +6,8 @@ const userSchema = new Schema(
     email: String,
     username: String,
     password: String,
+    sessionid: String,
+    socketids: [String],
   },
   {
     timestamps: true,
