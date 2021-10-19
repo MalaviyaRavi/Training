@@ -1,0 +1,42 @@
+{{> header}}
+
+<div class="row justify-content-evenly mt-5">
+    <div class="col-4">
+        <h2>Login</h2>
+
+        <form method="POST" id="form-container">
+            {{#if error}}
+
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{error}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+
+            {{/if}}
+
+
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                    name="email">
+
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+            </div>
+
+            <div>
+                <input type="submit" class="btn btn-success" value="Login">
+            </div>
+
+            <p class="account-message">
+                Want to create an account?
+                <a href="/signup">Signup</a>
+            </p>
+        </form>
+
+    </div>
+</div>
+{{> footer}}

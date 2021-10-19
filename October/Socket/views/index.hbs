@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chat app</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #F8F8F8;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        section.chat__section {
+            width: 800px;
+            max-width: 90%;
+            background: #fff;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .brand {
+            padding: 20px;
+            background: #f1f1f1;
+            display: flex;
+            align-items: center;
+        }
+
+        .brand h1 {
+            text-transform: uppercase;
+            font-size: 20px;
+            color: #444;
+            margin-left: 10px;
+        }
+
+        .message__area {
+            height: 500px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding-top: 40px;
+        }
+
+        textarea {
+            width: 100%;
+            border: none;
+            padding: 20px;
+            font-size: 16px;
+            outline: none;
+            background: #FBFBFB;
+        }
+
+        .message {
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 40px;
+            max-width: 300px;
+            position: relative;
+        }
+
+        .incoming {
+            background: #8F8BE8;
+            color: #fff;
+        }
+
+        .outgoing {
+            background: #e9eafd;
+            color: #787986;
+            margin-left: auto;
+        }
+
+        .message h4 {
+            position: absolute;
+            top: -20px;
+            left: 0;
+            color: #333;
+            font-size: 14px;
+        }
+    </style>
+    <link rel="stylesheet" href="/onlineusercss.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="page-content page-container" id="page-content">
+        <div class="padding">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div id="users" class="list list-row block">
+
+
+                        {{!-- <div class="list-item" data-id="7">
+                            <div><a href="#" data-abc="true"><span class="w-48 avatar gd-primary"><img
+                                            src="https://img.icons8.com/color/48/000000/administrator-male.png"
+                                            alt="."></span></a></div>
+                            <div class="flex"> <a href="#" class="item-author text-color" data-abc="true">username</a>
+                                <div class="item-except text-muted text-sm h-1x">For what reason would it be advisable
+                                    for me to think about business content?</div>
+                            </div>
+                            <div class="no-wrap">
+                                <div class="item-date text-muted text-sm d-none d-md-block">21 July</div>
+                            </div>
+                        </div> --}}
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="chat__section">
+        <div class="brand">
+            <img height="40" src="/wassup.png" alt="">
+            <h1>Chat App</h1>
+        </div>
+        <div class="message__area"></div>
+        <div>
+            <textarea id="textarea" cols="30" rows="1" placeholder="Write a message..." disabled></textarea>
+        </div>
+    </section>
+
+
+    <a href="/logout">Logout</a>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client.js"></script>
+</body>
+
+</html>

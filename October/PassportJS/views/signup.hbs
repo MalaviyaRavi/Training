@@ -1,0 +1,75 @@
+{{> header}}
+
+<div class="row justify-content-evenly mt-5">
+    <div class="col-4">
+        <h2>Signup</h2>
+
+        <form method="POST" id="form-container">
+            {{!-- {{#if errors}}
+            {{#each errors}}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{this}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            {{/each}}
+            {{/if}} --}}
+
+            <div class="mb-3">
+                <lable class="form-label">Username</lable>
+                <input type="text" name="username" id="" class="form-control" autocomplete="off">
+                {{#if errors.username}}
+                <span style="color: red;">{{errors.username.[0]}}</span><br>
+                {{!-- {{#each errors.username}}
+                <span style="color: red;">{{this}}</span><br>
+                {{/each}} --}}
+                {{/if}}
+
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                    name="email">
+                {{#if errors.email}}
+                <span style="color: red;">{{errors.email.[0]}}</span><br>
+                {{!-- {{#each errors.email}}
+                <span style="color: red;">{{this}}</span><br>
+                {{/each}} --}}
+                {{/if}}
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+                {{#if errors.password}}
+                <span style="color: red;">{{errors.password.[0]}}</span><br>
+                {{!-- {{#each errors.password}}
+                <span style="color: red;">{{this}}</span><br>
+                {{/each}} --}}
+                {{/if}}
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" name="cpassword">
+                {{#if errors.cpassword}}
+                <span style="color: red;">{{errors.cpassword.[0]}}</span><br>
+                {{!-- {{#each errors.username}}
+                <span style="color: red;">{{this}}</span><br>
+                {{/each}} --}}
+                {{/if}}
+            </div>
+
+            <div>
+                <input type="submit" class="btn btn-success" value="Register">
+            </div>
+
+            <p class="account-message">
+                Do you already have an account?
+                <a href="/login">Login</a>
+            </p>
+        </form>
+
+    </div>
+</div>
+{{> footer}}
