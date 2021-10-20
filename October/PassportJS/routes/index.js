@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-
+const mongoose = require("mongoose");
 const User = require("../models/user-model");
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
@@ -201,6 +201,13 @@ router.get("/getusers", async (req, res, next) => {
   res.json({ onlineusers, offlineusers });
 });
 
+// router.get("/:receiver", async function (req, res, next) {
+//   let receiver = req.params.receiver;
+//   let sender = req.user.id;
+
+//   res.json({ sender, receiver });
+// });
+
 //validation with frontend and backend
 
 //Validation Model For Task
@@ -370,6 +377,7 @@ router.post(
     }
 
     //set jwt in cookie
+
     res.cookie("jwt", token, { httpOnly: true, maxAge: 3600000 });
     res.json({ error: false });
   }

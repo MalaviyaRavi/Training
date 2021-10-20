@@ -21,7 +21,7 @@ const User = require("./models/user-model");
 
 var app = express();
 const http = require("http").createServer(app);
-global.io = require("socket.io")(http);
+let io = require("socket.io")(http);
 
 async function connectDb() {
   try {
@@ -75,7 +75,7 @@ app.use("/", indexRouter);
 
 io.on("connection", async (socket) => {
   let sessionid = global.sessionid;
-
+  let socketid = socket.id;
   await User.findOneAndUpdate(
     { sessionid },
     { $push: { socketids: socket.id } }
@@ -87,8 +87,19 @@ io.on("connection", async (socket) => {
     io.emit("oneuserleft");
     await User.findOneAndUpdate(
       { sessionid },
-      { $pull: { socketids: socket.id } }
+      { $pull: { socketids: socketid } }
     );
+  });
+
+  socket.on("msg1", async function (data) {
+    let { msg, sender, receiver } = data;
+    console.log("msg1 emmitted");
+    let receiverdata = await User.findOne({ _id: receiver });
+    console.log(msg);
+    for (let receiverSocketid of receiverdata.socketids) {
+      console.log(receiverSocketid);
+      io.to(receiverSocketid).emit("msg2", msg);
+    }
   });
 });
 

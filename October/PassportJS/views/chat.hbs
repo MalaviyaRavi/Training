@@ -1,10 +1,91 @@
 {{> header}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
     integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+
+
+    section.chat__section {
+        width: 800px;
+        max-width: 90%;
+        background: #fff;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        display: none;
+    }
+
+    .brand {
+        padding: 20px;
+        background: #f1f1f1;
+        display: flex;
+        align-items: center;
+    }
+
+    .brand h1 {
+        text-transform: uppercase;
+        font-size: 20px;
+        color: #444;
+        margin-left: 10px;
+    }
+
+    .message__area {
+        height: 500px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        padding-top: 40px;
+    }
+
+    textarea {
+        width: 100%;
+        border: none;
+        padding: 20px;
+        font-size: 16px;
+        outline: none;
+        background: #FBFBFB;
+    }
+
+    .message {
+        padding: 20px;
+        border-radius: 4px;
+        margin-bottom: 40px;
+        max-width: 300px;
+        position: relative;
+    }
+
+    .incoming {
+        background: #8F8BE8;
+        color: #fff;
+    }
+
+    .outgoing {
+        background: #e9eafd;
+        color: #787986;
+        margin-left: auto;
+    }
+
+    .message h4 {
+        position: absolute;
+        top: -20px;
+        left: 0;
+        color: #333;
+        font-size: 14px;
+    }
+</style>
+
+
 <div class="container mt-3 mb-4">
     <div class="col-lg-9 mt-4 mt-lg-0">
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-3">
                 <div class="user-dashboard-info-box table-responsive mb-0 bg-white p-4 shadow-sm">
                     <table class="table manage-candidates-top mb-0">
                         <thead>
@@ -21,6 +102,20 @@
                     </table>
 
                 </div>
+            </div>
+            <div class="col-8">
+
+                <section class="chat__section">
+                    <div class="brand">
+                        <img height="40" alt="">
+                        <h1 id="chattitle"></h1>
+                    </div>
+                    <div class="message__area"></div>
+                    <div>
+                        <textarea id="textarea" cols="30" rows="1" placeholder="Write a message..."></textarea>
+                        <button class="btn btn-primary" id="sendmsg">Send</button>
+                    </div>
+                </section>
             </div>
         </div>
     </div>
@@ -48,21 +143,15 @@
             console.log(offlineuserslist);
             if (onlineusers.length) {
                 for (let user of onlineusers) {
-                    item = `<tr class="candidates-list ">
+                    item = `<tr class="candidates-list user ">
                                 <td class="title">
 
                                     <div class="candidate-list-details">
                                         <div class="candidate-list-info">
                                             <div class="candidate-list-title">
-                                                <h5 class="mb-0">${user.username}</h5>
+                                                <h5 class="mb-0 user-${user._id} online" onclick = getChat(event)>${user.username}</h5>
                                             </div>
-                                            <div class="candidate-list-option">
-                                                <ul class="list-unstyled">
-                                                    <li><i class="fas fa-filter pr-1"></i>Information Technology</li>
-
-
-                                                </ul>
-                                            </div>
+                                           
                                         </div>
                                     </div>
                                 </td>
@@ -81,20 +170,15 @@
             if (offlineusers.length) {
 
                 for (let user of offlineusers) {
-                    item = `<tr class="candidates-list">
+                    item = `<tr class="candidates-list user">
                                 <td class="title">
 
                                     <div class="candidate-list-details">
                                         <div class="candidate-list-info">
                                             <div class="candidate-list-title">
-                                                <h5 class="mb-0 users">${user.username}</h5>
+                                                <h5 class="mb-0 user-${user._id} offline" onclick = getChat(event)>${user.username}</h5>
                                             </div>
-                                            <div class="candidate-list-option">
-                                                <ul class="list-unstyled">
-                                                    <li><i class="fas fa-filter pr-1"></i>Information Technology</li>
-
-                                                </ul>
-                                            </div>
+                                          
                                         </div>
                                     </div>
                                 </td>
@@ -108,6 +192,7 @@
                     jQuery("#userslist").append(item);
 
 
+
                 }
 
             }
@@ -117,6 +202,9 @@
         })
     }
 
+
+
+    let sender, receiver, socketids;
     $.noConflict();
     jQuery(document).ready(function () {
         loadUsers();
@@ -129,13 +217,75 @@
             loadUsers();
         })
 
-
-        jQuery('.users').on("click", function (e) {
-            console.log("value");
-            let username = jQuery(this);
-            alert(username);
+        socket.on("msg2", (msg2) => {
+            console.log("msg2 called");
+            console.log(msg2);
         })
+
+        jQuery("button#sendmsg").on("click", function () {
+            let msg = jQuery("#textarea").val();
+            msg = msg.trim();
+            if (msg == "") {
+                return;
+            }
+
+
+
+            console.log(sender);
+            console.log(receiver);
+
+            socket.emit("msg1", { msg, sender, receiver });
+
+
+
+
+
+
+
+
+
+        })
+
+
+
     })
+
+
+    function getChat(e) {
+        console.log("get chat");
+        let userid = e.target.classList[1].split("-")[1];
+        let username = e.target.innerText;
+        let status = e.target.classList[2];
+        console.log(status);
+
+
+        jQuery("section.chat__section").css({ "display": "block" })
+        jQuery("h1#chattitle").text(username);
+
+
+
+
+        /* if (status == "online") {
+             jQuery('#textarea').prop('disabled', false)
+         } else {
+             jQuery('#textarea').prop('disabled', true)
+         }*/
+
+
+
+        jQuery.get(`http://localhost:3737/${userid}`, function (data) {
+
+            sender = data.sender;
+            receiver = data.receiver;
+
+
+
+
+        })
+
+    }
+
+
 
 </script>
 
