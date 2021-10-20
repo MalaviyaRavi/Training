@@ -37,19 +37,27 @@
 <script>
     $(document).ready(function () {
 
-
+        //remove errors on keyup
         $('.form-control').on('keyup', function () {
 
             $('.errortext').remove();
         });
+
+
         $("#loginform").on("submit", function (event) {
+
+            //prevent submit event default behaviour
             event.preventDefault();
+
+            //get form data
             let email = $('#email').val();
             let password = $("#password").val();
 
+            //before ajax call remove all error
             if ($('.errortext')) {
                 $('.errortext').remove();
             }
+
 
             $.post({
                 type: "POST",
@@ -61,17 +69,19 @@
 
                         for (let item of data.errors) {
 
+                            //display global error on the top of the form if no field specific error
                             if (item.param == "global") {
                                 if (!$(".errortext").length)
                                     $(".labeltext").after("<p class = 'errortext text-danger text-center text-bold'>" + item.msg + "</p>")
                             }
 
 
+                            //dispaly field specific only one error
                             if ($("#" + item.param).parent().children(".errortext").length) {
                                 continue;
                             }
 
-
+                            //append error
                             $("#" + item.param).parent().append("<p class = 'errortext text-danger'>" + item.msg + "</p>");
                         }
 

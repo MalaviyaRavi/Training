@@ -113,6 +113,7 @@
 
 <script>
 
+    //remove errors on keyup
     $('.form-control').on('keyup', function () {
 
         $('.errortext').remove();
@@ -120,7 +121,12 @@
 
     $(document).ready(function () {
         $("#form").on("submit", function (event) {
+
+            //prevent submit event default behaviour
             event.preventDefault();
+
+
+            //get form data
             let username = $("#username").val();
             let email = $("#email").val();
             let password = $("#password").val();
@@ -129,6 +135,7 @@
             let city = $("#city").val();
             let mobile = $("#mobile").val();
 
+            //before ajax call remove all error
             if ($('.errortext')) {
                 $('.errortext').remove();
             }
@@ -142,11 +149,12 @@
                         for (let item of data.errors) {
 
 
+                            //only show  one error for specific field
                             if ($("#" + item.param).parent().children(".errortext").length) {
                                 continue;
                             }
 
-
+                            //append error
                             $("#" + item.param).parent().append("<p class = 'errortext text-danger'>" + item.msg + "</p>");
                         }
 
@@ -155,6 +163,7 @@
 
                     }
 
+                    //after validation redirect to login page
                     window.location.href = "http://localhost:3737/validationlogin"
 
 

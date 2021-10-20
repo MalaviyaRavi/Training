@@ -203,14 +203,19 @@ router.get("/getusers", async (req, res, next) => {
 
 //validation with frontend and backend
 
+//Validation Model For Task
 const ValidationModel = require("../models/validation-model");
+
 const jwt = require("jsonwebtoken");
+
+//Middleware For Authentication
 const { isAuth } = require("../middlewares/isAuth");
 
 router.get("/validation", function (req, res, next) {
   res.render("validation-form");
 });
 
+//validation post request with express-validator
 router.post(
   "/validation",
   [
@@ -289,6 +294,8 @@ router.post(
       return res.json({ error: true, errors });
     }
     let { username, email, city, gender, mobile } = req.body;
+
+    //hash password
     let password = await bcrypt.hash(req.body.password, bcryptSalt);
     await ValidationModel.create({
       username,
@@ -302,10 +309,12 @@ router.post(
   }
 );
 
+//validation login get route
 router.get("/validationlogin", function (req, res, next) {
   res.render("validation-login");
 });
 
+//validation login post route
 router.post(
   "/validationlogin",
   [
@@ -338,12 +347,15 @@ router.post(
     let user = await ValidationModel.findOne({ email });
     let token;
     if (!user) {
+      //global error (not input field specific)
       errors.push({ msg: "email or password invalid", param: "global" });
     } else {
       let isValid = await bcrypt.compare(password, user.password);
       if (!isValid) {
+        //global error (not input field specific)
         errors.push({ msg: "email or password invalid", param: "global" });
       } else {
+        //generate jwt token
         token = jwt.sign(
           {
             data: user._id,
@@ -356,11 +368,14 @@ router.post(
     if (errors.length) {
       return res.json({ error: true, errors });
     }
+
+    //set jwt in cookie
     res.cookie("jwt", token, { httpOnly: true, maxAge: 3600000 });
     res.json({ error: false });
   }
 );
 
+//home page get route
 router.get("/validationhome", isAuth, function (req, res, next) {
   let user = req.user;
   res.render("validation-home", { user });
@@ -368,6 +383,8 @@ router.get("/validationhome", isAuth, function (req, res, next) {
 
 router.get("/validationlogout", isAuth, function (req, res, next) {
   res.cookie("jwt", "", { httpOnly: true, maxAge: 0 });
+  console.log(req.user);
+  req.user = "";
   res.redirect("/validationlogin");
 });
 
