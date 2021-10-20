@@ -204,6 +204,8 @@ router.get("/getusers", async (req, res, next) => {
 //validation with frontend and backend
 
 const ValidationModel = require("../models/validation-model");
+const jwt = require("jsonwebtoken");
+const { isAuth } = require("../middlewares/isAuth");
 
 router.get("/validation", function (req, res, next) {
   res.render("validation-form");
@@ -224,11 +226,11 @@ router.post(
 
     check("email")
       .trim()
-      .normalizeEmail()
+      // .normalizeEmail()
       .toLowerCase()
       .not()
       .isEmpty()
-      .withMessage("emails is required")
+      .withMessage("email is required")
       .isEmail()
       .withMessage("please enter email in correct format")
       .custom(async function (email) {
@@ -279,15 +281,94 @@ router.post(
       )
       .withMessage("please enter correct Mobile number"),
   ],
-  function (req, res, next) {
+  async function (req, res, next) {
     let errorobj = validationResult(req);
     let errors = errorobj.array();
 
     if (errors.length) {
       return res.json({ error: true, errors });
     }
-    res.status(200).json({ error: false, data: { ...req.body } });
+    let { username, email, city, gender, mobile } = req.body;
+    let password = await bcrypt.hash(req.body.password, bcryptSalt);
+    await ValidationModel.create({
+      username,
+      email,
+      password,
+      gender,
+      city,
+      mobile,
+    });
+    res.status(200).json({ error: false, data: "user registration completed" });
   }
 );
+
+router.get("/validationlogin", function (req, res, next) {
+  res.render("validation-login");
+});
+
+router.post(
+  "/validationlogin",
+  [
+    check("email")
+      .trim()
+      .escape()
+      .not()
+      .isEmpty()
+      .withMessage("email is required")
+      .isEmail()
+      .withMessage("enter email in correct format")
+      .custom(async (email) => {
+        let user = await ValidationModel.findOne({ email });
+        if (!user) {
+          throw new Error("email is not registered please first register!");
+        }
+        return true;
+      }),
+
+    check("password")
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage("password is required"),
+  ],
+  async function (req, res, next) {
+    let errorobj = validationResult(req);
+    let errors = errorobj.array();
+    let { email, password } = req.body;
+    let user = await ValidationModel.findOne({ email });
+    let token;
+    if (!user) {
+      errors.push({ msg: "email or password invalid", param: "global" });
+    } else {
+      let isValid = await bcrypt.compare(password, user.password);
+      if (!isValid) {
+        errors.push({ msg: "email or password invalid", param: "global" });
+      } else {
+        token = jwt.sign(
+          {
+            data: user._id,
+          },
+          "ravi",
+          { expiresIn: "1h" }
+        );
+      }
+    }
+    if (errors.length) {
+      return res.json({ error: true, errors });
+    }
+    res.cookie("jwt", token, { httpOnly: true, maxAge: 3600000 });
+    res.json({ error: false });
+  }
+);
+
+router.get("/validationhome", isAuth, function (req, res, next) {
+  let user = req.user;
+  res.render("validation-home", { user });
+});
+
+router.get("/validationlogout", isAuth, function (req, res, next) {
+  res.cookie("jwt", "", { httpOnly: true, maxAge: 0 });
+  res.redirect("/validationlogin");
+});
 
 module.exports = router;
