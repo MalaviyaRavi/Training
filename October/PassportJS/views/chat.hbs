@@ -1,6 +1,6 @@
 {{> header}}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
-    integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+
+<link rel="stylesheet" href="/css/font-awesome.css">
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
@@ -79,6 +79,17 @@
         color: #333;
         font-size: 14px;
     }
+
+    small {
+        color: rgb(7, 71, 71);
+        font-size: x-small;
+    }
+
+    #usermsg {
+        color: rgb(197, 161, 2);
+        font-weight: bolder;
+        font-size: large;
+    }
 </style>
 
 
@@ -110,7 +121,9 @@
                         <img height="40" alt="">
                         <h1 id="chattitle"></h1>
                     </div>
-                    <div class="message__area"></div>
+                    <div class="message__area">
+
+                    </div>
                     <div>
                         <textarea id="textarea" cols="30" rows="1" placeholder="Write a message..."></textarea>
                         <button class="btn btn-primary" id="sendmsg">Send</button>
@@ -122,47 +135,23 @@
 </div>
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-    crossorigin="anonymous"></script>
+<script src="/js/jquery.js"></script>
+<script src="/js/socket.js"></script>
+<script src="/js/moment.js"></script>
 
-<script src="https://cdn.socket.io/4.2.0/socket.io.min.js"
-    integrity="sha384-PiBR5S00EtOj2Lto9Uu81cmoyZqR57XcOna1oAuVuIEjzj0wpqDVfD0JA9eXlRsj"
-    crossorigin="anonymous"></script>
 <script>
     const socket = io("http://localhost:3737", { transports: ['websocket'], upgrade: false });
-    let onlineuserslist, offlineuserslist;
-    function loadUsers() {
-        jQuery.get("http://localhost:3737/getusers", function ({ onlineusers, offlineusers }) {
 
-            jQuery("#userslist").html("");
+    function loadUsers() {
+        $.get("http://localhost:3737/getusers", function ({ onlineusers, offlineusers }) {
+
+            $("#userslist").html("");
             let item;
-            onlineuserslist = [...onlineusers];
-            offlineuserslist = [...offlineusers];
-            console.log(onlineuserslist);
-            console.log("offline");
-            console.log(offlineuserslist);
+
             if (onlineusers.length) {
                 for (let user of onlineusers) {
-                    item = `<tr class="candidates-list user ">
-                                <td class="title">
-
-                                    <div class="candidate-list-details">
-                                        <div class="candidate-list-info">
-                                            <div class="candidate-list-title">
-                                                <h5 class="mb-0 user-${user._id} online" onclick = getChat(event)>${user.username}</h5>
-                                            </div>
-                                           
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="candidate-list-favourite-time text-center">
-                                    <a class="candidate-list-favourite order-2 text-success" href="#"><i
-                                            class="fas fa-heart"></i></a>
-                                    <span class="candidate-list-time order-1">Online</span>
-                                </td>
-
-                            </tr>`
-                    jQuery("#userslist").append(item);
+                    item = '<tr class="candidates-list user"><td class="title"><div class="candidate-list-details"><div class="candidate-list-info"><div class="candidate-list-title"><h5 class="mb-0 user-' + user._id + '" onclick=getChat(event)>' + user.username + '</h5></div></div></div></td><td class="candidate-list-favourite-time text-center"><a class="candidate-list-favourite order-2 text-success" href="#"><i class="fas fa-heart"></i></a><span class="candidate-list-time order-1">Online</span></td></tr>'
+                    $("#userslist").append(item);
 
 
                 }
@@ -170,43 +159,39 @@
             if (offlineusers.length) {
 
                 for (let user of offlineusers) {
-                    item = `<tr class="candidates-list user">
-                                <td class="title">
-
-                                    <div class="candidate-list-details">
-                                        <div class="candidate-list-info">
-                                            <div class="candidate-list-title">
-                                                <h5 class="mb-0 user-${user._id} offline" onclick = getChat(event)>${user.username}</h5>
-                                            </div>
-                                          
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="candidate-list-favourite-time text-center">
-                                    <a class="candidate-list-favourite order-2 text-danger" href="#"><i
-                                            class="fas fa-heart"></i></a>
-                                    <span class="candidate-list-time order-1">offline</span>
-                                </td>
-
-                            </tr>`
-                    jQuery("#userslist").append(item);
-
-
-
+                    item = '<tr class="candidates-list user"><td class="title"><div class="candidate-list-details"><div class="candidate-list-info"><div class="candidate-list-title"><h5 class="mb-0 user-' + user._id + '" onclick=getChat(event)> ' + user.username + '</h5></div></div></div></td><td class="candidate-list-favourite-time text-center"><a class="candidate-list-favourite order-2 text-danger" href="#"><i class="fas fa-heart"></i></a><span class="candidate-list-time order-1">offline</span></td></tr>'
+                    $("#userslist").append(item);
                 }
-
             }
-
-
-
         })
     }
 
+    function getMessages() {
+        $(".message__area").html("");
+        $.get("http://localhost:3737/messages/" + sender + "/" + receiver + "", function (data) {
+            let time;
+            for (let r = 0; r < data.receivermessages.length; r++) {
+                time = moment(data.receivermessages[r].createdAt, 'YYYY-MM-DDTHH:mm:ss').format('MMM Do YY HH:mm');
+                if (sender == data.receivermessages[r].sender) {
+
+                    $(".message__area").prepend('<p id = "usermsg"  style="text-align: right;"> You - ' + data.receivermessages[r].msg + ' - <small>' + time + ' </small> </p>')
+                } else {
+                    $(".message__area").prepend('<p id = "usermsg" > ' + receivername + '- ' + data.receivermessages[r].msg + ' - <small>' + time + ' </small> </p>')
+                }
+            }
+        });
+    }
+
+    function scrollDiv() {
+        $(".message__area").animate({ scrollTop: $('.message__area').prop("scrollHeight") }, 1000);
+    }
+
+    //global sender and receiver for access in all function
+    let sender, receiver, receivername;
 
 
-    let sender, receiver, socketids;
-    $.noConflict();
-    jQuery(document).ready(function () {
+    $(document).ready(function () {
+        //load first time all users
         loadUsers();
 
         socket.on("new connection", () => {
@@ -220,72 +205,48 @@
         socket.on("msg2", (msg2) => {
             console.log("msg2 called");
             console.log(msg2);
+            let time = moment().format('MMM Do YY HH:mm');
+            $(".message__area").append('<p id = "usermsg" > ' + receivername + ' - ' + msg2 + ' - <small>' + time + ' </small> </p>')
+            scrollDiv();
+            // getMessages();
         })
 
-        jQuery("button#sendmsg").on("click", function () {
-            let msg = jQuery("#textarea").val();
+        $("button#sendmsg").on("click", function () {
+            let msg = $("#textarea").val();
             msg = msg.trim();
-            if (msg == "") {
+            if (!msg) {
                 return;
             }
+            socket.emit("msg1", { msg, sender, receiver }, function (text) {
 
-
-
-            console.log(sender);
-            console.log(receiver);
-
-            socket.emit("msg1", { msg, sender, receiver });
-
-
-
-
-
-
-
-
-
+                alert(text);
+            });
+            let time = moment().format('MMM Do YY HH:mm');
+            $(".message__area").append('<p id = "usermsg" style="text-align: right;"> you - ' + msg + '- <small>' + time + ' </small> </p>')
+            $("#textarea").val("");
+            scrollDiv();
         })
-
-
-
     })
 
-
     function getChat(e) {
-        console.log("get chat");
         let userid = e.target.classList[1].split("-")[1];
         let username = e.target.innerText;
-        let status = e.target.classList[2];
-        console.log(status);
+        receivername = username;
 
-
-        jQuery("section.chat__section").css({ "display": "block" })
-        jQuery("h1#chattitle").text(username);
-
-
-
-
-        /* if (status == "online") {
-             jQuery('#textarea').prop('disabled', false)
-         } else {
-             jQuery('#textarea').prop('disabled', true)
-         }*/
-
-
-
-        jQuery.get(`http://localhost:3737/${userid}`, function (data) {
-
+        $("section.chat__section").css({ "display": "block" })
+        $("h1#chattitle").text(username);
+        $.get('http://localhost:3737/' + userid + '', function (data) {
             sender = data.sender;
-            receiver = data.receiver;
+            receiver = userid;
 
+            //get all messages
+            getMessages();
 
-
+            //scroll as per msg
+            scrollDiv();
 
         })
-
     }
-
-
 
 </script>
 

@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const mongoose = require("mongoose");
 const User = require("../models/user-model");
+const Message = require("../models/message-model");
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 const passport = require("passport");
@@ -75,7 +76,7 @@ router.post(
       .isEmpty()
       .withMessage("confirm password is required"),
 
-    check("adhar")
+    /* check("adhar")
       .trim()
       .not()
       .isEmpty()
@@ -115,7 +116,7 @@ router.post(
       .isEmpty()
       .withMessage("GST number is required")
       .matches(`[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$`)
-      .withMessage("please enter correct GST number"),
+      .withMessage("please enter correct GST number"),*/
   ],
   async (req, res, next) => {
     let errorobj = validationResult(req);
@@ -201,12 +202,31 @@ router.get("/getusers", async (req, res, next) => {
   res.json({ onlineusers, offlineusers });
 });
 
-// router.get("/:receiver", async function (req, res, next) {
-//   let receiver = req.params.receiver;
-//   let sender = req.user.id;
+router.get("/:receiver", async function (req, res, next) {
+  let sender = req.user.id;
 
-//   res.json({ sender, receiver });
-// });
+  res.json({ sender });
+});
+
+router.get("/messages/:sender/:receiver", async function (req, res, next) {
+  let { sender, receiver } = req.params;
+
+  let receivermessages = await Message.find({
+    $or: [
+      {
+        $and: [{ sender: receiver }, { receiver: sender }],
+      },
+      {
+        $and: [{ sender: sender }, { receiver: receiver }],
+      },
+    ],
+  })
+    .sort({ _id: -1 })
+    .limit(15)
+    .lean();
+
+  res.json({ receivermessages });
+});
 
 //validation with frontend and backend
 

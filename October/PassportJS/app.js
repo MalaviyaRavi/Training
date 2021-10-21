@@ -18,6 +18,7 @@ const flash = require("connect-flash");
 
 var indexRouter = require("./routes/index");
 const User = require("./models/user-model");
+const Message = require("./models/message-model");
 
 var app = express();
 const http = require("http").createServer(app);
@@ -91,15 +92,19 @@ io.on("connection", async (socket) => {
     );
   });
 
-  socket.on("msg1", async function (data) {
+  socket.on("msg1", async function (data, callback) {
     let { msg, sender, receiver } = data;
-    console.log("msg1 emmitted");
+
+    await Message.create({ sender, receiver, msg });
+
     let receiverdata = await User.findOne({ _id: receiver });
-    console.log(msg);
+
     for (let receiverSocketid of receiverdata.socketids) {
       console.log(receiverSocketid);
+
       io.to(receiverSocketid).emit("msg2", msg);
     }
+    callback("message delivered");
   });
 });
 
