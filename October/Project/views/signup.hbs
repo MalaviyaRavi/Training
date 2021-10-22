@@ -1,0 +1,213 @@
+<main class="page-center">
+    <div class="container mt-5 border rounded">
+        <div class="row mt-5 justify-content-evenly">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h3 class="titletext">Registration</h3>
+                    </div>
+                </div>
+                <form enctype="multipart/form-data" id="form">
+                    <div class="row mt-3 justify-content-evenly">
+                        <div class="col-5">
+
+                            <div class="mb-4 ">
+                                <label for="username" class="form-label ">Username</label>
+                                <input type="text" class="form-control" id="username" name="username">
+
+                            </div>
+
+                            <div class="mb-4 ">
+                                <label for="email" class="form-label ">Email</label>
+                                <input type="text" class="form-control" id="email" name="email">
+
+                            </div>
+
+                            <div class="mb-4 ">
+                                <label for="password" class="form-label ">Password</label>
+                                <input type="password" class="form-control" id="password" name="password">
+
+                            </div>
+
+                            <div class="mb-4 ">
+                                <label for="cpassword" class="form-label ">Confirm Password</label>
+                                <input type="password" class="form-control" id="cpassword" name="cpassword">
+
+                            </div>
+
+
+                            <div class="mb-4 mt-2">
+                                <label for="gender" class="form-label ">Gender</label>
+                                <div class="d-flex">
+                                    <div class="form-check" id="gender">
+                                        <input class="form-check-input " type="radio" name="gender" value="male">
+                                        <label class="form-check-label" for="male">
+                                            Male
+                                        </label>
+
+
+                                    </div>
+                                    <div class="form-check mx-3">
+                                        <input class="form-check-input " type="radio" name="gender" value="female">
+                                        <label class="form-check-label" for="male">
+                                            Female
+                                        </label>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="mb-4 ">
+                                <label for="mobile" class="form-label ">Contact No.</label>
+                                <input type="text" class="form-control" id="mobile" name="mobile">
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-5">
+
+                            <div class="mb-4">
+
+                                <button class="btn btn-success" id="get-location">Get Current Location</button>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="country" class="form-label ">Select Country</label>
+
+                                <select class="form-select" name="country" id="country">
+                                    <option selected disabled>Select Country</option>
+                                    <option value="add">add country</option>
+                                    {{#each countries}}
+                                    <option value={{_id}}>{{countryname}}</option>
+                                    {{/each}}
+
+
+
+
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="state" class="form-label ">Select State</label>
+                                <select class="form-select" name="state" id="state">
+                                    <option value="" selected disabled>Select State</option>
+                                    <option value="add">add state</option>
+
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="city" class="form-label ">Select City</label>
+                                <select class="form-select" name="city" id="city">
+                                    <option selected disabled>Select City</option>
+                                    <option value="city1">City 1</option>
+                                    <option value="city2">City 2</option>
+                                    <option value="city3">City 3</option>
+                                </select>
+                            </div>
+
+
+
+                            <div class="mb-4">
+                                <lable class="form-lable" for="address1">Address</lable>
+                                <input type="text" class="form-control" id="address" name="address">
+                            </div>
+
+
+
+
+
+                            <div class="mb-4">
+                                <lable class="form-lable" for="image">Profile Image</lable>
+                                <input type="file" class="form-control" id="image" name="image">
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-3"></div>
+                        <div class="col-6 text-center">
+                            <button class="btn btn-primary" id="btnSubmit">Register</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<script>
+    $(document).ready(function () {
+
+        $("button#get-location").on("click", function (e) {
+            event.preventDefault();
+            navigator.geolocation.getCurrentPosition(function (position) {
+                let latitude = position.coords.latitude;
+                let longitude = position.coords.longitude;
+
+                $.get("http://localhost:3000/api/address/currentlocation/" + latitude + "/" + longitude + "", function (data) {
+
+                })
+
+
+
+            })
+
+        })
+
+        $("#country").on("change", function (e) {
+            let value = e.target.value;
+
+            if (value == "add") {
+                let countryname = prompt("Enter Country Name");
+
+                $.post("http://localhost:3000/api/address/countries", { countryname }, function (country) {
+                    $("#country").append("<option value=" + country._id + ">" + country.countryname + "</option>")
+                })
+
+            } else {
+                $.get("http://localhost:3000/api/address/states/" + value + "", function ({ states }) {
+                    $("#state").html("");
+                    $("#state").append("<option value='' selected disabled>Select State</option>");
+                    $("#state").append("<option value='add'>add state</option>");
+
+                    for (let state of states) {
+                        $("#state").append("<option value=" + state._id + ">" + state.statename + "</option>")
+                    }
+
+                })
+
+            }
+
+
+
+
+        })
+
+
+        $("#state").on("change", function (e) {
+            let value = e.target.value;
+            if (value = "add") {
+                let countryValue = $("#country").val();
+                if (countryValue == "add" || countryValue == "") {
+                    alert("please first select country");
+                    return;
+                }
+                let stateName = prompt("Enter State Name");
+
+                let countryId = countryValue;
+                $.post("http://localhost:3000/api/address/states", { stateName, countryId }, function (data) {
+                    $("#state").append("<option value=" + data._id + ">" + data.statename + "</option>")
+                })
+
+            }
+        })
+
+
+    })
+</script>
