@@ -4,6 +4,8 @@ const {
   addCountry,
   addState,
   getStateByCountry,
+  addCity,
+  getCityByState
 } = require("../../controllers/api/address");
 
 router.get(
@@ -13,8 +15,14 @@ router.get(
 
 router.post("/countries", addCountry);
 
+router.post("/states", addState);
+
+router.post("/cities", addCity);
+
+router.get("/cities/:stateid", getCityByState)
+
 router.get("/states/:countrid", getStateByCountry);
 
-router.post("/states", addState);
+
 
 module.exports = router;

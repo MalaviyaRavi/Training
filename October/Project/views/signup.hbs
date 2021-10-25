@@ -7,7 +7,7 @@
                         <h3 class="titletext">Registration</h3>
                     </div>
                 </div>
-                <form enctype="multipart/form-data" id="form">
+                <form enctype="multipart/form-data" id="signup_form" method="post">
                     <div class="row mt-3 justify-content-evenly">
                         <div class="col-5">
 
@@ -38,7 +38,7 @@
 
                             <div class="mb-4 mt-2">
                                 <label for="gender" class="form-label ">Gender</label>
-                                <div class="d-flex">
+                                <div class="d-flex gender">
                                     <div class="form-check" id="gender">
                                         <input class="form-check-input " type="radio" name="gender" value="male">
                                         <label class="form-check-label" for="male">
@@ -93,8 +93,7 @@
                             <div class="mb-4">
                                 <label for="state" class="form-label ">Select State</label>
                                 <select class="form-select" name="state" id="state">
-                                    <option value="" selected disabled>Select State</option>
-                                    <option value="add">add state</option>
+
 
                                 </select>
                             </div>
@@ -102,10 +101,8 @@
                             <div class="mb-4">
                                 <label for="city" class="form-label ">Select City</label>
                                 <select class="form-select" name="city" id="city">
-                                    <option selected disabled>Select City</option>
-                                    <option value="city1">City 1</option>
-                                    <option value="city2">City 2</option>
-                                    <option value="city3">City 3</option>
+
+
                                 </select>
                             </div>
 
@@ -131,7 +128,7 @@
                     <div class="row mt-3">
                         <div class="col-3"></div>
                         <div class="col-6 text-center">
-                            <button class="btn btn-primary" id="btnSubmit">Register</button>
+                            <button class="btn btn-primary" id="btnSubmit" type="submit">Register</button>
                         </div>
                     </div>
                 </form>
@@ -150,12 +147,39 @@
                 let latitude = position.coords.latitude;
                 let longitude = position.coords.longitude;
 
-                $.get("http://localhost:3000/api/address/currentlocation/" + latitude + "/" + longitude + "", function (data) {
+                $.get("http://localhost:3000/api/address/currentlocation/" + latitude + "/" + longitude + "", function ({ country, state, city }) {
+                    $('#country option[value=' + country._id + ']').attr("selected", true);
+
+                    $("#state").html("");
+                    $("#state").append("<option value='' disabled>Select State</option>");
+                    $("#state").append("<option value='add'>add state</option>");
+
+                    for (let stateobj of country._states) {
+
+                        if (stateobj.statename == state.statename) {
+                            $("#state").append("<option value=" + stateobj._id + " selected >" + stateobj.statename + "</option>")
+                        } else {
+                            $("#state").append("<option value=" + stateobj._id + ">" + stateobj.statename + "</option>")
+                        }
+                    }
+
+
+                    $("#city").html("");
+                    $("#city").append("<option value='' disabled>Select city</option>");
+                    $("#city").append("<option value='add'>add city</option>");
+
+                    for (let cityobj of state._cities) {
+
+                        if (cityobj.cityname == city.cityname) {
+                            $("#city").append("<option value=" + cityobj._id + " selected >" + cityobj.cityname + "</option>")
+                        } else {
+                            $("#city").append("<option value=" + cityobj._id + ">" + cityobj.cityname + "</option>")
+                        }
+                    }
+
+
 
                 })
-
-
-
             })
 
         })
@@ -167,7 +191,7 @@
                 let countryname = prompt("Enter Country Name");
 
                 $.post("http://localhost:3000/api/address/countries", { countryname }, function (country) {
-                    $("#country").append("<option value=" + country._id + ">" + country.countryname + "</option>")
+                    $("#country").append("<option value=" + country._id + " selected>" + country.countryname + "</option>")
                 })
 
             } else {
@@ -184,15 +208,11 @@
 
             }
 
-
-
-
         })
-
 
         $("#state").on("change", function (e) {
             let value = e.target.value;
-            if (value = "add") {
+            if (value == "add") {
                 let countryValue = $("#country").val();
                 if (countryValue == "add" || countryValue == "") {
                     alert("please first select country");
@@ -202,11 +222,204 @@
 
                 let countryId = countryValue;
                 $.post("http://localhost:3000/api/address/states", { stateName, countryId }, function (data) {
-                    $("#state").append("<option value=" + data._id + ">" + data.statename + "</option>")
+                    $("#state").append("<option value=" + data._id + " selected>" + data.statename + "</option>")
+                })
+
+            } else {
+
+                $.get("http://localhost:3000/api/address/cities/" + value + "", function ({ cities }) {
+                    $("#city").html("");
+                    $("#city").append("<option value='' selected disabled>Select City</option>");
+                    $("#city").append("<option value='add'>add city</option>");
+
+                    for (let city of cities) {
+                        $("#city").append("<option value=" + city._id + ">" + city.cityname + "</option>")
+                    }
+
                 })
 
             }
         })
+
+        $("#city").on("change", function (e) {
+            let value = e.target.value.toLowerCase();
+            if (value == "add") {
+                let stateId = $("#state").val();
+                let cityName = prompt("Enter City Name");
+                $.post("http://localhost:3000/api/address/cities", { cityName, stateId }, function (data) {
+                    $("#city").append("<option value=" + data._id + " selected>" + data.cityname + "</option>")
+                })
+
+            }
+        })
+
+
+
+        //Jquery Validate
+
+
+        $.validator.addMethod("pwcheck", function (value) {
+            return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
+                && /[a-z]/.test(value) // has a lowercase letter
+                && /\d/.test(value) // has a digit
+        });
+
+        $.validator.addMethod("checkfiletype", function (value) {
+            let extensions = ["jpg", "jpeg", "png"];
+            let fileExtension = value.split(".")[1];
+            return extensions.includes(fileExtension);
+        })
+
+        $.validator.addMethod('checkMobile', function (value, element) {
+            return /^[789]\d{9}$/.test(value);
+        }, "Please enter a valid phone number");
+
+
+        let validate = $("#signup_form").validate({
+
+            rules: {
+                username: {
+                    required: true,
+                    minlength: 3
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    remote: {
+                        url: "http://localhost:3000/api/users/checkemail",
+
+                    }
+                },
+                password: {
+                    required: true,
+                    minlength: 8,
+                    pwcheck: true,
+                },
+                cpassword: {
+                    required: true,
+                    minlength: 8,
+                    equalTo: "#password"
+                },
+                gender: {
+                    required: true
+                },
+                mobile: {
+                    required: true,
+                    checkMobile: true
+                },
+                country: {
+                    required: true,
+                },
+                state: {
+                    required: true
+                },
+                city: {
+                    required: true
+                },
+                address: {
+                    required: true
+                },
+                image: {
+                    required: true,
+                    checkfiletype: true,
+                }
+            },
+            messages: {
+                username: {
+                    required: "username is required.",
+                    minlength: "username should be 3 characters long."
+                },
+                email: {
+                    required: "email is required.",
+                    email: "please enter valid email",
+                    remote: "email is already registered try new one!"
+                },
+                password: {
+                    required: "password is required",
+                    minlength: "password length should be minimum 8 characters long",
+                    pwcheck: "password should have lowercase, digit and special character!! "
+                },
+                cpassword: {
+                    required: "confirm password is required",
+                    minlength: "confirm password length should be minimum 8 characters long",
+                    equalTo: "confirm password must same as password"
+                },
+                gender: {
+                    required: "gender is required"
+                },
+                mobile: {
+                    required: "contact number is required"
+                },
+                country: {
+                    required: "select country, country is required",
+                },
+                state: {
+                    required: "select state, state is required",
+                },
+                city: {
+                    required: "select city, city is required",
+                },
+                address: {
+                    required: "address is required",
+                },
+                image: {
+                    required: "upload image, profile image is required",
+                    checkfiletype: "profile image must be jpg, jpeg and png type",
+                }
+
+            },
+            errorClass: "error fail-alert",
+            errorPlacement: function (error, element) {
+                if (element.is(":radio")) {
+                    error.insertAfter(element.parent().parent());
+                } else {
+                    error.insertAfter(element);
+                }
+
+            },
+
+            submitHandler: function (form, event) {
+                event.preventDefault();
+
+                let image = $("#image")[0].files[0];
+
+                // $("#signup_form").serialize();
+                // let $signup_form = $("#signup_form");
+                let fd = new FormData();
+
+                fd.append("profile", image);
+                fd.append("email", $("#email").val());
+                fd.append("username", $("#username").val());
+                fd.append("password", $("#password").val());
+                fd.append("gender", $("#gender").val());
+                fd.append("mobile", $("#mobile").val());
+                fd.append("country", $("#country").val());
+                fd.append("state", $("#state").val());
+                fd.append("city", $("#city").val());
+                fd.append("address", $("#address").val());
+                $.ajax({
+                    url: 'http://localhost:3000/api/users',
+                    type: 'post',
+                    data: fd,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (!response) {
+                            alert('file uploaded');
+                        }
+                        else {
+                            alert('file not uploaded');
+                        }
+                    },
+                })
+            },
+
+        })
+
+
+
+
+
 
 
     })

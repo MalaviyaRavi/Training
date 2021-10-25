@@ -19,6 +19,7 @@
     "http-errors": "~1.6.3",
     "mongoose": "^6.0.12",
     "morgan": "~1.9.1",
+    "multer": "^1.4.3",
     "which-country": "^1.0.0"
   }
 }

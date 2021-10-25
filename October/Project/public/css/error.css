@@ -1,0 +1,23 @@
+.error-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+.error-actions {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.error-actions .btn {
+    margin-right: 10px;
+}
+
+
+
+label.error.fail-alert {
+    border: 1px solid red;
+    border-radius: 4px;
+    line-height: 1;
+    padding: 1px 0 6px 6px;
+    background: #ffe6eb;
+}

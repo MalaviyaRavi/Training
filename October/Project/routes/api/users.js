@@ -1,6 +1,11 @@
 const router = require("express").Router();
-const { registerUser } = require("../../controllers/api/users");
+const { registerUser, checkEmail } = require("../../controllers/api/users");
 
-router.post("/", registerUser);
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+
+router.post("/", upload.single("profile"), registerUser);
+
+router.get("/checkemail", checkEmail);
 
 module.exports = router;

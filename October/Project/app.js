@@ -69,7 +69,7 @@ app.use("/api/users", userApiRouter);
 app.use("/api/address", addressApiRouter);
 
 //routers
-app.use("/", indexRouter);
+app.use("/", indexRouter);  
 
 //connect database
 databaseConnection(DB_URL);
