@@ -16,7 +16,15 @@ const userSchema = mongoose.Schema(
       unique: true,
     },
     gender: String,
-    socketids: [String],
+    socketIds: [String],
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    profilePicture: {
+      type: String,
+      default: "default_profile_picture.png",
+    },
   },
   {
     timestamps: true,
