@@ -27,6 +27,7 @@ const userSchema = mongoose.Schema({
   },
 
   address: String,
+  profile: String,
 });
 
 module.exports = mongoose.model("user", userSchema);

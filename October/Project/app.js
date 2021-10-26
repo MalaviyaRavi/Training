@@ -6,7 +6,6 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 const exphbs = require("express-handlebars");
 const _handlebars = require("handlebars");
-console.log(__dirname + "/.env");
 
 const indexRouter = require("./routes/index");
 const userApiRouter = require("./routes/api/users");
@@ -19,10 +18,6 @@ process.env = result.parsed;
 //environment variables
 let PORT = parseInt(process.env.PORT);
 let DB_URL = process.env.DB_URL;
-
-// let {
-//   allowInsecurePrototypeAccess,
-// } = require("@handlebars/allow-prototype-access");
 
 //create app
 const app = express();
@@ -41,18 +36,15 @@ async function databaseConnection(URL) {
   }
 }
 
-//routers
-
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.engine(
   "hbs",
   exphbs({
     extname: ".hbs",
-    // handlebars: allowInsecurePrototypeAccess(_handlebars),
     defaultLayout: "main",
-    layoutsDir: __dirname + "/views/layouts/",
-    partialsDir: __dirname + "/views/partials/",
+    layoutsDir: path.join(__dirname, "views", "layouts"),
+    partialsDir: path.join(__dirname, "views", "partials"),
   })
 );
 app.set("view engine", "hbs");
@@ -69,7 +61,7 @@ app.use("/api/users", userApiRouter);
 app.use("/api/address", addressApiRouter);
 
 //routers
-app.use("/", indexRouter);  
+app.use("/", indexRouter);
 
 //connect database
 databaseConnection(DB_URL);

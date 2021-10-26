@@ -17,6 +17,8 @@ exports.getStateAndCityByCurrentLocation = async function (req, res, next) {
         "&localityLanguage=en"
     );
 
+    console.log(response);
+
     let countryname = response.data.countryName.toLowerCase();
     let statename = response.data.principalSubdivision.toLowerCase();
     let cityname = response.data.locality.split(" ")[0].toLowerCase();
