@@ -1,0 +1,7 @@
+label.error.fail-alert {
+   
+    line-height: 1;
+    padding: 1px 0 6px 6px;
+
+    color: red;
+}

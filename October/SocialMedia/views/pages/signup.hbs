@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="/css/pagewise/signup.css">
+
+<div class="container mt-2">
+    <div class="row justify-content-evenly mt-1">
+        <div class="col-5 mt-3 border border-4 px-5 pt-5 pb-2 border-success rounded-3 ">
+            <h3 class="text-center text-success">Register Here</h3>
+            <form method="POST" id="signup_form">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" , name="username">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="text" class="form-control" id="email" name="email">
+                </div>
+
+                <div class="mb-3">
+                    <label for="mobile" class="form-label">Mobile No.</label>
+                    <input type="text" class="form-control" id="mobile" name="mobile">
+                </div>
+
+                <div class="mb-3">
+                    <label for="gender" class="form-label">Gender</label>
+                    <div class="form-control">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="male" value="male" />
+                            <label class="form-check-label" for="inlineRadio1">Male</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="female" value="female" />
+                            <label class="form-check-label" for="inlineRadio2">Female</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
+                <div class="mb-3">
+                    <label for="cpassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="cpassword" name="cpassword">
+                </div>
+
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-lg btn-success px-5 mt-2">Signup</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/js/pagewise/signup.js"></script>

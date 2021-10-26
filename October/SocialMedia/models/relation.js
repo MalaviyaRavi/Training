@@ -1,14 +1,17 @@
 const mongoose = require("mongoose");
 
 const followerSchema = mongoose.Schema({
-  user: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
   },
-  follower: {
+  relatedUserId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
+  },
+  isFollower: {
+    type: Boolean,
   },
 });
 
-module.exports = mongoose.model("follower", followerSchema);
+module.exports = mongoose.model("relation", followerSchema);
