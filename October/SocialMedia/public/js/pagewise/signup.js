@@ -21,12 +21,15 @@ $(document).ready(function () {
       username: {
         required: true,
         minlength: 3,
+        remote: {
+          url: "/api/users/check/",
+        },
       },
       email: {
         required: true,
         email: true,
         remote: {
-          url: "/api/users/check/" + $("#email").val() + "",
+          url: "/api/users/check/",
         },
       },
       password: {
@@ -46,13 +49,16 @@ $(document).ready(function () {
       mobile: {
         required: true,
         checkMobile: true,
-        url: "/api/users/check" + $("#mobile").val() + "",
+        remote: {
+          url: "/api/users/check",
+        },
       },
     },
     messages: {
       username: {
         required: "username is required.",
         minlength: "username should be 3 characters long.",
+        remote: "username is not availabe try new one!",
       },
       email: {
         required: "email is required.",
@@ -79,6 +85,7 @@ $(document).ready(function () {
       mobile: {
         required: "contact number is required",
         checkMobile: "please enter correct mobile number",
+        remote: "mobile number is registred try new one",
       },
     },
     errorClass: "error fail-alert",
