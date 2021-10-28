@@ -5,6 +5,7 @@ const {
   getVarifyAccount,
   getLogin,
   getLogout,
+  postVarifyAccount,
 } = require("../controllers/user");
 const { isAuthenticated } = require("../middlewares/isAuthenticated");
 const { isVarified } = require("../middlewares/varify-account");
@@ -32,6 +33,9 @@ router.post(
 
 router.get("/logout", isAuthenticated, getLogout);
 
-router.route("/varify-account").get(isAuthenticated, getVarifyAccount);
+router
+  .route("/varify-account")
+  .get(isAuthenticated, getVarifyAccount)
+  .post(postVarifyAccount);
 
 module.exports = router;
