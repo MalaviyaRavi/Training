@@ -14,8 +14,8 @@ let wordMap = {
 let inputStr = "00444444005555556666668888883333300034444449999999992222555444";
 //   444444005555556666668888883333300334444449999999992222555444
 //  44444400555555666666888888333330034444449999999992222555444
-let stack = [];
-let output = [];
+
+let output = "";
 let iStr = inputStr.replace(/[1*#a-zA-Z]/g, "");
 
 function getIndex(stL, strL) {
@@ -39,12 +39,14 @@ while (i < iStr.length || j < iStr.length) {
     j++;
   } else {
     if (current == 0) {
-      output.push(" ".repeat(Math.floor((j - i) / 2)));
+      output += " ".repeat(Math.floor((j - i) / 2));
+
       i = j;
       current = iStr[i];
       j++;
     } else {
-      output.push(wordMap[current][getIndex(j - i, wordMap[current].length)]);
+      output += wordMap[current][getIndex(j - i, wordMap[current].length)];
+
       i = j;
       current = iStr[i];
       j++;
@@ -52,4 +54,4 @@ while (i < iStr.length || j < iStr.length) {
   }
 }
 
-console.log(output.join(""));
+console.log(output);

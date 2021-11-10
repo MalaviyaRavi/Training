@@ -1,0 +1,130 @@
+<main class="page-center">
+    <div class="container">
+        <div class="row mt-3 justify-content-evenly">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h3 class="titletext">Add User</h3>
+                    </div>
+                </div>
+                <form enctype="multipart/form-data" id="signup_form" method="post">
+                    <div class="row mt-3 justify-content-evenly">
+                        <div class="col-5">
+
+                            <div class="mb-4 ">
+                                <label for="firstname" class="form-label ">First Name</label>
+                                <input type="text" class="form-control" id="firstname" name="firstname">
+                            </div>
+
+                            <div class="mb-4 ">
+                                <label for="lastname" class="form-label ">Last Name</label>
+                                <input type="text" class="form-control" id="lastname" name="lastname">
+                            </div>
+
+                            <div class="mb-4 mt-2">
+                                <label for="gender" class="form-label ">Gender</label>
+                                <div class="d-flex gender">
+                                    <div class="form-check" id="gender">
+                                        <input class="form-check-input " type="radio" name="gender" value="male">
+                                        <label class="form-check-label" for="male">
+                                            Male
+                                        </label>
+
+
+                                    </div>
+                                    <div class="form-check mx-3">
+                                        <input class="form-check-input " type="radio" name="gender" value="female">
+                                        <label class="form-check-label" for="male">
+                                            Female
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="country" class="form-label ">Interest</label>
+
+                                <select class="form-select" name="interest" id="interest">
+                                    <option selected disabled>Select Your Interest</option>
+
+                                    {{#each interests}}
+                                    <option value="{{interestname}}">{{interestname}}</option>
+                                    {{/each}}
+
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <lable class="form-lable" for="address">Address</lable>
+                                <textarea type="text" class="form-control" id="address" name="address"></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <lable class="form-lable" for="image">Image</lable>
+                                <input type="file" class="form-control" id="image" name="image"
+                                    accept="image/png, image/jpeg">
+                            </div>
+
+                            <div class="mb-4">
+                                <lable class="form-lable" for="interest">Hobbies</lable>
+                                <div>
+                                    {{#each hobbies}}
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="{{hobbyname}}"
+                                            name="hobby">
+                                        <label class="form-check-label">{{hobbyname}}</label>
+                                    </div>
+                                    {{/each}}
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+            </div>
+            <div class="row mt-1">
+                <div class="col-3"></div>
+                <div class="col-6 text-center">
+                    <button class="btn btn-primary" id="btnSubmit" type="submit">Add User</button>
+                </div>
+            </div>
+            </form>
+
+        </div>
+
+        <div class="row mt-5 justify-content-evenly">
+            <div class="col-10">
+                <table class="table">
+                    <thead>
+                        <tr>
+
+                            <th scope="col">Image</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each users}}
+                        <tr class="user-{{_id}}">
+
+                            <td><img src="/img/{{image}}" alt="userimage" width="50" height="50" /></td>
+                            </td>
+                            <td>{{name}}</td>
+                            <td>{{gender}}</td>
+                            <td>{{address}}</td>
+                            <td><button class='btn btn-success edit btn-{{_id}}'>Edit</button> <button type='button'
+                                    class='btn btn-danger delete btn-{{_id}}'>Delete</button> </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="/js/pagewise/index.js"></script>
