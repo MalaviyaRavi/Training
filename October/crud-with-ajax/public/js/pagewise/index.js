@@ -100,7 +100,7 @@ $(document).ready(function () {
         success: function ({ success, messages, data }) {
           if (success) {
             let newUser =
-              "<tr id = " +
+              "<tr class = " +
               data.id +
               '><td><img src="/img/' +
               data.image +
@@ -110,9 +110,9 @@ $(document).ready(function () {
               data.gender +
               "</td> <td>" +
               data.address +
-              "</td><td><button class='btn btn-success edit btn-" +
+              "</td><td><button class='btn btn-success edit-btn' data-id='" +
               data.id +
-              "'>Edit</button> <button type='button' class='btn btn-danger delete btn-" +
+              "'>Edit</button> <button type='button' class='btn btn-danger delete-btn' data-id='" +
               data.id +
               "'>Delete</button> </td></tr>";
             $("tbody").append(newUser);
@@ -122,18 +122,35 @@ $(document).ready(function () {
     },
   });
 
-  $(".delete").click(function () {
-    let userid = $(this).attr("class").split(" ")[3].split("-")[1];
-    console.log(userid);
-    $.ajax({
-      url: "/api/users/" + userid + "",
-      type: "delete",
-      success: function ({ success, messages, data }) {
-        console.log("#" + userid + "");
-        if (success) {
-          $("#" + userid + "").remove();
-        }
-      },
+  $(document)
+    .off("click", ".delete-btn")
+    .on("click", ".delete-btn", function () {
+      $.confirm({
+        title: "Delete User",
+        content: "Are You Sure Want To Delete??",
+        buttons: {
+          confirm: function () {
+            let userId = $(".delete-btn").data("id");
+            $.ajax({
+              url: "/api/users/" + userId + "",
+              type: "delete",
+              success: function ({ success, message, data }) {
+                if (success) {
+                  $("." + userId).remove();
+                  $.alert(message);
+                }
+                if (!success) {
+                  $.alert(message);
+                }
+              },
+            });
+          },
+          cancel: function () {},
+        },
+      });
     });
-  });
+
+  //   $(".delete-btn").click(function () {
+
+  //   });
 });

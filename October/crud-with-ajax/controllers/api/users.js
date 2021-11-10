@@ -36,9 +36,7 @@ exports.deleteUser = async function (req, res, next) {
   try {
     let user = await userModel.findOneAndDelete({ _id: req.params.id });
 
-    fs.unlinkSync(
-      path.join(__dirname, "..", "..", "public", "img", user.image)
-    );
+    fs.unlinkSync("./public/img/" + user.image);
 
     res.json({
       success: true,

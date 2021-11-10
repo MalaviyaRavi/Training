@@ -109,15 +109,16 @@
                     </thead>
                     <tbody>
                         {{#each users}}
-                        <tr class="user-{{_id}}">
+                        <tr class="{{_id}}">
 
                             <td><img src="/img/{{image}}" alt="userimage" width="50" height="50" /></td>
                             </td>
                             <td>{{name}}</td>
                             <td>{{gender}}</td>
                             <td>{{address}}</td>
-                            <td><button class='btn btn-success edit btn-{{_id}}'>Edit</button> <button type='button'
-                                    class='btn btn-danger delete btn-{{_id}}'>Delete</button> </td>
+                            <td><button class='btn btn-success edit-btn' data-id="{{_id}}">Edit</button> <button
+                                    type='button' class='btn btn-danger delete-btn' data-id="{{_id}}">Delete</button>
+                            </td>
                         </tr>
                         {{/each}}
                     </tbody>
