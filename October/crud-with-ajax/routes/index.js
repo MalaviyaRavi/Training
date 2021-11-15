@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { signup } = require("../controllers/index");
 
-/* GET home page. */
+/* GET index page. */
 router.get("/", signup);
 
 module.exports = router;

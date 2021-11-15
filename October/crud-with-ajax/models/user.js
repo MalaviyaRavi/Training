@@ -7,7 +7,14 @@ const userSchema = mongoose.Schema({
   gender: String,
   hobbies: [String],
   interest: String,
-  image: String,
+  image: { type: String, default: "default.png" },
+});
+
+userSchema.index({
+  firstname: "text",
+  lastname: "text",
+  gender: "text",
+  address: "text",
 });
 
 module.exports = mongoose.model("user", userSchema);

@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const multer = require("multer");
 
+//storage file
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     let uploadPath = path.join(__dirname, "..", "..", "public", "img");
@@ -22,10 +23,22 @@ const multerObject = multer({
 const upload = multer(multerObject);
 const router = express.Router();
 
-const { signup, deleteUser } = require("../../controllers/api/users");
+const {
+  saveUser,
+  deleteUser,
+  getUserById,
+  getUsersByQuery,
+} = require("../../controllers/api/users");
 
-router.post("/", upload.single("image"), signup);
+//save and update user route
+router.post("/", upload.single("image"), saveUser);
 
+//delete user by id route
 router.delete("/:id", deleteUser);
+
+router.get("/", getUsersByQuery);
+
+//get user by id route
+router.get("/:id", getUserById);
 
 module.exports = router;
