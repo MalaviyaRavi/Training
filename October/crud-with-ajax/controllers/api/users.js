@@ -114,9 +114,8 @@ exports.getUsersByQuery = async function (req, res, next) {
   let sort = {};
   let query = [];
   try {
-    console.log(search !== "undefined");
+    //searching
     if (search != "undefined" && search.length != 0) {
-      console.log("search");
       query.push({
         $match: {
           $or: [
@@ -132,6 +131,7 @@ exports.getUsersByQuery = async function (req, res, next) {
       totalUsersCount = count[0].count;
     }
 
+    //pagination
     Array.prototype.push.apply(query, [
       {
         $project: {
@@ -149,6 +149,7 @@ exports.getUsersByQuery = async function (req, res, next) {
       },
     ]);
 
+    //sorting
     if (sortBy != "undefined" && sortingOrder != "undefined") {
       let order = sortingOrder == "asc" ? 1 : -1;
       sort[sortBy] = order;

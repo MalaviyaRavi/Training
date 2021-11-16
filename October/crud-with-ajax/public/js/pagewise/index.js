@@ -1,5 +1,7 @@
 const userEventHandler = function () {
   this.inEditMode = false;
+
+  //for search query
   this.hasSearch = "undefined";
 
   this.init = function () {
@@ -135,6 +137,11 @@ const userEventHandler = function () {
       .off("click", ".edit-btn")
       .on("click", ".edit-btn", function () {
         _this.inEditMode = true;
+
+        if ($("label.error.fail-alert").length) {
+          $("label.error.fail-alert").remove();
+        }
+
         let userId = $(this).data("id");
         $.ajax({
           url: "/api/users/" + userId,
@@ -238,6 +245,7 @@ const userEventHandler = function () {
       });
   };
 
+  //display users
   this.showUsers = function (sortBy, sortingOrder, search, page = 1) {
     $("#usersList").html("");
     $(".pagination").html("");
@@ -306,6 +314,7 @@ const userEventHandler = function () {
     });
   };
 
+  //get users by query
   this.getUsersByQuery = function () {
     //sorting
     $(document).on("click", "th", function () {
@@ -337,7 +346,7 @@ const userEventHandler = function () {
       }
       // let activePagenumber = Number($(".pageBtn.btn-primary").text());
       $(this).html(symbol);
-      _this.showUsers(sortBy, sortingOrder);
+      _this.showUsers(sortBy, sortingOrder, _this.hasSearch);
     });
 
     //pagination
@@ -367,11 +376,16 @@ const userEventHandler = function () {
       } else {
         destinationPage = Number(currentBtnText);
       }
-      let search = ;
+
       if (_this.hasSearch != "undefined") {
         search = _this.hasSearch;
       }
-      _this.showUsers("undefined", "undefined", _this.hasSearch, destinationPage);
+      _this.showUsers(
+        "undefined",
+        "undefined",
+        _this.hasSearch,
+        destinationPage
+      );
     });
 
     //searching
