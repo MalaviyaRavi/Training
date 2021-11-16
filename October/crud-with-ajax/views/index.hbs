@@ -77,8 +77,16 @@
                 {{!-- users table --}}
                 <input type="text" class="form-control" name="search" id="search" placeholder="search here"
                     style="width: 300px;">
+
+                <label for="searchGender" class="form-label w-25">Search by Gender</label>
+                <select class="form-select" name="searchGender" id="searchGender">
+                    <option value="all" selected>All</option>
+                    <option value="male">male</option>
+                    <option value="female">female</option>
+                </select>
+
                 <button class="btn btn-primary" id="searchBtn">Search</button>
-                <button class="btn btn-danger" id="clearBtn">Clear</button>
+                <button class="btn btn-danger" id="clearBtn" disabled>Clear</button>
                 <table class="table">
                     <thead>
                         <tr>
@@ -97,6 +105,26 @@
                 <div aria-label="Page navigation example" style="margin-left: 200px;">
                     <ul class="pagination">
                     </ul>
+                </div>
+
+
+                <div class="modal fade" id="userDetails" tabindex="-1" aria-labelledby="userDetailsLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="userDetailsLabel">User Detail</h5>
+
+                            </div>
+                            <div class="modal-body">
+                                ...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,8 +1,10 @@
 const userEventHandler = function () {
+  //user edit mode flag
   this.inEditMode = false;
 
   //for search query
   this.hasSearch = "undefined";
+  this.searchedGender = "undefined";
 
   this.init = function () {
     _this.validateFormAndSave();
@@ -11,6 +13,8 @@ const userEventHandler = function () {
     _this.deleteUser();
     _this.getUsersByQuery();
     _this.showUsers();
+    _this.getUserDetail();
+    _this.filterInputSearchEvents();
   };
 
   this.validateFormAndSave = function () {
@@ -111,6 +115,7 @@ const userEventHandler = function () {
               $("#signup_form")[0].reset();
               $("input:radio").attr("checked", false);
               _this.showUsers(
+                "undefined",
                 "undefined",
                 "undefined",
                 "undefined",
@@ -223,10 +228,20 @@ const userEventHandler = function () {
                   let activePagenumber = Number(
                     $(".pageBtn.btn-primary").text()
                   );
+
+                  //if one user in last page
+                  let lastPageNumber = Number(
+                    $(".pagination").find(".pageBtn:last").html()
+                  );
+                  if (activePagenumber == lastPageNumber) {
+                    activePagenumber--;
+                  }
+
                   if (success) {
                     $("." + userId).remove();
                     $.alert(message);
                     _this.showUsers(
+                      "undefined",
                       "undefined",
                       "undefined",
                       "undefined",
@@ -246,7 +261,7 @@ const userEventHandler = function () {
   };
 
   //display users
-  this.showUsers = function (sortBy, sortingOrder, search, page = 1) {
+  this.showUsers = function (sortBy, sortingOrder, search, gender, page = 1) {
     $("#usersList").html("");
     $(".pagination").html("");
     $.ajax({
@@ -259,7 +274,9 @@ const userEventHandler = function () {
         "&page=" +
         page +
         "&search=" +
-        search,
+        search +
+        "&gender=" +
+        gender,
       type: "get",
       success: function (response) {
         console.log(response);
@@ -272,8 +289,9 @@ const userEventHandler = function () {
               <td>${user.name}</td>
               <td>${user.gender}</td>
               <td>${user.address}</td>
-              <td><button class='btn btn-success edit-btn' data-id="${user._id}">Edit</button> <button
-                      type='button' class='btn btn-danger delete-btn' data-id="${user._id}">Delete</button>
+              <td><button class='btn btn-success edit-btn' data-id="${user._id}">Edit</button>
+                  <button type='button' class='btn btn-danger delete-btn' data-id="${user._id}">Delete</button>
+                  <button type='button' class='btn btn-primary btnView' data-id="${user._id}">View Details</button>
               </td>
               </tr>`;
               $("#usersList").append(userToBeAdd);
@@ -346,7 +364,12 @@ const userEventHandler = function () {
       }
       // let activePagenumber = Number($(".pageBtn.btn-primary").text());
       $(this).html(symbol);
-      _this.showUsers(sortBy, sortingOrder, _this.hasSearch);
+      _this.showUsers(
+        sortBy,
+        sortingOrder,
+        _this.hasSearch,
+        _this.searchedGender
+      );
     });
 
     //pagination
@@ -384,22 +407,67 @@ const userEventHandler = function () {
         "undefined",
         "undefined",
         _this.hasSearch,
+        _this.searchedGender,
         destinationPage
       );
     });
 
     //searching
     $("#searchBtn").click(function () {
+      _this.searchedGender = "undefined";
+      let genderSelection = $("#searchGender").val();
+
+      if (genderSelection != "all") {
+        _this.searchedGender = genderSelection;
+      }
+
       let query = $("#search").val();
-      _this.hasSearch = query;
-      _this.showUsers(undefined, undefined, query);
+      if (query.length) {
+        _this.hasSearch = query;
+      }
+
+      _this.showUsers(undefined, undefined, query, _this.searchedGender);
     });
 
     $("#clearBtn").click(function () {
       $("#search").val("");
       _this.hasSearch = "undefined";
+      _this.searchedGender = "undefined";
+      $("#searchGender option[value='all']").prop("selected", true);
+      $(this).attr("disabled", true);
       _this.showUsers();
     });
+  };
+
+  //view users all details
+  this.getUserDetail = function () {
+    $(document).on("click", ".btnView", function () {
+      let userId = $(this).data("id");
+      console.log(userId);
+      $.ajax({
+        url: "/api/users/user/" + userId,
+        type: "get",
+        dataType: "html",
+        success: function (res) {
+          $(".modal-title").html(res.firstname);
+          $("#userDetails .modal-body").html(res);
+          $("#userDetails").modal("show");
+        },
+      });
+    });
+  };
+
+  this.filterInputSearchEvents = function () {
+    $("#search").change(function () {
+      let searchText = $(this).val();
+      if (searchText.length) {
+        $("#clearBtn").attr("disabled", false);
+      } else {
+        $("#clearBtn").attr("disabled", true);
+      }
+    });
+
+    $("#searchGender");
   };
 
   let _this = this;

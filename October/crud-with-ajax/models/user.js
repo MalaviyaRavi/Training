@@ -8,6 +8,10 @@ const userSchema = mongoose.Schema({
   hobbies: [String],
   interest: String,
   image: { type: String, default: "default.png" },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 userSchema.index({

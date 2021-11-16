@@ -28,6 +28,7 @@ const {
   deleteUser,
   getUserById,
   getUsersByQuery,
+  getUserDetailsById,
 } = require("../../controllers/api/users");
 
 //save and update user route
@@ -37,6 +38,8 @@ router.post("/", upload.single("image"), saveUser);
 router.delete("/:id", deleteUser);
 
 router.get("/", getUsersByQuery);
+
+router.get("/user/:id", getUserDetailsById);
 
 //get user by id route
 router.get("/:id", getUserById);

@@ -66,7 +66,13 @@ exports.saveUser = async function (req, res, next) {
 //delete user
 exports.deleteUser = async function (req, res, next) {
   try {
-    let user = await userModel.findByIdAndDelete(req.params.id);
+    let user = await userModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        isDeleted: true,
+      },
+      { new: true }
+    );
 
     //delete file from server
     if (user.image != "default.png") {
@@ -105,30 +111,52 @@ exports.getUserById = async function (req, res, next) {
 //get users by query
 exports.getUsersByQuery = async function (req, res, next) {
   console.log(req.query);
-  let { sortBy, sortingOrder, search, page } = req.query;
+  let { sortBy, sortingOrder, search, gender, page } = req.query;
 
-  let totalUsersCount = await userModel.find().count();
+  let totalUsersCount = await userModel.find({ isDeleted: false }).count();
 
   let usersPerPage = 3;
   let usersToBeSkip = (page - 1) * usersPerPage;
   let sort = {};
-  let query = [];
+  let query = [{ $match: { isDeleted: false } }];
   try {
     //searching
-    if (search != "undefined" && search.length != 0) {
-      query.push({
-        $match: {
-          $or: [
-            { firstname: { $regex: search } },
-            { lastname: { $regex: search } },
-            { address: { $regex: search } },
-            { gender: { $regex: search } },
-          ],
-        },
-      });
-
-      let count = await userModel.aggregate(query).count("count");
-      totalUsersCount = count[0].count;
+    if (search != "undefined" || gender != "undefined") {
+      if (search != "undefined" && gender != "undefined") {
+        query.push({
+          $match: {
+            gender: gender,
+            $or: [
+              { firstname: { $regex: search } },
+              { lastname: { $regex: search } },
+              { address: { $regex: search } },
+              { gender: { $regex: search } },
+              { interest: { $eq: search } },
+              { hobbies: search },
+            ],
+          },
+        });
+      } else if (search != "undefined" && gender == "undefined") {
+        query.push({
+          $match: {
+            $or: [
+              { firstname: { $regex: search } },
+              { lastname: { $regex: search } },
+              { address: { $regex: search } },
+              { gender: { $regex: search } },
+              { interest: { $eq: search } },
+              { hobbies: search },
+            ],
+          },
+        });
+      } else if (search == "undefined" && gender != "undefined") {
+        query.push({
+          $match: {
+            gender: gender,
+          },
+        });
+      }
+      totalUsersCount = (await userModel.aggregate(query)).length;
     }
 
     //pagination
@@ -166,4 +194,11 @@ exports.getUsersByQuery = async function (req, res, next) {
     console.log(error);
     res.json({ type: "error", data: "error during fetching users!!!" });
   }
+};
+
+exports.getUserDetailsById = async function (req, res, next) {
+  try {
+    let user = await userModel.findById(req.params.id).lean();
+    res.render("userDetails", { layout: false, user });
+  } catch (error) {}
 };
