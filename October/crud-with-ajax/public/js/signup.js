@@ -13,7 +13,6 @@ $(document).ready(function () {
             "selected",
             true
           );
-
           $("#state").html("");
           $("#state").append("<option value='' disabled>Select State</option>");
           $("#state").append("<option value='add'>add state</option>");

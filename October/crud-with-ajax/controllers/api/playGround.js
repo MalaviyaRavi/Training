@@ -1,11 +1,16 @@
-const fs = require("await-fs");
+const { parse } = require("json2csv");
 
-async function deleteFile() {
-  try {
-    await fs.unlink("../../public/img/default.png");
-  } catch (error) {
-    console.log(error);
-  }
+const fields = ["field1", "field2", "field3"];
+const opts = { fields };
+
+let myData = [
+  { field2: "def", field3: "pwr", field1: "abc" },
+  { field1: "abc", field2: "def", field3: "pwr" },
+];
+
+try {
+  const csv = parse(myData, opts);
+  console.log(csv);
+} catch (err) {
+  console.error(err);
 }
-
-deleteFile();

@@ -5,6 +5,10 @@ const path = require("path");
 //user model
 const userModel = require("../../models/user");
 
+//services
+const sendMail = require("../../services/send-mail");
+const { generateCsv } = require("../../services/generate-csv");
+
 //save and update user
 exports.saveUser = async function (req, res, next) {
   let image = req.file ? req.file.filename : null;
@@ -111,64 +115,63 @@ exports.getUserById = async function (req, res, next) {
 //get users by query
 exports.getUsersByQuery = async function (req, res, next) {
   console.log(req.query);
-  let { sortBy, sortingOrder, search, gender, page } = req.query;
+
+  let queryParams = { ...req.query };
+
+  // let { sortBy, sortingOrder, search, gender, page } = req.query;
 
   let totalUsersCount = await userModel.find({ isDeleted: false }).count();
 
   let usersPerPage = 3;
-  let usersToBeSkip = (page - 1) * usersPerPage;
+  let usersToBeSkip = (queryParams.page - 1) * usersPerPage;
   let sort = {};
-  let query = [{ $match: { isDeleted: false } }];
+  let query = [
+    { $match: { isDeleted: false } },
+    {
+      $project: {
+        name: { $concat: ["$firstname", " ", "$lastname"] },
+        gender: 1,
+        image: 1,
+        address: 1,
+        hobbies: 1,
+        interest: 1,
+      },
+    },
+  ];
+
+  let matchObject = {};
   try {
     //searching
-    if (search != "undefined" || gender != "undefined") {
-      if (search != "undefined" && gender != "undefined") {
-        query.push({
-          $match: {
-            gender: gender,
-            $or: [
-              { firstname: { $regex: search } },
-              { lastname: { $regex: search } },
-              { address: { $regex: search } },
-              { gender: { $regex: search } },
-              { interest: { $eq: search } },
-              { hobbies: search },
-            ],
-          },
-        });
-      } else if (search != "undefined" && gender == "undefined") {
-        query.push({
-          $match: {
-            $or: [
-              { firstname: { $regex: search } },
-              { lastname: { $regex: search } },
-              { address: { $regex: search } },
-              { gender: { $regex: search } },
-              { interest: { $eq: search } },
-              { hobbies: search },
-            ],
-          },
-        });
-      } else if (search == "undefined" && gender != "undefined") {
-        query.push({
-          $match: {
-            gender: gender,
-          },
-        });
+    if (queryParams.search || queryParams.gender) {
+      if (queryParams.search) {
+        matchObject["$or"] = [
+          { name: { $regex: queryParams.search } },
+          { address: { $regex: queryParams.search } },
+          { gender: { $regex: queryParams.search } },
+          { interest: { $eq: queryParams.search } },
+          { hobbies: queryParams.search },
+        ];
       }
+
+      if (queryParams.gender) {
+        matchObject["gender"] = queryParams.gender;
+      }
+
+      query.push({
+        $match: matchObject,
+      });
       totalUsersCount = (await userModel.aggregate(query)).length;
     }
 
+    let usersForCsv = await userModel.aggregate(query, {});
+
+    console.log(
+      "------------------------------------------------>",
+      usersForCsv
+    );
+
     //pagination
     Array.prototype.push.apply(query, [
-      {
-        $project: {
-          name: { $concat: ["$firstname", " ", "$lastname"] },
-          gender: 1,
-          image: 1,
-          address: 1,
-        },
-      },
       {
         $skip: usersToBeSkip,
       },
@@ -178,18 +181,53 @@ exports.getUsersByQuery = async function (req, res, next) {
     ]);
 
     //sorting
-    if (sortBy != "undefined" && sortingOrder != "undefined") {
-      let order = sortingOrder == "asc" ? 1 : -1;
-      sort[sortBy] = order;
+    if (queryParams.sortBy && queryParams.sortingOrder) {
+      let order = queryParams.sortingOrder == "asc" ? 1 : -1;
+      sort[queryParams.sortBy] = order;
       query.push({
         $sort: sort,
       });
     }
 
     let users = await userModel.aggregate(query);
-    console.log(users);
-    let data = users.length ? users : "No users found!!";
-    res.json({ type: "success", data: data, totalUsersCount });
+    // let tempUsers = [...users]
+    let usersToBeSend = users.length ? users : "No users found!!";
+
+    //generateCSV
+    if (usersForCsv.length && (queryParams.export || queryParams.email)) {
+      generateCsv(usersForCsv);
+      let currentdate = new Date();
+      let csvFileName =
+        currentdate.getDate() +
+        "-" +
+        (currentdate.getMonth() + 1) +
+        "-" +
+        currentdate.getFullYear() +
+        "@" +
+        currentdate.getHours() +
+        ":" +
+        currentdate.getMinutes() +
+        ".csv";
+      if (queryParams.email) {
+        let text = `click to below link <html><a href='http://192.168.1.116:3000/csvs/${csvFileName}'>CSV LINK</a><html>`;
+        await sendMail(queryParams.email, "csv file link", text);
+        return res.json({
+          type: "success",
+          isMailSent: true,
+        });
+      }
+      return res.json({
+        type: "success",
+        isDownload: true,
+        csvFileName: csvFileName,
+      });
+    }
+
+    res.json({
+      type: "success",
+      data: usersToBeSend,
+      totalUsersCount,
+    });
   } catch (error) {
     console.log(error);
     res.json({ type: "error", data: "error during fetching users!!!" });

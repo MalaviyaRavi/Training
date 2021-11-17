@@ -75,6 +75,10 @@
 
             <div class="col-5">
                 {{!-- users table --}}
+
+                <button class="btn btn-success" id="exportsToCsv">Exports To CSV</button>
+                <button class="btn btn-success" id="exportsToEmail">Exports CSV To Mail</button>
+
                 <input type="text" class="form-control" name="search" id="search" placeholder="search here"
                     style="width: 300px;">
 
@@ -95,6 +99,7 @@
                             <th data-column="gender" data-order="desc">Gender &#9650</th>
                             <th data-column="address" data-order="desc">Address &#9650</th>
                             <th>Action</th>
+                            <th> <button class="btn btn-primary w-100" id="resetSort">Reset Sorting</button></th>
                         </tr>
                     </thead>
                     <tbody id="usersList">

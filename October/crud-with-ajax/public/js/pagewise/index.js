@@ -3,8 +3,14 @@ const userEventHandler = function () {
   this.inEditMode = false;
 
   //for search query
-  this.hasSearch = "undefined";
-  this.searchedGender = "undefined";
+  this.hasSearch;
+  this.searchedGender;
+
+  // for sorting
+  this.sortBy;
+  this.sortingOrder;
+
+  //currentUsers
 
   this.init = function () {
     _this.validateFormAndSave();
@@ -12,9 +18,10 @@ const userEventHandler = function () {
     _this.cancelEditOperation();
     _this.deleteUser();
     _this.getUsersByQuery();
-    _this.showUsers();
+    _this.showUsers({});
     _this.getUserDetail();
     _this.filterInputSearchEvents();
+    _this.exportsCsvEvents();
   };
 
   this.validateFormAndSave = function () {
@@ -114,18 +121,12 @@ const userEventHandler = function () {
               $("#userId").remove();
               $("#signup_form")[0].reset();
               $("input:radio").attr("checked", false);
-              _this.showUsers(
-                "undefined",
-                "undefined",
-                "undefined",
-                "undefined",
-                activePagenumber
-              );
+              _this.showUsers({ page: activePagenumber });
             }
             if (response.isAdded) {
               $.alert(response.message);
               $("#signup_form")[0].reset();
-              _this.showUsers();
+              _this.showUsers({});
             }
             if (response.hasError) {
               $.alert(response.message);
@@ -233,20 +234,17 @@ const userEventHandler = function () {
                   let lastPageNumber = Number(
                     $(".pagination").find(".pageBtn:last").html()
                   );
-                  if (activePagenumber == lastPageNumber) {
+                  if (
+                    activePagenumber == lastPageNumber &&
+                    $("tr").length == 1
+                  ) {
                     activePagenumber--;
                   }
 
                   if (success) {
                     $("." + userId).remove();
                     $.alert(message);
-                    _this.showUsers(
-                      "undefined",
-                      "undefined",
-                      "undefined",
-                      "undefined",
-                      activePagenumber
-                    );
+                    _this.showUsers({ page: activePagenumber });
                   }
                   if (!success) {
                     $.alert(message);
@@ -261,26 +259,49 @@ const userEventHandler = function () {
   };
 
   //display users
-  this.showUsers = function (sortBy, sortingOrder, search, gender, page = 1) {
-    $("#usersList").html("");
-    $(".pagination").html("");
+  // sortBy, sortingOrder, search, gender, page = 1
+  this.showUsers = function (args) {
+    console.log("keys", Object.entries(args));
+
+    let page;
+    if (!args.page) {
+      page = 1;
+    } else {
+      page = args.page;
+      delete args.page;
+    }
+
+    let url = "/api/users/?page=" + page;
+
+    for (const key in args) {
+      if (args[key]) {
+        url = url + "&" + key + "=" + args[key];
+      }
+    }
+
     $.ajax({
-      url:
-        "/api/users/?sortBy=" +
-        sortBy +
-        "&" +
-        "sortingOrder=" +
-        sortingOrder +
-        "&page=" +
-        page +
-        "&search=" +
-        search +
-        "&gender=" +
-        gender,
+      url: url,
       type: "get",
       success: function (response) {
-        console.log(response);
         if (response.type == "success") {
+          if (response.isDownload) {
+            let a = $("<a />");
+            a.attr("download", response.csvFileName);
+            a.attr("href", `/csvs/${response.csvFileName}`);
+            $("body").append(a);
+            a[0].click();
+            $("body").remove(a);
+            $.alert("Users CSV File exported");
+            return;
+          }
+
+          if (response.isMailSent) {
+            $.alert("Users CSV File link exported to mail");
+            return;
+          }
+
+          $("#usersList").html("");
+          $(".pagination").html("");
           if (typeof response.data != "string") {
             for (const user of response.data) {
               let userToBeAdd = `<tr class="${user._id}">
@@ -298,7 +319,6 @@ const userEventHandler = function () {
             }
 
             let numOfBtns = Math.ceil(response.totalUsersCount / 3);
-
             if (page > 1) {
               $(".pagination").append(
                 `<button class="pageBtn border btn prevBtn" >Previous</button>`
@@ -323,9 +343,13 @@ const userEventHandler = function () {
               );
             }
           } else {
+            $("#usersList").html("");
+            $(".pagination").html("");
             $("#usersList").prepend(`<h4>${response.data}</h4>`);
           }
         } else {
+          $("#usersList").html("");
+          $(".pagination").html("");
           $("#usersList").prepend(`<h4>${response.data}</h4>`);
         }
       },
@@ -352,6 +376,8 @@ const userEventHandler = function () {
 
       let sortBy = $(this).data("column");
       let sortingOrder = $(this).data("order");
+      _this.sortBy = sortBy;
+      _this.sortingOrder = sortingOrder;
       let symbol = $(this).html();
       symbol = symbol.substring(0, symbol.length - 1);
 
@@ -364,12 +390,12 @@ const userEventHandler = function () {
       }
       // let activePagenumber = Number($(".pageBtn.btn-primary").text());
       $(this).html(symbol);
-      _this.showUsers(
-        sortBy,
-        sortingOrder,
-        _this.hasSearch,
-        _this.searchedGender
-      );
+      _this.showUsers({
+        sortBy: sortBy,
+        sortingOrder: sortingOrder,
+        search: _this.hasSearch,
+        gender: _this.searchedGender,
+      });
     });
 
     //pagination
@@ -403,18 +429,18 @@ const userEventHandler = function () {
       if (_this.hasSearch != "undefined") {
         search = _this.hasSearch;
       }
-      _this.showUsers(
-        "undefined",
-        "undefined",
-        _this.hasSearch,
-        _this.searchedGender,
-        destinationPage
-      );
+      _this.showUsers({
+        sortBy: _this.sortBy,
+        sortingOrder: _this.sortingOrder,
+        search: _this.hasSearch,
+        gender: _this.searchedGender,
+        page: destinationPage,
+      });
     });
 
     //searching
     $("#searchBtn").click(function () {
-      _this.searchedGender = "undefined";
+      console.log("called");
       let genderSelection = $("#searchGender").val();
 
       if (genderSelection != "all") {
@@ -426,7 +452,7 @@ const userEventHandler = function () {
         _this.hasSearch = query;
       }
 
-      _this.showUsers(undefined, undefined, query, _this.searchedGender);
+      _this.showUsers({ search: query, gender: _this.searchedGender });
     });
 
     $("#clearBtn").click(function () {
@@ -435,7 +461,13 @@ const userEventHandler = function () {
       _this.searchedGender = "undefined";
       $("#searchGender option[value='all']").prop("selected", true);
       $(this).attr("disabled", true);
-      _this.showUsers();
+      _this.showUsers({});
+    });
+
+    $("#resetSort").click(function () {
+      _this.sortingOrder = undefined;
+      _this.sortBy = undefined;
+      _this.showUsers({});
     });
   };
 
@@ -470,6 +502,47 @@ const userEventHandler = function () {
     $("#searchGender");
   };
 
+  this.validateEmail = function (email) {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  this.exportsCsvEvents = function () {
+    $("#exportsToCsv").click(function () {
+      let activePagenumber = Number($(".pageBtn.btn-primary").text());
+      _this.showUsers({
+        page: activePagenumber,
+        search: _this.hasSearch,
+        gender: _this.searchedGender,
+        sortBy: _this.sortBy,
+        sortingOrder: _this.sortingOrder,
+        export: true,
+      });
+    });
+
+    $("#exportsToEmail").click(function () {
+      let activePagenumber = Number($(".pageBtn.btn-primary").text());
+      let email = prompt("enter email here");
+      let isValidEmail = _this.validateEmail(email);
+
+      if (!isValidEmail) {
+        $.alert("enter valid email try again");
+      }
+
+      _this.showUsers({
+        page: activePagenumber,
+        search: _this.hasSearch,
+        gender: _this.searchedGender,
+        sortBy: _this.sortBy,
+        sortingOrder: _this.sortingOrder,
+        export: true,
+        email: email,
+      });
+    });
+  };
+
   let _this = this;
+
   this.init();
 };
