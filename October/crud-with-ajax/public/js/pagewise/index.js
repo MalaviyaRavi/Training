@@ -10,7 +10,12 @@ const userEventHandler = function () {
   this.sortBy;
   this.sortingOrder;
 
-  //currentUsers
+  $(window)[0].addEventListener("beforeunload", (event) => {
+    // Cancel the event as stated by the standard.
+    event.preventDefault();
+    // Chrome requires returnValue to be set.
+    event.returnValue = "sure want to exit??";
+  });
 
   this.init = function () {
     _this.validateFormAndSave();
@@ -261,7 +266,7 @@ const userEventHandler = function () {
   //display users
   // sortBy, sortingOrder, search, gender, page = 1
   this.showUsers = function (args) {
-    console.log("keys", Object.entries(args));
+    console.log("keys", args);
 
     let page;
     if (!args.page) {
@@ -299,59 +304,9 @@ const userEventHandler = function () {
             $.alert("Users CSV File link exported to mail");
             return;
           }
-
-          $("#usersList").html("");
-          $(".pagination").html("");
-          if (typeof response.data != "string") {
-            for (const user of response.data) {
-              let userToBeAdd = `<tr class="${user._id}">
-              <td><img src="/img/${user.image}" alt="userimage" width="50" height="50" /></td>
-              </td>
-              <td>${user.name}</td>
-              <td>${user.gender}</td>
-              <td>${user.address}</td>
-              <td><button class='btn btn-success edit-btn' data-id="${user._id}">Edit</button>
-                  <button type='button' class='btn btn-danger delete-btn' data-id="${user._id}">Delete</button>
-                  <button type='button' class='btn btn-primary btnView' data-id="${user._id}">View Details</button>
-              </td>
-              </tr>`;
-              $("#usersList").append(userToBeAdd);
-            }
-
-            let numOfBtns = Math.ceil(response.totalUsersCount / 3);
-            if (page > 1) {
-              $(".pagination").append(
-                `<button class="pageBtn border btn prevBtn" >Previous</button>`
-              );
-            }
-
-            for (let pageNumber = 1; pageNumber <= numOfBtns; pageNumber++) {
-              if (pageNumber == page) {
-                $(".pagination").append(
-                  `<button class="pageBtn border btn btn-primary">${pageNumber}</button>`
-                );
-              } else {
-                $(".pagination").append(
-                  `<button class="pageBtn border btn nextBtn">${pageNumber}</button>`
-                );
-              }
-            }
-
-            if (page < numOfBtns) {
-              $(".pagination").append(
-                `<button class="pageBtn border btn">Next</button>`
-              );
-            }
-          } else {
-            $("#usersList").html("");
-            $(".pagination").html("");
-            $("#usersList").prepend(`<h4>${response.data}</h4>`);
-          }
-        } else {
-          $("#usersList").html("");
-          $(".pagination").html("");
-          $("#usersList").prepend(`<h4>${response.data}</h4>`);
         }
+        $("#users").html("");
+        $("#users").html(response);
       },
     });
   };
@@ -374,22 +329,13 @@ const userEventHandler = function () {
         $("#btnCancel").remove();
       }
 
+      console.log("clicked");
+
       let sortBy = $(this).data("column");
       let sortingOrder = $(this).data("order");
       _this.sortBy = sortBy;
       _this.sortingOrder = sortingOrder;
-      let symbol = $(this).html();
-      symbol = symbol.substring(0, symbol.length - 1);
 
-      if (sortingOrder == "desc") {
-        $(this).data("order", "asc");
-        symbol += "&#9660";
-      } else {
-        $(this).data("order", "desc");
-        symbol += "&#9650";
-      }
-      // let activePagenumber = Number($(".pageBtn.btn-primary").text());
-      $(this).html(symbol);
       _this.showUsers({
         sortBy: sortBy,
         sortingOrder: sortingOrder,
@@ -417,7 +363,6 @@ const userEventHandler = function () {
       let curretnActivePage = Number($(".pageBtn.btn-primary").text());
 
       let destinationPage;
-
       if (currentBtnText == "Previous") {
         destinationPage = curretnActivePage - 1;
       } else if (currentBtnText == "Next") {
@@ -425,7 +370,6 @@ const userEventHandler = function () {
       } else {
         destinationPage = Number(currentBtnText);
       }
-
       if (_this.hasSearch != "undefined") {
         search = _this.hasSearch;
       }
@@ -440,7 +384,6 @@ const userEventHandler = function () {
 
     //searching
     $("#searchBtn").click(function () {
-      console.log("called");
       let genderSelection = $("#searchGender").val();
 
       if (genderSelection != "all") {
@@ -451,7 +394,6 @@ const userEventHandler = function () {
       if (query.length) {
         _this.hasSearch = query;
       }
-
       _this.showUsers({ search: query, gender: _this.searchedGender });
     });
 
@@ -498,8 +440,6 @@ const userEventHandler = function () {
         $("#clearBtn").attr("disabled", true);
       }
     });
-
-    $("#searchGender");
   };
 
   this.validateEmail = function (email) {
@@ -524,21 +464,25 @@ const userEventHandler = function () {
     $("#exportsToEmail").click(function () {
       let activePagenumber = Number($(".pageBtn.btn-primary").text());
       let email = prompt("enter email here");
-      let isValidEmail = _this.validateEmail(email);
 
-      if (!isValidEmail) {
-        $.alert("enter valid email try again");
+      if (email) {
+        let isValidEmail = _this.validateEmail(email);
+
+        if (!isValidEmail) {
+          $.alert("enter valid email try again");
+          return;
+        }
+
+        _this.showUsers({
+          page: activePagenumber,
+          search: _this.hasSearch,
+          gender: _this.searchedGender,
+          sortBy: _this.sortBy,
+          sortingOrder: _this.sortingOrder,
+          export: true,
+          email: email,
+        });
       }
-
-      _this.showUsers({
-        page: activePagenumber,
-        search: _this.hasSearch,
-        gender: _this.searchedGender,
-        sortBy: _this.sortBy,
-        sortingOrder: _this.sortingOrder,
-        export: true,
-        email: email,
-      });
     });
   };
 

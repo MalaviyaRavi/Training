@@ -5,6 +5,19 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const exphbs = require("express-handlebars");
+// const helpers = require("handlebars-helpers");
+const Handlebars = require("handlebars");
+const moment = require("moment");
+
+process.env.TZ = "UTC";
+
+let helpers = require("handlebars-helpers")({
+  Handlebars: Handlebars,
+});
+
+Handlebars.registerHelper("convertUTCtoIST", function (UTCtime) {
+  return moment(UTCtime).utcOffset("+05:30").format("YYYY-MM-DD HH:mm a");
+});
 
 //api
 const userApiRouter = require("./routes/api/users");
@@ -46,6 +59,8 @@ app.engine(
     defaultLayout: "main",
     layoutsDir: path.join(__dirname, "views", "layouts"),
     partialsDir: path.join(__dirname, "views", "partials"),
+    helpers: helpers,
+    handlebars: Handlebars,
   })
 );
 app.set("view engine", "hbs");

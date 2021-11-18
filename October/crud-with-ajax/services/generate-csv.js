@@ -2,16 +2,45 @@ const converter = require("json2csv");
 const user = require("../models/user");
 const fs = require("fs");
 const path = require("path");
+const moment = require("moment");
 
-// const jsonToCsv = require("../helper/promises");
+function convertUTCtoIST(UTC) {
+  return moment(UTC).utcOffset("+05:30").format("YYYY-MM-DD HH:mm a");
+}
 
 const { parse } = require("json2csv");
 
-const fields = ["name", "gender", "address", "interest", "hobbies"];
+const fields = [
+  {
+    label: "Name",
+    value: "name",
+  },
+  {
+    label: "Gender",
+    value: "gender",
+  },
+  {
+    label: "Address",
+    value: "address",
+  },
+  {
+    label: "Interest",
+    value: "interest",
+  },
+  {
+    label: "Hobbies",
+    value: "hobbies",
+  },
+  {
+    label: "CreatedAt",
+    value: function (field) {
+      return convertUTCtoIST(field.createdAt);
+    },
+  },
+];
 const opts = { fields };
 
 exports.generateCsv = async function (users) {
-  console.log("dfvdxgvb", users);
   let tempUsers = [];
 
   for (let userIndex = 0; userIndex < users.length; userIndex++) {
@@ -21,32 +50,12 @@ exports.generateCsv = async function (users) {
   for (let user of tempUsers) {
     user.hobbies = user.hobbies.join(",");
   }
-  // console.log(tempUsers);
-
   const csv = parse(tempUsers, opts);
-
-  // console.log(tempUsers);
-
-  let currentdate = new Date();
-  let currentTime =
-    currentdate.getDate() +
-    "-" +
-    (currentdate.getMonth() + 1) +
-    "-" +
-    currentdate.getFullYear() +
-    "@" +
-    currentdate.getHours() +
-    ":" +
-    currentdate.getMinutes() +
+  let fileName =
+    "users-" +
+    moment().utcOffset("+05:30").format("YYYY-MM-DD HH:mm a") +
     ".csv";
-
-  let csvStoragePath = path.join(
-    __dirname,
-    "..",
-    "public",
-    "csvs",
-    currentTime
-  );
+  let csvStoragePath = path.join(__dirname, "..", "public", "csvs", fileName);
 
   console.log(csvStoragePath);
   fs.writeFileSync(csvStoragePath, csv);

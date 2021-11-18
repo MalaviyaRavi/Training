@@ -1,0 +1,61 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th data-column="name" data-order="{{sortOrder}}">Name &#9650</th>
+            <th data-column="gender" data-order="{{sortOrder}}">Gender &#9650</th>
+            <th data-column="address" data-order="{{sortOrder}}">Address &#9650</th>
+            <th data-column="createdAt" data-order="{{sortOrder}}">createdAt &#9650</th>
+
+            <th>Action</th>
+            <th> <button class="btn btn-primary w-100" id="resetSort">Reset Sorting</button></th>
+        </tr>
+    </thead>
+    <tbody id="usersList">
+        {{#if users}}
+
+        {{#each users}}
+        <tr class="{{_id}}">
+            <td><img src="/img/{{image}}" alt="mage" width="50" height="50" /></td>
+            </td>
+            <td>{{name}}</td>
+            <td>{{gender}}</td>
+            <td>{{address}}</td>
+            <td>{{convertUTCtoIST createdAt}}</td>
+            <td><button class='btn btn-success edit-btn' data-id="{{_id}}">Edit</button>
+                <button type='button' class='btn btn-danger delete-btn' data-id="{{_id}}">Delete</button>
+                <button type='button' class='btn btn-primary btnView' data-id="{{_id}}">View Details</button>
+            </td>
+        </tr>
+
+        {{/each}}
+
+        {{else}}
+
+        <h3>No User Found</h3>
+
+        {{/if}}
+
+    </tbody>
+</table>
+
+<div aria-label="Page navigation example" style="margin-left: 200px;">
+    <ul class="pagination">
+        {{#if hasPrev}}
+        <button class="pageBtn border btn prevBtn">Previous</button>
+        {{else}}
+        <button class="pageBtn border btn prevBtn disabled">Previous</button>
+        {{/if}}
+
+        {{#each pages}}
+        <button
+            class="pageBtn border btn {{#compare ../currentActivePage '==' this}}btn-primary{{/compare}}">{{this}}</button>
+        {{/each}}
+
+        {{#if hasNext}}
+        <button class="pageBtn border btn nextBtn">Next</button>
+        {{else}}
+        <button class="pageBtn border btn nextBtn disabled">Next</button>
+        {{/if}}
+    </ul>
+</div>

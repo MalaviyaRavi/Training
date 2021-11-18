@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const fs = require("await-fs");
 const path = require("path");
+const moment = require("moment");
 
 //user model
 const userModel = require("../../models/user");
@@ -114,11 +115,9 @@ exports.getUserById = async function (req, res, next) {
 
 //get users by query
 exports.getUsersByQuery = async function (req, res, next) {
-  console.log(req.query);
-
   let queryParams = { ...req.query };
-
-  // let { sortBy, sortingOrder, search, gender, page } = req.query;
+  let hasPrev = false;
+  let hasNext = false;
 
   let totalUsersCount = await userModel.find({ isDeleted: false }).count();
 
@@ -135,6 +134,7 @@ exports.getUsersByQuery = async function (req, res, next) {
         address: 1,
         hobbies: 1,
         interest: 1,
+        createdAt: 1,
       },
     },
   ];
@@ -152,62 +152,34 @@ exports.getUsersByQuery = async function (req, res, next) {
           { hobbies: queryParams.search },
         ];
       }
-
       if (queryParams.gender) {
         matchObject["gender"] = queryParams.gender;
       }
-
       query.push({
         $match: matchObject,
       });
       totalUsersCount = (await userModel.aggregate(query)).length;
     }
 
-    let usersForCsv = await userModel.aggregate(query, {});
-
-    console.log(
-      "------------------------------------------------>",
-      usersForCsv
-    );
-
-    //pagination
-    Array.prototype.push.apply(query, [
-      {
-        $skip: usersToBeSkip,
-      },
-      {
-        $limit: usersPerPage,
-      },
-    ]);
-
-    //sorting
+    let sortOrder = "desc";
     if (queryParams.sortBy && queryParams.sortingOrder) {
       let order = queryParams.sortingOrder == "asc" ? 1 : -1;
+      sortOrder = queryParams.sortingOrder == "desc" ? "asc" : "desc";
       sort[queryParams.sortBy] = order;
       query.push({
         $sort: sort,
       });
     }
 
-    let users = await userModel.aggregate(query);
-    // let tempUsers = [...users]
-    let usersToBeSend = users.length ? users : "No users found!!";
+    if (queryParams.export || queryParams.email) {
+      let usersForCsv = await userModel.aggregate(query);
 
-    //generateCSV
-    if (usersForCsv.length && (queryParams.export || queryParams.email)) {
       generateCsv(usersForCsv);
-      let currentdate = new Date();
       let csvFileName =
-        currentdate.getDate() +
-        "-" +
-        (currentdate.getMonth() + 1) +
-        "-" +
-        currentdate.getFullYear() +
-        "@" +
-        currentdate.getHours() +
-        ":" +
-        currentdate.getMinutes() +
+        "users-" +
+        moment().utcOffset("+05:30").format("YYYY-MM-DD HH:mm a") +
         ".csv";
+
       if (queryParams.email) {
         let text = `click to below link <html><a href='http://192.168.1.116:3000/csvs/${csvFileName}'>CSV LINK</a><html>`;
         await sendMail(queryParams.email, "csv file link", text);
@@ -223,14 +195,46 @@ exports.getUsersByQuery = async function (req, res, next) {
       });
     }
 
-    res.json({
-      type: "success",
-      data: usersToBeSend,
-      totalUsersCount,
+    //for pagination
+    Array.prototype.push.apply(query, [
+      {
+        $skip: usersToBeSkip,
+      },
+      {
+        $limit: usersPerPage,
+      },
+    ]);
+
+    let users = await userModel.aggregate(query);
+
+    //for pagination
+    let numOfPages = Math.ceil(totalUsersCount / 3);
+    if (queryParams.page > 1) {
+      hasPrev = true;
+    }
+    if (queryParams.page < numOfPages) {
+      hasNext = true;
+    }
+    let pages = [];
+    for (let i = 0; i < numOfPages; i++) {
+      pages[i] = i + 1;
+    }
+
+    res.render("users", {
+      layout: false,
+      users: users,
+      hasPrev,
+      hasNext,
+      currentActivePage: queryParams.page,
+      pages,
+      sortOrder,
     });
   } catch (error) {
     console.log(error);
-    res.json({ type: "error", data: "error during fetching users!!!" });
+    res.render("users", {
+      layout: false,
+      users: null,
+    });
   }
 };
 
