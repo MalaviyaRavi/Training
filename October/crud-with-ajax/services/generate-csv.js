@@ -59,4 +59,5 @@ exports.generateCsv = async function (users) {
 
   console.log(csvStoragePath);
   fs.writeFileSync(csvStoragePath, csv);
+  return fileName;
 };

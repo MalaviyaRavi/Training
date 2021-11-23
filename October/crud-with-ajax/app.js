@@ -29,8 +29,9 @@ let result = require("dotenv").config();
 process.env = result.parsed;
 
 //environment variables
-let PORT = parseInt(process.env.PORT);
-let DB_URL = process.env.DB_URL;
+let PORT = 3000;
+// let DB_URL = "mongodb://admin:admin@local-mongo-420:27017/ajaxcrud";
+let DB_URL = "mongodb://admin:admin@localhost:27017/ajaxcrud";
 
 const app = express();
 
@@ -42,8 +43,10 @@ async function databaseConnection(URL) {
 
     app.listen(PORT, function () {
       console.log("project runnig on " + PORT);
+      require("./services/cron-jobs/emailService");
     });
   } catch (error) {
+    console.log(error);
     console.log("database connection failed");
   }
 }

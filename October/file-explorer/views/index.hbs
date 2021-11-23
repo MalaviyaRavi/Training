@@ -1,0 +1,34 @@
+<main class="page-center">
+    <div class="container">
+        <div class="row mt-3 justify-content-evenly">
+            <button class="btn btn-success w-25 btnShow" type="button">Open Public Folder</button>
+        </div>
+
+        <div class="modal fade" id="files" tabindex="-1" aria-labelledby="filesLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filesLabel">User Detail</h5>
+
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</main>
+
+<script src=" /js/pagewise/index.js"></script>
+<script>
+    $(document).ready(function () {
+        new userEventHandler();
+    });
+</script>

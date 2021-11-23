@@ -5,6 +5,8 @@ const moment = require("moment");
 
 //user model
 const userModel = require("../../models/user");
+//emailQuery model
+const emailQueryModel = require("../../models/emailQuery");
 
 //services
 const sendMail = require("../../services/send-mail");
@@ -171,7 +173,7 @@ exports.getUsersByQuery = async function (req, res, next) {
       });
     }
 
-    if (queryParams.export || queryParams.email) {
+    if (queryParams.export && !queryParams.email) {
       let usersForCsv = await userModel.aggregate(query);
 
       generateCsv(usersForCsv);
@@ -180,18 +182,28 @@ exports.getUsersByQuery = async function (req, res, next) {
         moment().utcOffset("+05:30").format("YYYY-MM-DD HH:mm a") +
         ".csv";
 
-      if (queryParams.email) {
-        let text = `click to below link <html><a href='http://192.168.1.116:3000/csvs/${csvFileName}'>CSV LINK</a><html>`;
-        await sendMail(queryParams.email, "csv file link", text);
-        return res.json({
-          type: "success",
-          isMailSent: true,
-        });
-      }
+      // if (queryParams.email) {
+      //   let text = `click to below link <html><a href='http://192.168.1.116:3000/csvs/${csvFileName}'>CSV LINK</a><html>`;
+      //   await sendMail(queryParams.email, "csv file link", text);
+      //   return res.json({
+      //     type: "success",
+      //     isMailSent: true,
+      //   });
+      // }
       return res.json({
         type: "success",
         isDownload: true,
         csvFileName: csvFileName,
+      });
+    }
+
+    if (queryParams.email) {
+      let queryToBeStore = JSON.stringify(query);
+      let email = queryParams.email;
+      await emailQueryModel.create({ email: email, query: queryToBeStore });
+      return res.json({
+        type: "success",
+        isQueryStored: true,
       });
     }
 

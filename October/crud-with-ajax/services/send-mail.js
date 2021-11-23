@@ -10,17 +10,19 @@ const sendEmail = async function (email, subject, text) {
       },
     });
 
-    await transporter.sendMail({
+    let info = await transporter.sendMail({
       from: "Users CSV File",
       to: email,
       subject: subject,
       html: text,
     });
 
-    console.log("email sent sucessfully");
+    return info;
   } catch (error) {
-    console.log(error, "email not sent");
+    throw error;
   }
 };
+
+// sendEmail("rmalaviya.789@gmail.com", "hello", "body");
 
 module.exports = sendEmail;

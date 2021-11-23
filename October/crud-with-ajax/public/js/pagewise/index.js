@@ -300,8 +300,8 @@ const userEventHandler = function () {
             return;
           }
 
-          if (response.isMailSent) {
-            $.alert("Users CSV File link exported to mail");
+          if (response.isQueryStored) {
+            $.alert("CSV Link Will Be Sent Specified Email");
             return;
           }
         }
