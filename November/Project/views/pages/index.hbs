@@ -1,0 +1,124 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <form method="POST" id="mainForm">
+            <div class="col-5 mt-5 text-center border p-3" id="form-1">
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" name="username-1">
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password-1">
+                </div>
+            </div>
+
+            <div class="col-5 text-center mt-5" id="btns">
+                <button type="button" class="btn btn-success" id="plus">+</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-5">
+            <table>
+                <tr>
+                    <th>Username</th>
+                    <th>Password</th>
+                </tr>
+                {{#each users}}
+                <tr>
+                    <td>{{username}}</td>
+                    <td>{{password}}</td>
+                </tr>
+                {{/each}}
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        /* $("#mainForm").validate({
+             rules: {
+                 username: {
+                     required: true,
+                     minlength: 3,
+                 },
+                 password: {
+                     required: true,
+                     minlength: 3,
+                 },
+ 
+             },
+             messages: {
+                 username: {
+                     required: "firstname is required.",
+                     minlength: "firstname should be 3 characters long.",
+                 },
+                 password: {
+                     required: "lastname is required.",
+                     minlength: "lastname should be 3 characters long.",
+                 },
+ 
+             },
+             errorClass: "text text-danger",
+             submitHandler: function (form) {
+                 $("input").valid();
+                 form.submit();
+             }
+         })*/
+
+        $("#mainForm").validate();
+        $("input").each(function () {
+            let currentField = $(this)
+            $(this).rules("add", {
+                required: true,
+                messages: {
+                    required: currentField.attr("name").substring(0, currentField.attr("name").length - 2) + " is required"
+                }
+            });
+        });
+
+
+
+        let formCount = 1;
+        $("#plus").click(function () {
+            formCount++;
+            let formToBeApppend = `<div class="col-5 mt-5 text-center border p-3" id="form-1">
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" name="username-${formCount}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password-${formCount}">
+                </div>
+            </div>`
+
+            $(formToBeApppend).insertBefore('#btns');
+            $("input").each(function () {
+                let currentField = $(this)
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: currentField.attr("name").substring(0, currentField.attr("name").length - 2) + " is required"
+                    }
+                });
+            });
+
+        })
+
+
+
+
+    });
+</script>
