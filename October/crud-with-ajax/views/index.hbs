@@ -3,6 +3,12 @@
         <div class="row mt-3">
             {{!-- user form --}}
             <div class="col-5">
+
+                <button class="btn btn-primary" id="cronControl" type="button" data-cron={{cronStatus}}>{{#if
+                    cronStatus}}Stop Cron{{else}}Start Cron{{/if}}</button>
+
+
+
                 <h3 class="titletext">Add User</h3>
                 <form enctype="multipart/form-data" id="signup_form" method="post">
                     <div class="mb-4 ">

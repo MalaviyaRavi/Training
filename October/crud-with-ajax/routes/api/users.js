@@ -29,10 +29,13 @@ const {
   getUserById,
   getUsersByQuery,
   getUserDetailsById,
+  changeCronControl,
 } = require("../../controllers/api/users");
 
 //save and update user route
 router.post("/", upload.single("image"), saveUser);
+
+router.post("/s", changeCronControl);
 
 //delete user by id route
 router.delete("/:id", deleteUser);

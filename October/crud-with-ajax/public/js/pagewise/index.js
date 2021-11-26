@@ -27,6 +27,7 @@ const userEventHandler = function () {
     _this.getUserDetail();
     _this.filterInputSearchEvents();
     _this.exportsCsvEvents();
+    _this.cronController();
   };
 
   this.validateFormAndSave = function () {
@@ -483,6 +484,27 @@ const userEventHandler = function () {
           email: email,
         });
       }
+    });
+  };
+
+  this.cronController = function () {
+    $("#cronControl").click(function () {
+      let $cronControlBtn = $(this);
+
+      let cronStatus = $(this).data("cron");
+      $(this).data("cron", !cronStatus);
+      cronStatus = $(this).data("cron");
+      $.ajax({
+        url: "/api/users/changeCronControl",
+        type: "post",
+        data: { cronStatus: cronStatus },
+        success: function (response) {
+          let cronStatusAlert = !cronStatus
+            ? "Cron service has been Stoped"
+            : "Cron Service has been Started";
+          $cronControlBtn.text(!cronStatus ? "Start Cron" : "Stop Cron");
+        },
+      });
     });
   };
 

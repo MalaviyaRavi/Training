@@ -22,6 +22,7 @@ const userSchema = mongoose.Schema(
 userSchema.index({
   firstname: "text",
   lastname: "text",
+
   gender: "text",
   address: "text",
 });

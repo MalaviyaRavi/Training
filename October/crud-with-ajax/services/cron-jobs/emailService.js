@@ -1,60 +1,54 @@
 const CronJob = require("cron").CronJob;
-
-const emailQueryModel = require("../../models/emailQuery");
-const userModel = require("../../models/user");
-
-const sendMail = require("../send-mail");
-const { generateCsv } = require("../generate-csv");
-
-// async function getUsers() {
-//   try {
-//     let records = await emailQueryModel
-//       .find({
-//         $and: [{ status: "pending" }, { count: { $ne: 3 } }],
-//       })
-//       .limit(1);
-//     return records;
-//   } catch (error) {
-//     return [];
-//   }
-// }
+const path = require("path");
+const fs = require("fs");
 
 const job = new CronJob(
   "*/1 * * * *",
   async function () {
     try {
-      console.log("hello");
-      let records = await emailQueryModel
-        .find({
-          $and: [{ status: "pending" }, { count: { $lt: 3 } }],
-        })
-        .limit(1);
+      let configurationData = await configurationModel.findOne();
+      let cronStatus =
+        configurationData.configuration.cronConfiguration.cronStatus;
 
-      let record = records[0];
-      console.log("record", record);
-      if (record) {
-        let usersForCsv = await userModel.aggregate(JSON.parse(record.query));
-        let csvFileName = await generateCsv(usersForCsv);
-        console.log(csvFileName);
-        try {
-          let text = `click to below link <html><a href='http://192.168.1.116:3000/csvs/${csvFileName}'>CSV LINK</a><html>`;
-          let mailResponse = sendMail(record.email, "users csv", text);
-          let info = await mailResponse;
+      console.log(cronStatus);
+      if (cronStatus) {
+        console.log("cron started");
+        let records = await emailQueryModel
+          .find({
+            $and: [{ status: "pending" }, { count: { $lt: 3 } }],
+          })
+          .limit(1);
 
-          if (info.rejected.length) {
-            await emailQueryModel.updateOne(
-              { _id: record._id },
-              { $inc: { count: 1 } }
-            );
-          } else {
-            await emailQueryModel.updateOne(
-              { _id: record._id },
-              { $set: { status: "completed" } }
-            );
+        let record = records[0];
+
+        if (record) {
+          let usersForCsv = await userModel.aggregate(JSON.parse(record.query));
+          let csvFileName = await generateCsv(usersForCsv);
+          console.log(csvFileName);
+          try {
+            let text = `click to below link <html><a href='http://192.168.1.116:3000/csvs/${csvFileName}'>CSV LINK</a><html>`;
+            let mailResponse = sendMail(record.email, "users csv", text);
+            let info = await mailResponse;
+
+            if (info.rejected.length) {
+              await emailQueryModel.updateOne(
+                { _id: record._id },
+                { $inc: { count: 1 } }
+              );
+              console.log("error in mail sent");
+            } else {
+              await emailQueryModel.updateOne(
+                { _id: record._id },
+                { $set: { status: "completed" } }
+              );
+              console.log("mail sent");
+            }
+          } catch (error) {
+            console.log(error);
           }
-        } catch (error) {
-          console.log(error);
         }
+      } else {
+        console.log("cron stopped");
       }
     } catch (error) {
       console.log(error);
@@ -62,7 +56,7 @@ const job = new CronJob(
   },
   null,
   true,
-  "America/Los_Angeles"
+  "Asia/Kolkata"
 );
 
 job.start();

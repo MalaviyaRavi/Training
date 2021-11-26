@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const fs = require("await-fs");
+const fsAsync = require("await-fs");
+const fs = require("fs");
 const path = require("path");
 const moment = require("moment");
 
@@ -8,9 +9,14 @@ const userModel = require("../../models/user");
 //emailQuery model
 const emailQueryModel = require("../../models/emailQuery");
 
+//configuration model
+
+const configurationModel = require("../../models/configuration");
+
 //services
 const sendMail = require("../../services/send-mail");
 const { generateCsv } = require("../../services/generate-csv");
+const { fstatSync } = require("fs");
 
 //save and update user
 exports.saveUser = async function (req, res, next) {
@@ -43,7 +49,7 @@ exports.saveUser = async function (req, res, next) {
 
       //delete old image from server during image update
       if (image) {
-        fs.unlink("./public/img/" + oldUser.image);
+        fsAsync.unlink("./public/img/" + oldUser.image);
       }
 
       return res.json({
@@ -83,7 +89,7 @@ exports.deleteUser = async function (req, res, next) {
 
     //delete file from server
     if (user.image != "default.png") {
-      fs.unlink("./public/img/" + user.image);
+      fsAsync.unlink("./public/img/" + user.image);
     }
 
     res.json({
@@ -255,4 +261,21 @@ exports.getUserDetailsById = async function (req, res, next) {
     let user = await userModel.findById(req.params.id).lean();
     res.render("userDetails", { layout: false, user });
   } catch (error) {}
+};
+
+exports.changeCronControl = async function (req, res, next) {
+  let { cronStatus } = req.body;
+  try {
+    await configurationModel.updateOne(
+      {},
+      {
+        $set: {
+          "configuration.cronConfiguration.cronStatus": Boolean(cronStatus),
+        },
+      }
+    );
+    res.json({ type: "success" });
+  } catch (error) {
+    res.json({ type: "error" });
+  }
 };
