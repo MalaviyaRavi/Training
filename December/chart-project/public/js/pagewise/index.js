@@ -90,7 +90,6 @@ const chartEventHandler = function () {
             crosshair: true,
           };
         } else if (chartBy == "hourly") {
-          console.log(xAxisData);
           xAxis = {
             categories: xAxisData.map(function (hourValue) {
               if (hourValue == 12) {
@@ -108,7 +107,7 @@ const chartEventHandler = function () {
 
         let series = [
           {
-            name: "DateTime",
+            name: "postCount",
             data: data,
           },
         ];

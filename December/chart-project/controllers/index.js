@@ -178,6 +178,8 @@ exports.chart = async function (req, res, next) {
       },
     ]);
 
+    console.log(JSON.stringify(query));
+
     let postStatistics = await Post.aggregate(query);
 
     if (postStatistics.length) {

@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-5 mt-5">
+            <h3 class="text-center">Login</h3>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="emailOrMobile" class="form-label">Email Or Mobile</label>
+                    <input type="text" class="form-control" id="emailOrMobile">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password">
+                </div>
+                <div class="mb-3 text-center">
+                    <input type="button" class="btn btn-success " value="Login" id="btnLogin">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="/js/pagewise/login.js"></script>
+<script>
+    $(document).ready(function () {
+        new loginEventHandler();
+
+    });
+</script>

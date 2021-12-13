@@ -5,11 +5,15 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const exphbs = require("express-handlebars");
+const bcrypt = require("bcryptjs");
 
-const indexRouter = require("./routes/index");
+//Model
+const User = require("./models/user");
 
-//environment variables
-// let PORT = parseInt(process.env.PORT);
+const usersRouter = require("./routes/users");
+
+//api routers
+const usersApiRouter = require("./routes/api/users");
 
 const app = express();
 
@@ -25,7 +29,6 @@ app.engine(
   })
 );
 app.set("view engine", "hbs");
-
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -33,17 +36,34 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 //database connection
-(async function connectDb() {
+async function connectDb() {
   try {
-    await mongoose.connect("mongodb://ravi:ravi@localhost:27017/posts-master");
+    let connection = await mongoose.connect(
+      "mongodb://admin:admin@localhost:27017/api-task-database"
+    );
+
     console.log("database connected");
+
+    //add admin user
+    await User.update(
+      { name: "Admin", email: "admin@admin.com" },
+      {
+        name: "Admin",
+        email: "admin@admin.com",
+        mobile: "1234567890",
+        password: bcrypt.hashSync("123456", 8),
+      },
+      { upsert: true }
+    );
   } catch (error) {
+    console.log(error);
     console.log("database connection failed");
   }
-})();
+}
 
-//index router
-app.use("/", indexRouter);
+app.use("/api", usersApiRouter);
+
+app.use("/", usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -61,4 +81,9 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
-module.exports = app;
+app.listen(3000, function () {
+  console.log("app started");
+  connectDb();
+});
+
+// module.exports = app;
