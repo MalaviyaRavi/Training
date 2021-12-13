@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row justify-content-evenly">
+    <div class="col-7 mt-4 text-center">
+      <div class="mb-4">
+        <label for="country" class="form-label">
+          Select Criteria
+        </label>
+        <select class="form-select" name="chartBY" id="chartBy">
+          <option selected value="hourly">
+            Hourly
+          </option>
+          <option value="daily">Daily</option>
+          <option value="monthly">Monthly</option>
+          <option value="yearly">Yearly</option>
+        </select>
+      </div>
+
+      <div id ="barChart">
+      </div>
+
+
+      <div id ="pieChart" class="mt-5">
+      </div>
+
+
+    </div>
+  </div>
+</div>
+<script src="/js/pagewise/index.js"></script>
+<script>
+  $(document).ready(function () {
+        new chartEventHandler();
+        
+    });
+</script>
