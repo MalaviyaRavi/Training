@@ -1,15 +1,33 @@
 const usersEventHandler = function () {
   this.init = function () {
     _this.addUser();
-    _this.displayUsers();
+    _this.displayUsers({});
+    _this.exportToCsv();
+    _this.uploadCSV();
+    _this.logout();
   };
 
-  this.displayUsers = function () {
+  this.displayUsers = function (options) {
+    let url = "/api/users";
+    if (options.export) {
+      url = url + "?export=" + options.export;
+    }
     $.ajax({
-      url: "/api/users",
+      url: url,
       method: "GET",
       headers: { Authorization: $(document)[0].cookie.split("=")[1] },
       success: function (response) {
+        if (response.type == "exportToCsv" && response.statusCode == 200) {
+          let a = $("<a />");
+          a.attr("download", response.csvFileName);
+          a.attr("href", `/csvs/${response.csvFileName}`);
+          $("body").append(a);
+          a[0].click();
+          $("body").remove(a);
+          alert("Users CSV File exported");
+          return;
+        }
+
         if ((response.type = "invalidToken" && response.statusCode == 401)) {
           return $(location).attr("href", "/");
         }
@@ -18,6 +36,7 @@ const usersEventHandler = function () {
           $("usersList").append(`<h3>${response.message}</h3>`);
           return;
         }
+
         let tableHeader = `<tr>
       
         <th scope="col">Name</th>
@@ -82,7 +101,7 @@ const usersEventHandler = function () {
       //user add
       submitHandler: function (form, event) {
         event.preventDefault();
-        s;
+
         let name = $("#name").val();
         let mobile = $("#mobile").val();
         let email = $("#email").val();
@@ -92,6 +111,7 @@ const usersEventHandler = function () {
           url: "/api/users",
           type: "POST",
           data: { name, mobile, email, password },
+          headers: { Authorization: $(document)[0].cookie.split("=")[1] },
           success: function (response) {
             if (response.statusCode != 201) {
               alert(response.message);
@@ -108,6 +128,49 @@ const usersEventHandler = function () {
           },
         });
       },
+    });
+  };
+
+  this.logout = function () {
+    $("#btnLogout").on("click", function () {
+      $.ajax({
+        url: "/api/logout",
+        method: "GET",
+        success: function (response) {
+          if (response.type == "success") {
+            $(location).attr("href", "/");
+          }
+        },
+      });
+    });
+  };
+
+  this.exportToCsv = function () {
+    $("#btnExport").on("click", function () {
+      _this.displayUsers({ export: true });
+    });
+  };
+
+  this.uploadCSV = function () {
+    $("#btnUpload").on("click", function () {
+      if ($("#csvFile")[0].files.length === 0) {
+        $("#error").html("please select file");
+        return;
+      }
+      if ($("#csvFile")[0].files[0].type != "text/csv") {
+        $("#error").html("please upload csv file");
+        return;
+      }
+      let formData = new FormData($("#uplosdCsv")[0]);
+      $.ajax({
+        url: "/api/upload/csv",
+        type: "post",
+        data: formData,
+        contentType: false,
+        processData: false,
+        headers: { Authorization: $(document)[0].cookie.split("=")[1] },
+        success: function () {},
+      });
     });
   };
 

@@ -1,4 +1,5 @@
 <div class="container">
+    <button class="btn btn-danger" id="btnLogout">Logout</button>
     <div class="row justify-content-center mt-5">
         <div class="col-5 mt-5 border p-3">
             <h3 class="titletext text-center">Add User</h3>
@@ -22,15 +23,45 @@
                 </div>
 
 
-                <div class="mb-3 text-center" id="actionBtns">
+                <div class="mb-3 text-right" id="actionBtns">
                     <button class="btn btn-primary" id="btnAddUser" type="submit">Add User</button>
                 </div>
             </form>
         </div>
         <div class="col-5 mx-3">
-            <table class="table" id="usersList">
+            <div class="mr-auto"><button class="btn btn-primary" id="btnExport">Export</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Import CSV
+                </button>
+            </div>
 
+            <table class="table" id="usersList">
             </table>
+        </div>
+
+        <div class="modal" tabindex="-1" id="exampleModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload CSV</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="uplosdCsv">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="csvFile" class="form-label">Select CSV File</label>
+                                <input class="form-control" type="file" id="csvFile" name="csvFile">
+                            </div>
+                            <p id="error" class="text text-danger">
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="btnUpload">Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -40,6 +71,5 @@
 <script>
     $(document).ready(function () {
         new usersEventHandler();
-
     });
 </script>

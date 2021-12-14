@@ -5,8 +5,31 @@ const {
   getAllUsers,
   checkExistance,
   addUser,
+  logout,
+  uploadCsv,
 } = require("../../controllers/api/users");
-const isAuthenticated = require("../../middlewares/isAuthenticated");
+
+const path = require("path");
+
+const multer = require("multer");
+
+//storage file
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    let uploadPath = path.join(__dirname, "..", "..", "public", "csvs");
+    callback(null, uploadPath);
+  },
+  filename: (req, file, callback) => {
+    callback(null, req.user.userEmail);
+  },
+});
+
+const multerObject = multer({
+  storage: storage,
+});
+
+const upload = multer(multerObject);
+
 const User = require("../../models/user");
 
 const router = express.Router();
@@ -18,7 +41,15 @@ router.get("/users", isAuthenticated, getAllUsers);
 router.get("/users/check", checkExistance);
 
 router.post(
+  "/upload/csv",
+  isAuthenticated,
+  upload.single("csvFile"),
+  uploadCsv
+);
+
+router.post(
   "/users",
+  isAuthenticated,
   body("name").notEmpty().withMessage("name is required"),
   body("password")
     .isLength({ min: 6 })
@@ -43,5 +74,7 @@ router.post(
     }),
   addUser
 );
+
+router.get("/logout", logout);
 
 module.exports = router;

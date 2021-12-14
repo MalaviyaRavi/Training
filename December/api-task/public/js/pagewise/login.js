@@ -25,7 +25,6 @@ const loginEventHandler = function () {
           }
           let authToken = loginResponse.token;
           $(document)[0].cookie = `authToken=${authToken}`;
-          alert(loginResponse.message);
           $(location).attr("href", "/users");
         },
       });

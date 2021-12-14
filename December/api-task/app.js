@@ -7,8 +7,8 @@ const mongoose = require("mongoose");
 const exphbs = require("express-handlebars");
 const bcrypt = require("bcryptjs");
 
-//Model
-const User = require("./models/user");
+global.config = require("./config/config");
+require("./middlewares/isAuthenticated");
 
 const usersRouter = require("./routes/users");
 
@@ -38,23 +38,14 @@ app.use(express.static(path.join(__dirname, "public")));
 //database connection
 async function connectDb() {
   try {
-    let connection = await mongoose.connect(
-      "mongodb://admin:admin@localhost:27017/api-task-database"
+    await mongoose.connect(
+      `mongodb://${config.mongodb.username}:${config.mongodb.password}@${config.mongodb.host}:${config.mongodb.port}/${config.mongodb.database}`
     );
-
     console.log("database connected");
-
-    //add admin user
-    await User.update(
-      { name: "Admin", email: "admin@admin.com" },
-      {
-        name: "Admin",
-        email: "admin@admin.com",
-        mobile: "1234567890",
-        password: bcrypt.hashSync("123456", 8),
-      },
-      { upsert: true }
-    );
+    app.listen(config.port, async function () {
+      console.log("app started");
+      require("./services/generateAdmin");
+    });
   } catch (error) {
     console.log(error);
     console.log("database connection failed");
@@ -81,9 +72,5 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
-app.listen(3000, function () {
-  console.log("app started");
-  connectDb();
-});
-
+connectDb();
 // module.exports = app;

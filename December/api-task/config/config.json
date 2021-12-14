@@ -1,0 +1,19 @@
+{
+    "port":3000,
+    "mongodb":{
+        "host":"localhost",
+        "port":27017,
+        "username":"admin",
+        "password":"admin",
+        "database":"api-task-database"
+    },
+    "JWT":{
+        "secret":"ravi"
+    },
+    "errorMsgs" :{
+        "500" : "something went wrong",
+        "401" : "Invalid Credentials",
+        "201" : "resources added successfully",
+        "404" : "resources not found" 
+    }
+}
