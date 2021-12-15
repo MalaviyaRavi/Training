@@ -1,5 +1,8 @@
 const express = require("express");
-const { body, validationResult } = require("express-validator");
+const {
+  body,
+  validationResult
+} = require("express-validator");
 const {
   login,
   getAllUsers,
@@ -20,7 +23,7 @@ const storage = multer.diskStorage({
     callback(null, uploadPath);
   },
   filename: (req, file, callback) => {
-    callback(null, req.user.userEmail);
+    callback(null, req.user.userEmail + ".csv");
   },
 });
 
@@ -52,26 +55,32 @@ router.post(
   isAuthenticated,
   body("name").notEmpty().withMessage("name is required"),
   body("password")
-    .isLength({ min: 6 })
-    .withMessage("password should be 6 character long"),
+  .isLength({
+    min: 6
+  })
+  .withMessage("password should be 6 character long"),
   body("email")
-    .isEmail()
-    .withMessage("enter valid email address")
-    .custom(async function (value) {
-      let user = await User.findOne({ email: value });
-      if (user) {
-        throw new Error("email is already registered");
-      }
-    }),
+  .isEmail()
+  .withMessage("enter valid email address")
+  .custom(async function (value) {
+    let user = await User.findOne({
+      email: value
+    });
+    if (user) {
+      throw new Error("email is already registered");
+    }
+  }),
   body("mobile")
-    .isMobilePhone()
-    .withMessage("enter valid mobile number")
-    .custom(async function (value) {
-      let user = await User.findOne({ mobile: value });
-      if (user) {
-        throw new Error("mobile is already registered");
-      }
-    }),
+  .isMobilePhone()
+  .withMessage("enter valid mobile number")
+  .custom(async function (value) {
+    let user = await User.findOne({
+      mobile: value
+    });
+    if (user) {
+      throw new Error("mobile is already registered");
+    }
+  }),
   addUser
 );
 

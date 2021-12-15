@@ -8,7 +8,6 @@ global.isAuthenticated = async function (req, res, next) {
     try {
       let user = await User.findOne({ email: payLoad.userEmail });
       if (user) {
-        console.log(payLoad);
         req.user = payLoad;
         return next();
       } else {

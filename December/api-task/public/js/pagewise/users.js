@@ -1,5 +1,6 @@
 const usersEventHandler = function () {
   this.init = function () {
+    _this.selectedFields = 0;
     _this.addUser();
     _this.displayUsers({});
     _this.exportToCsv();
@@ -15,7 +16,9 @@ const usersEventHandler = function () {
     $.ajax({
       url: url,
       method: "GET",
-      headers: { Authorization: $(document)[0].cookie.split("=")[1] },
+      headers: {
+        Authorization: $(document)[0].cookie.split("=")[1]
+      },
       success: function (response) {
         if (response.type == "exportToCsv" && response.statusCode == 200) {
           let a = $("<a />");
@@ -110,8 +113,15 @@ const usersEventHandler = function () {
         $.ajax({
           url: "/api/users",
           type: "POST",
-          data: { name, mobile, email, password },
-          headers: { Authorization: $(document)[0].cookie.split("=")[1] },
+          data: {
+            name,
+            mobile,
+            email,
+            password
+          },
+          headers: {
+            Authorization: $(document)[0].cookie.split("=")[1]
+          },
           success: function (response) {
             if (response.statusCode != 201) {
               alert(response.message);
@@ -147,7 +157,9 @@ const usersEventHandler = function () {
 
   this.exportToCsv = function () {
     $("#btnExport").on("click", function () {
-      _this.displayUsers({ export: true });
+      _this.displayUsers({
+        export: true
+      });
     });
   };
 
@@ -168,9 +180,87 @@ const usersEventHandler = function () {
         data: formData,
         contentType: false,
         processData: false,
-        headers: { Authorization: $(document)[0].cookie.split("=")[1] },
-        success: function () {},
+        headers: {
+          Authorization: $(document)[0].cookie.split("=")[1]
+        },
+        xhr: function () {
+          //upload Progress
+          let xhr = $.ajaxSettings.xhr();
+          if (xhr.upload) {
+            $("#progress-wrp").css("display", "block");
+            xhr.upload.addEventListener('progress', function (event) {
+              let percent = 0;
+              let position = event.loaded || event.position;
+              let total = event.total;
+              if (event.lengthComputable) {
+                percent = Math.ceil(position / total * 100);
+              }
+              //update progressbar
+              $(".progress-bar").css("width", +percent + "%");
+              $(".status").text(percent + "%");
+            }, true);
+          }
+          return xhr;
+        },
+        success: function (response) {
+          if (response.type == "error") {
+            alert(response.message);
+            return;
+          }
+
+          let dbFields = ["name", "mobile", "email"];
+
+          for (let fieldIndex = 0; fieldIndex < response.firstRow.length; fieldIndex++) {
+            let $row = `<tr id="${response.firstRow[fieldIndex]}-header">
+            <td><input class="checkBox form-check-input" type="checkbox" value="${response.firstRow[fieldIndex]}"></td>
+            <td>${response.firstRow[fieldIndex]}</td>
+            <td>${response.secondRow[fieldIndex]}</td>
+            <td>
+                <select name="dbField" id="${response.firstRow[fieldIndex]}-dropdown" class="form-select">
+                    <option value="" selected>select db field</option>
+                    <option value="name">name</option>
+                    <option value="mobile">mobile</option>
+                    <option value="email">email</option>
+                </select>
+            </td>
+        </tr>`
+
+            $("#mappingDetails").append($row);
+          }
+          $('#fieldMapping').modal('show');
+        },
       });
+    });
+
+
+    $("#btnModalUpload").on("click", function (e) {
+
+      let checkboxs = $("input:checkbox:checked").ma;
+      for (const checkbox of checkboxs) {
+        console.log("214235745s");
+        console.log(checkbox.val());
+      }
+    })
+
+
+    //checkbox events
+    $(document).on("change", '.checkBox', function () {
+      if (this.checked == true) {
+        _this.selectedFields++
+      }
+      if (this.checked == false) {
+        _this.selectedFields--;
+      }
+      if (_this.selectedFields == 3) {
+        $("input:checkbox:not(:checked)").attr("disabled", true);
+      }
+      if (_this.selectedFields < 3) {
+        $("input:checkbox:not(:checked)").attr("disabled", false);
+      }
+    })
+
+    $("#csvFile").change(function () {
+      $("#error").text("");
     });
   };
 

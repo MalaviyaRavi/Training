@@ -8,10 +8,11 @@ const moment = require("moment");
 //   return moment(UTC).utcOffset("+05:30").format("YYYY-MM-DD HH:mm a");
 // }
 
-const { parse } = require("json2csv");
+const {
+  parse
+} = require("json2csv");
 
-const fields = [
-  {
+const fields = [{
     label: "Name",
     value: "name",
   },
@@ -20,11 +21,13 @@ const fields = [
     value: "email",
   },
   {
-    label: "Mobile",
+    label: "Mobile Number",
     value: "mobile",
   },
 ];
-const opts = { fields };
+const opts = {
+  fields
+};
 
 exports.generateCsv = function (users) {
   const csv = parse(users, opts);
