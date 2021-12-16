@@ -1,4 +1,5 @@
 const User = require("../../models/user");
+// const CsvMetaData = require("../../models/csvMetaData");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const {
@@ -11,6 +12,8 @@ const {
 const csv = require("csvtojson");
 const path = require("path");
 const fs = require("fs");
+const validateCsvData = require("../../utility/csvUtil");
+const CsvMetaData = require("../../models/csvMetaData");
 
 exports.login = async function (req, res, next) {
   try {
@@ -147,33 +150,31 @@ exports.logout = async function (req, res, next) {
   });
 };
 
-// function checkEmail(email) {
-//   return email.toLowerCase()
-//     .match(
-//       `/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/`
-//     )
-// }
-
-// function checkMobile(mobile) {
-//   return mobile.match(`^([0|\+[0-9]{1,5})?([7-9][0-9]{9})$`)
-// }
-
 exports.uploadCsv = async function (req, res, next) {
   try {
-    let fileName = req.file.filename;
-    let filePath = path.join(__dirname, "..", "..", "public", "csvs", fileName);
-    let users = await csv().fromFile(filePath);
 
+    let fileName = req.file.filename;
+    let file = await CsvMetaData.create({
+      uploadBy: req.user.userId,
+      Name: fileName
+    })
+    let filePath = path.join(__dirname, "..", "..", "public", "csvs", fileName);
+    let users = await csv({
+      noheader: true
+    }).fromFile(filePath);
+    console.log(users);
 
     res.json({
       type: "success",
       statusCode: 200,
-      firstRow: Object.keys(users[0]),
-      secondRow: Object.values(users[0]),
-      fileName: fileName,
+      csvHeaderField: Object.keys(users[0]),
+      firstRow: Object.values(users[0]),
+      secondRow: Object.values(users[1]),
+      fileId: file._id,
       message: config.errorMsgs["200"],
     });
   } catch (error) {
+    console.log(error);
     return res.json({
       type: "error",
       statusCode: 500,
@@ -185,13 +186,54 @@ exports.uploadCsv = async function (req, res, next) {
 exports.createFileMetadata = async function (req, res, next) {
   try {
     let {
-      fieldMap,
-      fileName
-    } = req.body;
-    let userId = req.user.userId;
+      fileId,
+      skipRow
+    } = req.query;
+    let fieldMap = req.body;
+
+    let file = await CsvMetaData.findOne({
+      _id: fileId
+    })
+    let filePath = path.join(__dirname, "..", "..", "public", "csvs", file.Name);
+    let records = await csv({
+      noheader: true
+    }).fromFile(filePath);
+
+    if (skipRow == true) {
+      records = records.slice(1)
+    }
+
+    let cleanedData = await validateCsvData(records, fieldMap, fileId);
+    console.log(cleanedData);
+
+    let users = await User.insertMany(cleanedData.validRecords);
+    let totalUploadedRecords = users.length;
+
+    await CsvMetaData.updateOne({
+      _id: fileId
+    }, {
+      $set: {
+        totalUploadedRecords,
+        totalRecords: records.length,
+        filePath,
+        duplicateRecords: cleanedData.duplicateRecordsCount,
+        discardredRecords: cleanedData.discardredRecordsCount,
+        status: "uploaded",
+        skipRow: skipRow
+      }
+    })
+    res.json({
+      type: "success",
+      statusCode: 200,
+      users
+    })
 
   } catch (error) {
-
+    console.log(error);
+    res.json({
+      type: "error",
+      statusCode: 500,
+    })
   }
 }
 

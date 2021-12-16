@@ -6,6 +6,11 @@ const csvMetadataSchema = mongoose.Schema({
         type: mongoose.Schema.Types.Mixed
     },
     totalRecords: Number,
+    filePath: String,
+    skipFirstRow: {
+        type: Boolean,
+        default: false
+    },
     duplicateRecords: Number,
     discardredRecords: Number,
     totalUploadedRecords: Number,
@@ -17,6 +22,8 @@ const csvMetadataSchema = mongoose.Schema({
         type: String,
         default: "pending"
     }
+}, {
+    timestamps: true
 })
 
 

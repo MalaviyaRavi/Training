@@ -5,6 +5,10 @@ const userSchema = mongoose.Schema({
   email: String,
   mobile: String,
   password: String,
+  addedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "csvmetadata"
+  }
 });
 
 module.exports = mongoose.model("user", userSchema);
