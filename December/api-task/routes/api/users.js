@@ -10,6 +10,7 @@ const {
   addUser,
   logout,
   uploadCsv,
+  createFileMetadata
 } = require("../../controllers/api/users");
 
 const path = require("path");
@@ -23,7 +24,8 @@ const storage = multer.diskStorage({
     callback(null, uploadPath);
   },
   filename: (req, file, callback) => {
-    callback(null, req.user.userEmail + ".csv");
+    let suffix = Date.now()
+    callback(null, req.user.userEmail + suffix + ".csv");
   },
 });
 
@@ -49,6 +51,8 @@ router.post(
   upload.single("csvFile"),
   uploadCsv
 );
+
+router.post("/fieldMap", isAuthenticated, createFileMetadata);
 
 router.post(
   "/users",

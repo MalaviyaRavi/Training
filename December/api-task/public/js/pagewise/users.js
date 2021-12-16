@@ -1,6 +1,9 @@
 const usersEventHandler = function () {
   this.init = function () {
     _this.selectedFields = 0;
+    _this.dbSelectedFields = new Set();
+    _this.fieldMap = {};
+    _this.fileName = null;
     _this.addUser();
     _this.displayUsers({});
     _this.exportToCsv();
@@ -208,15 +211,22 @@ const usersEventHandler = function () {
             return;
           }
 
-          let dbFields = ["name", "mobile", "email"];
+          _this.fileName = response.fileName;
 
           for (let fieldIndex = 0; fieldIndex < response.firstRow.length; fieldIndex++) {
-            let $row = `<tr id="${response.firstRow[fieldIndex]}-header">
+
+            let rowValue = response.firstRow[fieldIndex]
+
+            if (rowValue.split(" ").length > 1) {
+              rowValue = rowValue.split(" ")[0]
+            }
+
+            let $row = `<tr id="${rowValue}-header">
             <td><input class="checkBox form-check-input" type="checkbox" value="${response.firstRow[fieldIndex]}"></td>
-            <td>${response.firstRow[fieldIndex]}</td>
+            <td>${rowValue}</td>
             <td>${response.secondRow[fieldIndex]}</td>
             <td>
-                <select name="dbField" id="${response.firstRow[fieldIndex]}-dropdown" class="form-select">
+                <select name="dbField" id="${rowValue}-dropdown" class="form-select">
                     <option value="" selected>select db field</option>
                     <option value="name">name</option>
                     <option value="mobile">mobile</option>
@@ -233,14 +243,75 @@ const usersEventHandler = function () {
     });
 
 
-    $("#btnModalUpload").on("click", function (e) {
 
-      let checkboxs = $("input:checkbox:checked").ma;
-      for (const checkbox of checkboxs) {
-        console.log("214235745s");
-        console.log(checkbox.val());
+
+
+
+    $("#btnModalUpload").on("click", function (e) {
+      $("#modelError").text("");
+      _this.fieldMap = {};
+      let hasSameSelected = false;
+      _this.dbSelectedFields.clear();
+      $('input:checkbox:checked').each(function (i) {
+
+        let checkboxValue = $(this).val();
+
+        if (checkboxValue.split(" ").length > 1) {
+          checkboxValue = checkboxValue.split(" ")[0];
+        }
+
+        let dbField = $(`#${checkboxValue}-dropdown option:selected`).val()
+
+        if (_this.dbSelectedFields.has(dbField)) {
+          hasSameSelected = true
+        }
+        _this.dbSelectedFields.add(dbField);
+        _this.fieldMap[$(this).val()] = dbField
+      });
+
+      if (hasSameSelected) {
+        $("#modelError").text("selecte unique field from db");
+        return;
       }
+
+      $.ajax({
+        url: "/api/fieldMap",
+        headers: {
+          Authorization: $(document)[0].cookie.split("=")[1]
+        },
+        type: "POST",
+        data: {
+          fieldMap: _this.fieldMap,
+          fileName: _this.fileName
+        },
+        success: function (response) {
+          console.log(response);
+        }
+      })
     })
+
+
+
+    // let preSelectedValue = "";
+    // $(document).on("focus", 'select[name="dbField"]', function () {
+    //   preSelectedValue = $(this).val();
+
+
+    // }).on("change", 'select[name="dbField"]', function () {
+    //   let selectedField = $(this).val();
+    //   if (selectedField != "") {
+
+    //     if (preSelectedValue != "") {
+    //       $(`option[value=${preSelectedValue}]`).attr("disabled", false);
+    //       $(`option[value=${selectedField}]`).attr("disabled", true);
+    //     }
+    //   } else {
+    //     console.log("there");
+    //     $(`option[value=${preSelectedValue}]`).attr("disabled", false);
+    //   }
+    // })
+
+
 
 
     //checkbox events
@@ -259,6 +330,7 @@ const usersEventHandler = function () {
       }
     })
 
+    //file select change event
     $("#csvFile").change(function () {
       $("#error").text("");
     });

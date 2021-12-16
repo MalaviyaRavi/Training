@@ -147,16 +147,16 @@ exports.logout = async function (req, res, next) {
   });
 };
 
-function checkEmail(email) {
-  return email.toLowerCase()
-    .match(
-      `/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/`
-    )
-}
+// function checkEmail(email) {
+//   return email.toLowerCase()
+//     .match(
+//       `/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/`
+//     )
+// }
 
-function checkMobile(mobile) {
-  return mobile.match(`^([0|\+[0-9]{1,5})?([7-9][0-9]{9})$`)
-}
+// function checkMobile(mobile) {
+//   return mobile.match(`^([0|\+[0-9]{1,5})?([7-9][0-9]{9})$`)
+// }
 
 exports.uploadCsv = async function (req, res, next) {
   try {
@@ -164,12 +164,13 @@ exports.uploadCsv = async function (req, res, next) {
     let filePath = path.join(__dirname, "..", "..", "public", "csvs", fileName);
     let users = await csv().fromFile(filePath);
 
-    console.log(users);
+
     res.json({
       type: "success",
       statusCode: 200,
       firstRow: Object.keys(users[0]),
       secondRow: Object.values(users[0]),
+      fileName: fileName,
       message: config.errorMsgs["200"],
     });
   } catch (error) {
@@ -180,6 +181,19 @@ exports.uploadCsv = async function (req, res, next) {
     });
   }
 };
+
+exports.createFileMetadata = async function (req, res, next) {
+  try {
+    let {
+      fieldMap,
+      fileName
+    } = req.body;
+    let userId = req.user.userId;
+
+  } catch (error) {
+
+  }
+}
 
 
 // exports.uploadCsv = async function (req, res, next) {
