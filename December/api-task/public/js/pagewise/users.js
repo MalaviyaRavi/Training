@@ -220,7 +220,7 @@ const usersEventHandler = function () {
             <td>${response.secondRow[fieldIndex]}</td>
             <td>
                 <select name="dbField" id="${response.csvHeaderField[fieldIndex]}-dropdown" class="form-select">
-                    <option value="" selected>select db field</option>
+                    <option value="">select db field</option>
                     <option value="name">name</option>
                     <option value="mobile">mobile</option>
                     <option value="email">email</option>
