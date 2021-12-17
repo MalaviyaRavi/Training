@@ -1,7 +1,6 @@
 const usersEventHandler = function () {
   this.init = function () {
-    _this.selectedFields = 0;
-    _this.dbSelectedFields = new Set();
+
     _this.fieldMap = {};
     _this.fileId = null;
     _this.addUser();
@@ -30,7 +29,7 @@ const usersEventHandler = function () {
           $("body").append(a);
           a[0].click();
           $("body").remove(a);
-          alert("Users CSV File exported");
+          $.alert("Users CSV File exported");
           return;
         }
 
@@ -216,34 +215,18 @@ const usersEventHandler = function () {
           for (let fieldIndex = 0; fieldIndex < response.firstRow.length; fieldIndex++) {
 
             let $row = `<tr id="${response.csvHeaderField[fieldIndex]}" class="fieldRow">
+
             <td>${response.firstRow[fieldIndex]}</td>
             <td>${response.secondRow[fieldIndex]}</td>
             <td>
-                <select name="dbField" id="${response.csvHeaderField[fieldIndex]}-dropdown" class="form-select">
-                    <option value="">select db field</option>
+                <select name="default" id="${response.csvHeaderField[fieldIndex]}-dropdown" class="dbOption form-select">
+                    <option value="default">select db field</option>
                     <option value="name">name</option>
                     <option value="mobile">mobile</option>
                     <option value="email">email</option>
                 </select>
             </td>
         </tr>`
-
-            //     let $row = `<tr id="${rowValue}-header">
-            //     <td><input class="checkBox form-check-input" type="checkbox" value="${response.firstRow[fieldIndex]}"></td>
-            //     <td>${rowValue}</td>
-            //     <td>${response.secondRow[fieldIndex]}</td>
-            //     <td>
-            //         <select name="dbField" id="${rowValue}-dropdown" class="form-select">
-            //             <option value="" selected>select db field</option>
-            //             <option value="name">name</option>
-            //             <option value="mobile">mobile</option>
-            //             <option value="email">email</option>
-            //         </select>
-            //     </td>
-            // </tr>`
-
-
-
             $("#mappingDetails").append($row);
           }
           $('#fieldMapping').modal('show');
@@ -252,53 +235,16 @@ const usersEventHandler = function () {
     });
 
 
-
-
-
-
     $("#btnModalUpload").on("click", function (e) {
       $("#modelError").text("");
-      _this.fieldMap = {};
-      let hasSameSelected = false;
-      _this.dbSelectedFields.clear();
       let skipRow = $("#skipRow").prop("checked");
-      // $('input:checkbox:checked').each(function (i) {
 
-      //   let checkboxValue = $(this).val();
-
-      //   if (checkboxValue.split(" ").length > 1) {
-      //     checkboxValue = checkboxValue.split(" ")[0];
-      //   }
-
-      //   let dbField = $(`#${checkboxValue}-dropdown option:selected`).val();
-
-      //   if (_this.dbSelectedFields.has(dbField)) {
-      //     hasSameSelected = true
-      //   }
-      //   _this.dbSelectedFields.add(dbField);
-      //   _this.fieldMap[$(this).val()] = dbField
-      // });
       $('.fieldRow').each(function (i) {
-        console.log($(this).attr("id"), "hello");
         let field = $(this).attr("id");
 
         let dbField = $(`#${field}-dropdown option:selected`).val();
-
-        if (_this.dbSelectedFields.has(dbField)) {
-          hasSameSelected = true
-        }
-        _this.dbSelectedFields.add(dbField);
         _this.fieldMap[dbField] = field
       });
-
-      if (hasSameSelected) {
-        $("#modelError").text("selecte unique field from db");
-        return;
-      }
-
-      console.log(_this.fieldMap);
-
-
 
       $.ajax({
         url: "/api/fieldMap?fileId=" + _this.fileId + "&skipRow=" + skipRow,
@@ -320,53 +266,62 @@ const usersEventHandler = function () {
                 $("#usersList").append(userDataRow);
               }
             }
+            let duplicateRecordsInCsv = response.totalRecords - response.duplicateRecords - response.discardredRecords - response.totalUploadedRecords;
+            let alertResponse = ` <ul>
+          <li class="text text-success">Total Records In Csv : ${response.totalRecords}</li>
+          <li class="text text-dark">Duplicate Records In CSV : ${duplicateRecordsInCsv} </li>
+          <li class="text text-primary">Duplicate Records In Database : ${response.duplicateRecords} </li>
+          <li class="text text-danger">Discarded Records : ${response.discardredRecords} </li>
+          <li class="text text-info">Total Uploaded Records : ${response.totalUploadedRecords} </li>
+      </ul>`
+            $("#mappingDetails").html("");
             $('#fieldMapping').modal('hide');
             $("#progress-wrp").css("display", "none");
+            $.alert(alertResponse);
+
 
           }
         }
       })
     })
 
+    let selectedField = {};
+    $(document).on("change", ".dbOption", function (e) {
+      let previousSelectedValue = $(this).attr('name');
+      $(this).attr('name', $(this).val());
+      let newSelectedValue = $(this).val();
+      // console.log("prev", previousSelectedValue, "new", newSelectedValue);
+      if (previousSelectedValue === newSelectedValue) {
+        return;
+      }
 
+      if (previousSelectedValue === "default" && newSelectedValue != "default") {
+        selectedField[newSelectedValue] = 1;
+        for (const field of Object.keys(selectedField)) {
+          $(`.dbOption option[value=${field}]`).prop("disabled", true);
+        }
+        return;
+      }
 
-    // let preSelectedValue = "";
-    // $(document).on("focus", 'select[name="dbField"]', function () {
-    //   preSelectedValue = $(this).val();
+      if (previousSelectedValue !== "default" && newSelectedValue === "default") {
+        $(`.dbOption option[value=${previousSelectedValue}]`).prop("disabled", false);
+        delete selectedField[previousSelectedValue];
+        for (const field of Object.keys(selectedField)) {
+          $(`.dbOption option[value=${field}]`).prop("disabled", true);
+        }
+        return;
+      }
 
+      if (previousSelectedValue !== "default" && newSelectedValue !== "default") {
+        $(`.dbOption option[value=${previousSelectedValue}]`).prop("disabled", false);
+        delete selectedField[previousSelectedValue];
+        selectedField[newSelectedValue] = 1;
+        for (const field of Object.keys(selectedField)) {
+          $(`.dbOption option[value=${field}]`).prop("disabled", true);
+        }
+      }
 
-    // }).on("change", 'select[name="dbField"]', function () {
-    //   let selectedField = $(this).val();
-    //   if (selectedField != "") {
-
-    //     if (preSelectedValue != "") {
-    //       $(`option[value=${preSelectedValue}]`).attr("disabled", false);
-    //       $(`option[value=${selectedField}]`).attr("disabled", true);
-    //     }
-    //   } else {
-    //     console.log("there");
-    //     $(`option[value=${preSelectedValue}]`).attr("disabled", false);
-    //   }
-    // })
-
-
-
-
-    //checkbox events
-    // $(document).on("change", '.checkBox', function () {
-    //   if (this.checked == true) {
-    //     _this.selectedFields++
-    //   }
-    //   if (this.checked == false) {
-    //     _this.selectedFields--;
-    //   }
-    //   if (_this.selectedFields == 3) {
-    //     $("input:checkbox:not(:checked)").attr("disabled", true);
-    //   }
-    //   if (_this.selectedFields < 3) {
-    //     $("input:checkbox:not(:checked)").attr("disabled", false);
-    //   }
-    // })
+    })
 
     //file select change event
     $("#csvFile").change(function () {

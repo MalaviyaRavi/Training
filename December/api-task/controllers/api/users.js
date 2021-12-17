@@ -222,10 +222,16 @@ exports.createFileMetadata = async function (req, res, next) {
         skipRow: skipRow
       }
     })
+
+
     res.json({
       type: "success",
       statusCode: 200,
-      users
+      users,
+      duplicateRecords: cleanedData.duplicateRecordsCount,
+      discardredRecords: cleanedData.discardredRecordsCount,
+      totalRecords: records.length,
+      totalUploadedRecords: totalUploadedRecords
     })
 
   } catch (error) {

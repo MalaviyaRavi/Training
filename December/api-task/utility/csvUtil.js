@@ -33,19 +33,24 @@ function checkDuplicateInCSV(email, mobile) {
 async function validateCsvData(records, fieldMap, fileId) {
 
     for (const record of records) {
+        let name = record[fieldMap.name];
+        let email = record[fieldMap.email];
+        let mobile = record[fieldMap.mobile];
 
-        if (checkDuplicateInCSV(record[fieldMap.email], record[fieldMap.mobile])) {
+        //skip record which has email or mobile duplicate
+        if (checkDuplicateInCSV(email, mobile)) {
             continue;
         }
-        if (record[fieldMap.name] && record[fieldMap.email] && checkEmail(record[fieldMap.email]) && record[fieldMap.mobile] && checkMobile(record[fieldMap.mobile])) {
+
+
+        if (name && email && checkEmail(email) && mobile && checkMobile(mobile)) {
             let matchUser = await User.findOne({
                 $or: [{
-                    email: record[fieldMap.email]
+                    email: email
                 }, {
-                    mobile: record[fieldMap.mobile]
+                    mobile: mobile
                 }],
             });
-
             let isExist = matchUser ? true : false;
 
             if (isExist) {
@@ -53,10 +58,10 @@ async function validateCsvData(records, fieldMap, fileId) {
             } else {
                 validRecordsCount++;
                 let userObj = {};
-                userObj["name"] = record[fieldMap.name];
-                userObj["email"] = record[fieldMap.email];
-                userObj["mobile"] = record[fieldMap.mobile];
-                userObj["password"] = bcrypt.hashSync(record[fieldMap.email], 8);
+                userObj["name"] = name;
+                userObj["email"] = email;
+                userObj["mobile"] = mobile;
+                userObj["password"] = bcrypt.hashSync(email, 8);
                 userObj["addedBy"] = fileId;
                 validRecords.push(userObj);
             }
