@@ -209,6 +209,11 @@ const usersEventHandler = function () {
             alert(response.message);
             return;
           }
+          let optionString = '';
+          let dbFields = response.dbFields;
+          for (const field of dbFields) {
+            optionString = optionString + `<option value="${field}">${field}</option>`;
+          }
 
           _this.fileId = response.fileId;
 
@@ -221,9 +226,8 @@ const usersEventHandler = function () {
             <td>
                 <select name="default" id="${response.csvHeaderField[fieldIndex]}-dropdown" class="dbOption form-select">
                     <option value="default">select db field</option>
-                    <option value="name">name</option>
-                    <option value="mobile">mobile</option>
-                    <option value="email">email</option>
+                    ${optionString}
+                    <option value="add" id = "addNewField">Add New Field</option>
                 </select>
             </td>
         </tr>`
@@ -245,6 +249,11 @@ const usersEventHandler = function () {
         let dbField = $(`#${field}-dropdown option:selected`).val();
         _this.fieldMap[dbField] = field
       });
+
+
+      console.log(_this.fieldMap);
+
+
 
       $.ajax({
         url: "/api/fieldMap?fileId=" + _this.fileId + "&skipRow=" + skipRow,
@@ -287,15 +296,49 @@ const usersEventHandler = function () {
 
     let selectedField = {};
     $(document).on("change", ".dbOption", function (e) {
+      $this = $(this);
       let previousSelectedValue = $(this).attr('name');
+
+      if ($(this).val() === "add") {
+        let newField = prompt("enter new field");
+        if (!newField) {
+          return;
+        }
+        $.ajax({
+          url: "/api/field/add",
+          data: {
+            newField: newField
+          },
+          method: "POST",
+          success: function (response) {
+            if (response.type == "error") {
+              return $.alert(response.message)
+            }
+
+            $(`<option value="${newField}">${newField}</option>`).insertBefore(".dbOption #addNewField")
+            $this.val(newField).attr("selected", true);
+            $this.attr('name', newField);
+            previousSelectedValue = $this.attr("name");
+            selectedField[newField] = 1;
+            for (const field of Object.keys(selectedField)) {
+              $(`.dbOption option[value=${field}]`).prop("disabled", true);
+            }
+
+          }
+        })
+        return;
+      }
+
+
+
       $(this).attr('name', $(this).val());
       let newSelectedValue = $(this).val();
-      // console.log("prev", previousSelectedValue, "new", newSelectedValue);
+
       if (previousSelectedValue === newSelectedValue) {
         return;
       }
 
-      if (previousSelectedValue === "default" && newSelectedValue != "default") {
+      if (previousSelectedValue === "default" && newSelectedValue !== "default") {
         selectedField[newSelectedValue] = 1;
         for (const field of Object.keys(selectedField)) {
           $(`.dbOption option[value=${field}]`).prop("disabled", true);
@@ -322,6 +365,46 @@ const usersEventHandler = function () {
       }
 
     })
+
+    /* {
+       let selectedField = {};
+       $(document).on("change", ".dbOption", function (e) {
+         let previousSelectedValue = $(this).attr('name');
+         $(this).attr('name', $(this).val());
+         let newSelectedValue = $(this).val();
+         // console.log("prev", previousSelectedValue, "new", newSelectedValue);
+         if (previousSelectedValue === newSelectedValue) {
+           return;
+         }
+
+         if (previousSelectedValue === "default" && newSelectedValue !== "default") {
+           selectedField[newSelectedValue] = 1;
+           for (const field of Object.keys(selectedField)) {
+             $(`.dbOption option[value=${field}]`).prop("disabled", true);
+           }
+           return;
+         }
+
+         if (previousSelectedValue !== "default" && newSelectedValue === "default") {
+           $(`.dbOption option[value=${previousSelectedValue}]`).prop("disabled", false);
+           delete selectedField[previousSelectedValue];
+           for (const field of Object.keys(selectedField)) {
+             $(`.dbOption option[value=${field}]`).prop("disabled", true);
+           }
+           return;
+         }
+
+         if (previousSelectedValue !== "default" && newSelectedValue !== "default") {
+           $(`.dbOption option[value=${previousSelectedValue}]`).prop("disabled", false);
+           delete selectedField[previousSelectedValue];
+           selectedField[newSelectedValue] = 1;
+           for (const field of Object.keys(selectedField)) {
+             $(`.dbOption option[value=${field}]`).prop("disabled", true);
+           }
+         }
+
+       })
+     }*/
 
     //file select change event
     $("#csvFile").change(function () {

@@ -14,6 +14,7 @@ const path = require("path");
 const fs = require("fs");
 const validateCsvData = require("../../utility/csvUtil");
 const CsvMetaData = require("../../models/csvMetaData");
+const Field = require("../../models/field");
 
 exports.login = async function (req, res, next) {
   try {
@@ -162,11 +163,22 @@ exports.uploadCsv = async function (req, res, next) {
     let users = await csv({
       noheader: true
     }).fromFile(filePath);
-    console.log(users);
+
+    let allDbFields = Object.keys(User.schema.paths);
+    let fieldsToBeIgnore = ["_id", "password", "__v", "addedBy"];
+    let dbFieldsForCsv = allDbFields.filter(function (field) {
+      return !fieldsToBeIgnore.includes(field);
+    })
+    let fieldDoc = await Field.findOne({});
+
+    if (fieldDoc) {
+      dbFieldsForCsv = dbFieldsForCsv.concat(fieldDoc.fields);
+    }
 
     res.json({
       type: "success",
       statusCode: 200,
+      dbFields: dbFieldsForCsv,
       csvHeaderField: Object.keys(users[0]),
       firstRow: Object.values(users[0]),
       secondRow: Object.values(users[1]),
@@ -204,7 +216,7 @@ exports.createFileMetadata = async function (req, res, next) {
     }
 
     let cleanedData = await validateCsvData(records, fieldMap, fileId);
-    console.log(cleanedData);
+    console.log("cleanded", cleanedData);
 
     let users = await User.insertMany(cleanedData.validRecords);
     let totalUploadedRecords = users.length;
@@ -241,6 +253,58 @@ exports.createFileMetadata = async function (req, res, next) {
       statusCode: 500,
     })
   }
+}
+
+
+exports.addNewField = async function (req, res, next) {
+  let {
+    newField
+  } = req.body;
+
+  let dbFields = Object.keys(User.schema.paths)
+
+  let fieldDoc = await Field.findOne({});
+
+  if (fieldDoc) {
+    dbFields = dbFields.concat(fieldDoc.fields);
+  }
+
+  let isFieldExist = dbFields.includes(newField);
+
+
+  if (isFieldExist) {
+    return res.json({
+      type: "error",
+      message: "field already exist in schema"
+    })
+  }
+
+
+  try {
+    await Field.updateOne({}, {
+      $addToSet: {
+        "fields": newField
+      }
+    }, {
+      "upsert": true
+    });
+
+    res.json({
+      type: "success",
+      message: "new field added successfully"
+    })
+  } catch (error) {
+    console.log(error);
+    res.json({
+      type: "error",
+      message: "error in field adding"
+    })
+  }
+
+
+
+
+
 }
 
 

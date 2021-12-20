@@ -10,7 +10,8 @@ const {
   addUser,
   logout,
   uploadCsv,
-  createFileMetadata
+  createFileMetadata,
+  addNewField
 } = require("../../controllers/api/users");
 
 const path = require("path");
@@ -87,6 +88,8 @@ router.post(
   }),
   addUser
 );
+
+router.post("/field/add", addNewField);
 
 router.get("/logout", logout);
 

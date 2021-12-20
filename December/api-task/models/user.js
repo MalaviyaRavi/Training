@@ -9,6 +9,8 @@ const userSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "csvmetadata"
   }
+}, {
+  strict: false,
 });
 
 module.exports = mongoose.model("user", userSchema);

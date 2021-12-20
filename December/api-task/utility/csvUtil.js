@@ -58,9 +58,9 @@ async function validateCsvData(records, fieldMap, fileId) {
             } else {
                 validRecordsCount++;
                 let userObj = {};
-                userObj["name"] = name;
-                userObj["email"] = email;
-                userObj["mobile"] = mobile;
+                for (const field in fieldMap) {
+                    userObj[field] = record[fieldMap[field]];
+                }
                 userObj["password"] = bcrypt.hashSync(email, 8);
                 userObj["addedBy"] = fileId;
                 validRecords.push(userObj);
