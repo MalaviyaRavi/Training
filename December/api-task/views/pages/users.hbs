@@ -123,6 +123,31 @@
     </div>
 </div>
 
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <table>
+                <tr>
+                    <th>FileName</th>
+                    <th>Status</th>
+                    <th>Uploaded By</th>
+                </tr>
+
+                {{#each files}}
+
+                <tr>
+                    <th>{{Name}}</th>
+                    <th>{{status}}</th>
+                    <th>{{uploadBy.email}}</th>
+                </tr>
+
+
+                {{/each}}
+            </table>
+        </div>
+    </div>
+</div>
+
 
 <script src="/js/pagewise/users.js"></script>
 <script>
