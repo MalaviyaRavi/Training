@@ -123,26 +123,11 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-8">
-            <table>
-                <tr>
-                    <th>FileName</th>
-                    <th>Status</th>
-                    <th>Uploaded By</th>
-                </tr>
-
-                {{#each files}}
-
-                <tr>
-                    <th>{{Name}}</th>
-                    <th>{{status}}</th>
-                    <th>{{uploadBy.email}}</th>
-                </tr>
-
-
-                {{/each}}
+<div class="container mt-5">
+    <div class="row justify-center">
+        <div class="col-8 mt-5">
+            <h3 class="text-center">File Status</h3>
+            <table id="fileStatus" class="table bordered">
             </table>
         </div>
     </div>
@@ -150,6 +135,9 @@
 
 
 <script src="/js/pagewise/users.js"></script>
+<script src="https://cdn.socket.io/4.4.0/socket.io.min.js"
+    integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj"
+    crossorigin="anonymous"></script>
 <script>
     $(document).ready(function () {
         new usersEventHandler();

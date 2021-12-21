@@ -13,10 +13,7 @@ function checkMobile(mobile) {
 
 
 
-let validRecords = [];
-let discardredRecordsCount = 0;
-let duplicateRecordsCount = 0;
-let validRecordsCount = 0;
+
 let emailObject = {};
 let mobileObject = {};
 
@@ -30,7 +27,15 @@ function checkDuplicateInCSV(email, mobile) {
     }
 }
 
+//records == jsonarray
+//record = user
+
 async function validateCsvData(records, fieldMap, fileId) {
+    let validRecords = [];
+    let discardredRecordsCount = 0;
+    let duplicateRecordsCount = 0;
+    let duplicateCsvRecordsCount = 0;
+    let validRecordsCount = 0;
 
     for (const record of records) {
         let name = record[fieldMap.name];
@@ -39,6 +44,7 @@ async function validateCsvData(records, fieldMap, fileId) {
 
         //skip record which has email or mobile duplicate
         if (checkDuplicateInCSV(email, mobile)) {
+            duplicateCsvRecordsCount++;
             continue;
         }
 
@@ -74,7 +80,8 @@ async function validateCsvData(records, fieldMap, fileId) {
         validRecords,
         duplicateRecordsCount,
         discardredRecordsCount,
-        validRecordsCount
+        validRecordsCount,
+        duplicateCsvRecordsCount
     }
 }
 

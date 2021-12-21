@@ -7,13 +7,30 @@ const csvMetadataSchema = mongoose.Schema({
     },
     totalRecords: Number,
     filePath: String,
-    skipFirstRow: {
+    parsedRows: {
+        type: Number,
+        default: 0
+    },
+    skipRow: {
         type: Boolean,
         default: false
     },
-    duplicateRecords: Number,
-    discardredRecords: Number,
-    totalUploadedRecords: Number,
+    duplicateRecords: {
+        type: Number,
+        default: 0
+    },
+    duplicateRecordsInCsv: {
+        type: Number,
+        default: 0
+    },
+    discardredRecords: {
+        type: Number,
+        default: 0
+    },
+    totalUploadedRecords: {
+        type: Number,
+        default: 0
+    },
     uploadBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user"

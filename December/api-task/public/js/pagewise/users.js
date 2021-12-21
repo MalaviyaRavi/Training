@@ -2,11 +2,17 @@ const usersEventHandler = function () {
   this.init = function () {
 
     _this.fieldMap = {};
+    _this.socket = io("http://localhost:4000", {
+      transports: ['websocket']
+    });
+    _this.socketEvents();
     _this.fileId = null;
     _this.addUser();
+
     _this.displayUsers({});
     _this.exportToCsv();
     _this.uploadCSV();
+    _this.displayUploadStatusReport();
     _this.logout();
   };
 
@@ -225,7 +231,7 @@ const usersEventHandler = function () {
             <td>${response.secondRow[fieldIndex]}</td>
             <td>
                 <select name="default" id="${response.csvHeaderField[fieldIndex]}-dropdown" class="dbOption form-select">
-                    <option value="default">select db field</option>
+                    <option value="default" selected>select db field</option>
                     ${optionString}
                     <option value="add" id = "addNewField">Add New Field</option>
                 </select>
@@ -247,7 +253,11 @@ const usersEventHandler = function () {
         let field = $(this).attr("id");
 
         let dbField = $(`#${field}-dropdown option:selected`).val();
-        _this.fieldMap[dbField] = field
+        console.log(dbField);
+        if (dbField != "default") {
+          _this.fieldMap[dbField] = field
+        }
+
       });
 
 
@@ -265,30 +275,30 @@ const usersEventHandler = function () {
         success: function (response) {
           console.log(response);
           if (response.type == "success") {
-            if (response.users.length) {
-              for (const user of response.users) {
-                let userDataRow = `<tr>
-                <td scope="col">${user.name}</td>
-                <td scope="col">${user.email}</td>
-                <td scope="col">${user.mobile}</td>
-              </tr>`;
-                $("#usersList").append(userDataRow);
-              }
-            }
-            let duplicateRecordsInCsv = response.totalRecords - response.duplicateRecords - response.discardredRecords - response.totalUploadedRecords;
-            let alertResponse = ` <ul>
-          <li class="text text-success">Total Records In Csv : ${response.totalRecords}</li>
-          <li class="text text-dark">Duplicate Records In CSV : ${duplicateRecordsInCsv} </li>
-          <li class="text text-primary">Duplicate Records In Database : ${response.duplicateRecords} </li>
-          <li class="text text-danger">Discarded Records : ${response.discardredRecords} </li>
-          <li class="text text-info">Total Uploaded Records : ${response.totalUploadedRecords} </li>
-      </ul>`
+            //       if (response.users.length) {
+            //         for (const user of response.users) {
+            //           let userDataRow = `<tr>
+            //           <td scope="col">${user.name}</td>
+            //           <td scope="col">${user.email}</td>
+            //           <td scope="col">${user.mobile}</td>
+            //         </tr>`;
+            //           $("#usersList").append(userDataRow);
+            //         }
+            //       }
+            //       let duplicateRecordsInCsv = response.totalRecords - response.duplicateRecords - response.discardredRecords - response.totalUploadedRecords;
+            //       let alertResponse = ` <ul>
+            //     <li class="text text-success">Total Records In Csv : ${response.totalRecords}</li>
+            //     <li class="text text-dark">Duplicate Records In CSV : ${duplicateRecordsInCsv} </li>
+            //     <li class="text text-primary">Duplicate Records In Database : ${response.duplicateRecords} </li>
+            //     <li class="text text-danger">Discarded Records : ${response.discardredRecords} </li>
+            //     <li class="text text-info">Total Uploaded Records : ${response.totalUploadedRecords} </li>
+            // </ul>`
             $("#mappingDetails").html("");
             $('#fieldMapping').modal('hide');
             $("#progress-wrp").css("display", "none");
-            $.alert(alertResponse);
-
-
+            $.alert(response.message);
+          } else {
+            $.alert(response.message);
           }
         }
       })
@@ -366,6 +376,8 @@ const usersEventHandler = function () {
 
     })
 
+
+
     /* {
        let selectedField = {};
        $(document).on("change", ".dbOption", function (e) {
@@ -411,6 +423,64 @@ const usersEventHandler = function () {
       $("#error").text("");
     });
   };
+
+  this.displayUploadStatusReport = function () {
+    $.ajax({
+      url: "/api/files",
+      method: "GET",
+      success: function (response) {
+        if (response.type == "error") {
+          return $.alert(response.message)
+        }
+
+        $("#fileStatus").html("");
+
+        $("#fileStatus").append(`<tr>
+        <th>FileName</th>
+        <th>Status</th>
+        <th>Percentage Upload</th>
+    </tr>`)
+
+        for (const file of response.files) {
+          let $span = null;
+          if (file.status == "pending") {
+            $span = ` <span class="text text-danger">${file.percentUpload}%</span>`
+          }
+          if (file.status == "inProgress") {
+            $span = ` <span class="text text-primary">${file.percentUpload}%</span>`
+          }
+          if (file.status == "uploaded") {
+            $span = ` <span class="text text-success">${file.percentUpload}%</span>`
+          }
+
+
+          let fileRow = `<tr>
+          <td>${file.Name}</td>
+          <td>${file.status}</td>
+          <td>
+             ${$span}
+          </tds>
+      </tr>`
+
+          $("#fileStatus").append(fileRow)
+        }
+      }
+    })
+  }
+
+  this.socketEvents = function () {
+    _this.socket.on("statusChange", function () {
+      _this.displayUploadStatusReport()
+    })
+
+    _this.socket.on("fileProcessStart", function (payLoad) {
+      $.alert(`${payLoad.fileName} proccessing start`);
+    })
+
+    _this.socket.on("fileProcessEnd", function (payLoad) {
+      $.alert(`${payLoad.fileName} proccessing done`);
+    })
+  }
 
   let _this = this;
   this.init();

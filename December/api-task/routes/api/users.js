@@ -11,7 +11,8 @@ const {
   logout,
   uploadCsv,
   createFileMetadata,
-  addNewField
+  addNewField,
+  getFiles
 } = require("../../controllers/api/users");
 
 const path = require("path");
@@ -92,5 +93,7 @@ router.post(
 router.post("/field/add", addNewField);
 
 router.get("/logout", logout);
+
+router.get("/files", getFiles);
 
 module.exports = router;

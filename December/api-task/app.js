@@ -47,6 +47,7 @@ async function connectDb() {
     app.listen(config.port, async function () {
       console.log("app started");
       require("./services/generateAdmin");
+      // require("./cron-jobs/upload-csv");
     });
   } catch (error) {
     console.log(error);

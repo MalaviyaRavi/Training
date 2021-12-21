@@ -210,27 +210,24 @@ exports.createFileMetadata = async function (req, res, next) {
     let records = await csv({
       noheader: true
     }).fromFile(filePath);
-
-    if (skipRow == true) {
-      records = records.slice(1)
+    console.log(skipRow, typeof skipRow);
+    if (skipRow == "true") {
+      records = records.slice(1, )
     }
 
-    let cleanedData = await validateCsvData(records, fieldMap, fileId);
-    console.log("cleanded", cleanedData);
+    // let cleanedData = await validateCsvData(records, fieldMap, fileId);
+    // console.log("cleanded", cleanedData);
 
-    let users = await User.insertMany(cleanedData.validRecords);
-    let totalUploadedRecords = users.length;
+    // let users = await User.insertMany(cleanedData.validRecords);
+    // let totalUploadedRecords = users.length;
 
     await CsvMetaData.updateOne({
       _id: fileId
     }, {
       $set: {
-        totalUploadedRecords,
         totalRecords: records.length,
         filePath,
-        duplicateRecords: cleanedData.duplicateRecordsCount,
-        discardredRecords: cleanedData.discardredRecordsCount,
-        status: "uploaded",
+        FieldMapping: fieldMap,
         skipRow: skipRow
       }
     })
@@ -239,11 +236,7 @@ exports.createFileMetadata = async function (req, res, next) {
     res.json({
       type: "success",
       statusCode: 200,
-      users,
-      duplicateRecords: cleanedData.duplicateRecordsCount,
-      discardredRecords: cleanedData.discardredRecordsCount,
-      totalRecords: records.length,
-      totalUploadedRecords: totalUploadedRecords
+      message: `${file.name} uploaded successfully with fieldmapping`
     })
 
   } catch (error) {
@@ -305,6 +298,38 @@ exports.addNewField = async function (req, res, next) {
 
 
 
+}
+
+exports.getFiles = async function (req, res, next) {
+  try {
+
+    let files = await CsvMetaData.aggregate([{
+      $project: {
+        Name: "$Name",
+        status: "$status",
+
+        percentUpload: {
+          $round: [{
+            $multiply: [{
+              $divide: ["$parsedRows", "$totalRecords"]
+            }, 100]
+          }, 0]
+        },
+      }
+    }, ])
+
+
+
+    res.json({
+      type: "success",
+      files: files
+    })
+  } catch (error) {
+    res.json({
+      type: "error",
+      message: "something went wrong"
+    })
+  }
 }
 
 
