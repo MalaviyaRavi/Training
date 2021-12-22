@@ -32,7 +32,7 @@
 
 <div class="container">
     <button class="btn btn-danger" id="btnLogout">Logout</button>
-    <div class="row justify-content-center mt-5">
+    <div class="row justify-content-evenly mt-5">
         <div class="col-5 mt-5 border p-3">
             <h3 class="titletext text-center">Add User</h3>
             <form id="addUserForm">
@@ -97,6 +97,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Upload CSV</h5>
+                        <h5 id="fieldDuplicationError" class="text text-danger d-none"></h5>
                         <h5 id="modelError" class="text text-danger"></h5>
                     </div>
                     <div class="modal-body">
@@ -124,10 +125,14 @@
 </div>
 
 <div class="container mt-5">
-    <div class="row justify-center">
-        <div class="col-8 mt-5">
+    <div class="row justify-content-evenly">
+        <div class="col-10 mt-5">
+            <div class="cronBtns text-center">
+                <button id="btnStartCron" class="btn btn-primary">Start Cron</button>
+                <button id="btnStopCron" class="btn btn-danger d-none">Stop Cron</button>
+            </div>
             <h3 class="text-center">File Status</h3>
-            <table id="fileStatus" class="table bordered">
+            <table id="fileStatus" class="table table-striped" border="1" cellspacing="5" cellpadding="10">
             </table>
         </div>
     </div>
@@ -135,9 +140,6 @@
 
 
 <script src="/js/pagewise/users.js"></script>
-<script src="https://cdn.socket.io/4.4.0/socket.io.min.js"
-    integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj"
-    crossorigin="anonymous"></script>
 <script>
     $(document).ready(function () {
         new usersEventHandler();

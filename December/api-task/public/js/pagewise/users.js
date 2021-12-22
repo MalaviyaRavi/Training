@@ -1,14 +1,13 @@
 const usersEventHandler = function () {
   this.init = function () {
-
     _this.fieldMap = {};
     _this.socket = io("http://localhost:4000", {
       transports: ['websocket']
     });
     _this.socketEvents();
+    _this.selectedFields = {};
     _this.fileId = null;
     _this.addUser();
-
     _this.displayUsers({});
     _this.exportToCsv();
     _this.uploadCSV();
@@ -215,12 +214,12 @@ const usersEventHandler = function () {
             alert(response.message);
             return;
           }
+          _this.selectedFields = {};
           let optionString = '';
           let dbFields = response.dbFields;
           for (const field of dbFields) {
             optionString = optionString + `<option value="${field}">${field}</option>`;
           }
-
           _this.fileId = response.fileId;
 
           for (let fieldIndex = 0; fieldIndex < response.firstRow.length; fieldIndex++) {
@@ -244,7 +243,6 @@ const usersEventHandler = function () {
       });
     });
 
-
     $("#btnModalUpload").on("click", function (e) {
       $("#modelError").text("");
       let skipRow = $("#skipRow").prop("checked");
@@ -259,12 +257,6 @@ const usersEventHandler = function () {
         }
 
       });
-
-
-      console.log(_this.fieldMap);
-
-
-
       $.ajax({
         url: "/api/fieldMap?fileId=" + _this.fileId + "&skipRow=" + skipRow,
         headers: {
@@ -275,24 +267,6 @@ const usersEventHandler = function () {
         success: function (response) {
           console.log(response);
           if (response.type == "success") {
-            //       if (response.users.length) {
-            //         for (const user of response.users) {
-            //           let userDataRow = `<tr>
-            //           <td scope="col">${user.name}</td>
-            //           <td scope="col">${user.email}</td>
-            //           <td scope="col">${user.mobile}</td>
-            //         </tr>`;
-            //           $("#usersList").append(userDataRow);
-            //         }
-            //       }
-            //       let duplicateRecordsInCsv = response.totalRecords - response.duplicateRecords - response.discardredRecords - response.totalUploadedRecords;
-            //       let alertResponse = ` <ul>
-            //     <li class="text text-success">Total Records In Csv : ${response.totalRecords}</li>
-            //     <li class="text text-dark">Duplicate Records In CSV : ${duplicateRecordsInCsv} </li>
-            //     <li class="text text-primary">Duplicate Records In Database : ${response.duplicateRecords} </li>
-            //     <li class="text text-danger">Discarded Records : ${response.discardredRecords} </li>
-            //     <li class="text text-info">Total Uploaded Records : ${response.totalUploadedRecords} </li>
-            // </ul>`
             $("#mappingDetails").html("");
             $('#fieldMapping').modal('hide');
             $("#progress-wrp").css("display", "none");
@@ -304,10 +278,9 @@ const usersEventHandler = function () {
       })
     })
 
-    let selectedField = {};
+
     $(document).on("change", ".dbOption", function (e) {
       $this = $(this);
-      let previousSelectedValue = $(this).attr('name');
 
       if ($(this).val() === "add") {
         let newField = prompt("enter new field");
@@ -324,15 +297,10 @@ const usersEventHandler = function () {
             if (response.type == "error") {
               return $.alert(response.message)
             }
-
             $(`<option value="${newField}">${newField}</option>`).insertBefore(".dbOption #addNewField")
             $this.val(newField).attr("selected", true);
             $this.attr('name', newField);
-            previousSelectedValue = $this.attr("name");
-            selectedField[newField] = 1;
-            for (const field of Object.keys(selectedField)) {
-              $(`.dbOption option[value=${field}]`).prop("disabled", true);
-            }
+            _this.selectedField[newField] = 1;
 
           }
         })
@@ -340,8 +308,33 @@ const usersEventHandler = function () {
       }
 
 
+      let prevValue = $this.attr("name");
+      let current = $this.val();
 
-      $(this).attr('name', $(this).val());
+      if (_this.selectedFields.hasOwnProperty(current)) {
+        $.toast({
+          heading: 'Warning',
+          text: `${current} already selected try new one`,
+          showHideTransition: 'plain',
+          icon: 'warning',
+          hideAfter: 2000,
+          allowToastClose: true,
+          stack: 3,
+          position: 'top-center',
+        })
+        $this.val(prevValue).attr("selected", true);
+      } else {
+        $this.attr("name", current)
+        if (current !== "default") {
+          delete _this.selectedFields[prevValue];
+          _this.selectedFields[current] = 1;
+        } else {
+          delete _this.selectedFields[prevValue];
+        }
+      }
+
+
+      /*$(this).attr('name', $(this).val());
       let newSelectedValue = $(this).val();
 
       if (previousSelectedValue === newSelectedValue) {
@@ -372,52 +365,9 @@ const usersEventHandler = function () {
         for (const field of Object.keys(selectedField)) {
           $(`.dbOption option[value=${field}]`).prop("disabled", true);
         }
-      }
+      }*/
 
     })
-
-
-
-    /* {
-       let selectedField = {};
-       $(document).on("change", ".dbOption", function (e) {
-         let previousSelectedValue = $(this).attr('name');
-         $(this).attr('name', $(this).val());
-         let newSelectedValue = $(this).val();
-         // console.log("prev", previousSelectedValue, "new", newSelectedValue);
-         if (previousSelectedValue === newSelectedValue) {
-           return;
-         }
-
-         if (previousSelectedValue === "default" && newSelectedValue !== "default") {
-           selectedField[newSelectedValue] = 1;
-           for (const field of Object.keys(selectedField)) {
-             $(`.dbOption option[value=${field}]`).prop("disabled", true);
-           }
-           return;
-         }
-
-         if (previousSelectedValue !== "default" && newSelectedValue === "default") {
-           $(`.dbOption option[value=${previousSelectedValue}]`).prop("disabled", false);
-           delete selectedField[previousSelectedValue];
-           for (const field of Object.keys(selectedField)) {
-             $(`.dbOption option[value=${field}]`).prop("disabled", true);
-           }
-           return;
-         }
-
-         if (previousSelectedValue !== "default" && newSelectedValue !== "default") {
-           $(`.dbOption option[value=${previousSelectedValue}]`).prop("disabled", false);
-           delete selectedField[previousSelectedValue];
-           selectedField[newSelectedValue] = 1;
-           for (const field of Object.keys(selectedField)) {
-             $(`.dbOption option[value=${field}]`).prop("disabled", true);
-           }
-         }
-
-       })
-     }*/
-
     //file select change event
     $("#csvFile").change(function () {
       $("#error").text("");
@@ -437,29 +387,47 @@ const usersEventHandler = function () {
 
         $("#fileStatus").append(`<tr>
         <th>FileName</th>
+        <th>totalRecords</th>
+        <th>Parsed Rows</th>
+        <th>Duplicate Rows(DB)</th>
+        <th>Duplicate Rows(CSV)</th>
+        <th>Discarded Rows</th>
+        <th>Total Uploaded Rows</th>
         <th>Status</th>
-        <th>Percentage Upload</th>
+        <th>Percent Upload</th>
     </tr>`)
 
         for (const file of response.files) {
+
           let $span = null;
+          let $status = null;
           if (file.status == "pending") {
-            $span = ` <span class="text text-danger">${file.percentUpload}%</span>`
+            console.log(file);
+            $status = `<span class="text text-danger">${file.status}</span>`
+            $span = `<span class="text text-danger">${file.percentUpload}%</span>`
           }
           if (file.status == "inProgress") {
+            $status = ` <span class="text text-primary">${file.status}</span>`
             $span = ` <span class="text text-primary">${file.percentUpload}%</span>`
           }
           if (file.status == "uploaded") {
+            $status = ` <span class="text text-success">${file.status}</span>`
             $span = ` <span class="text text-success">${file.percentUpload}%</span>`
           }
 
 
           let fileRow = `<tr>
           <td>${file.Name}</td>
-          <td>${file.status}</td>
+          <td>${file.totalRecords}</td>
+          <td>${file.parsedRows}</td>
+          <td>${file.duplicateRecords}</td>
+          <td>${file.duplicateRecordsInCsv}</td>
+          <td>${file.discardredRecords}</td>
+          <td>${file.totalUploadedRecords}</td>
+          <td>${$status}</td>
           <td>
              ${$span}
-          </tds>
+          </td>
       </tr>`
 
           $("#fileStatus").append(fileRow)
@@ -469,16 +437,53 @@ const usersEventHandler = function () {
   }
 
   this.socketEvents = function () {
+
+    $("#btnStartCron").on("click", function () {
+      console.log("start");
+      $(this).addClass("d-none");
+      $("#btnStopCron").removeClass("d-none");
+      _this.socket.emit("cronStart");
+    })
+
+    $("#btnStopCron").on("click", function () {
+      console.log("stop");
+      $(this).addClass("d-none");
+      $("#btnStartCron").removeClass("d-none");
+      _this.socket.emit("cronStop");
+    })
+
+
+
     _this.socket.on("statusChange", function () {
       _this.displayUploadStatusReport()
     })
 
     _this.socket.on("fileProcessStart", function (payLoad) {
-      $.alert(`${payLoad.fileName} proccessing start`);
+      $.toast({
+        text: `${payLoad.fileName} uploading start`,
+        icon: 'info',
+        showHideTransition: 'slide',
+        allowToastClose: true,
+        hideAfter: 3000,
+        stack: 3,
+        position: 'top-right',
+        textAlign: 'left',
+        loaderBg: '#174646',
+      });
     })
 
     _this.socket.on("fileProcessEnd", function (payLoad) {
-      $.alert(`${payLoad.fileName} proccessing done`);
+      $.toast({
+        text: `${payLoad.fileName} uploading done`,
+        icon: 'info',
+        showHideTransition: 'slide',
+        allowToastClose: true,
+        hideAfter: 3000,
+        stack: 3,
+        position: 'top-right',
+        textAlign: 'left',
+        loaderBg: '#174646',
+      });
     })
   }
 

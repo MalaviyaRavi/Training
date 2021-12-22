@@ -212,7 +212,7 @@ exports.createFileMetadata = async function (req, res, next) {
     }).fromFile(filePath);
     console.log(skipRow, typeof skipRow);
     if (skipRow == "true") {
-      records = records.slice(1, )
+      records = records.slice(1);
     }
 
     // let cleanedData = await validateCsvData(records, fieldMap, fileId);
@@ -307,7 +307,12 @@ exports.getFiles = async function (req, res, next) {
       $project: {
         Name: "$Name",
         status: "$status",
-
+        parsedRows: "$parsedRows",
+        duplicateRecords: "$duplicateRecords",
+        duplicateRecordsInCsv: "$duplicateRecordsInCsv",
+        discardredRecords: "$discardredRecords",
+        totalUploadedRecords: "$totalUploadedRecords",
+        totalRecords: "$totalRecords",
         percentUpload: {
           $round: [{
             $multiply: [{
@@ -319,12 +324,16 @@ exports.getFiles = async function (req, res, next) {
     }, ])
 
 
+    console.log(files);
+
+
 
     res.json({
       type: "success",
       files: files
     })
   } catch (error) {
+    console.log(error);
     res.json({
       type: "error",
       message: "something went wrong"

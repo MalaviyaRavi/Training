@@ -10,9 +10,9 @@ const {
 } = require("socket.io");
 global.io = new Server(server);
 
-io.on('connection', function () {
-    console.log("connected with socket");
-})
+global.hasCronOn = false;
+
+
 async function connectDb() {
     try {
         await mongoose.connect(

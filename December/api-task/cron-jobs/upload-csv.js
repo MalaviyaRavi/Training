@@ -1,21 +1,10 @@
 const cron = require('node-cron');
 const CsvMetaData = require("../models/csvMetaData");
-const mongoose = require("mongoose");
 const csv = require('@fast-csv/parse');
 const validateCsvData = require('../utility/csvUtil');
 const User = require('../models/user');
-async function connectDb() {
-    try {
-        await mongoose.connect(
-            `mongodb://admin:admin@localhost:27017/api-task-database`
-        );
-        console.log("database connected");
-    } catch (error) {
-        console.log(error);
-        console.log("database connection failed");
-    }
-}
-// connectDb();
+
+
 let task = cron.schedule('*/15 * * * * *', async function () {
     try {
         let fileMetadata = await CsvMetaData.findOne({
@@ -28,12 +17,12 @@ let task = cron.schedule('*/15 * * * * *', async function () {
             console.log("no files pending");
         } else {
 
+
             if (fileMetadata.status === "pending") {
                 io.emit("fileProcessStart", {
                     fileName: fileMetadata.Name
                 })
             }
-
             await CsvMetaData.updateOne({
                 _id: fileMetadata._id
             }, {
@@ -41,9 +30,6 @@ let task = cron.schedule('*/15 * * * * *', async function () {
                     status: "inProgress"
                 }
             })
-
-
-
             let rowsToBeUploaded = [];
             let batchSize = 2;
             let skipRows = fileMetadata.parsedRows;
@@ -77,7 +63,7 @@ let task = cron.schedule('*/15 * * * * *', async function () {
                             }
                         })
                         rowsToBeUploaded = [];
-                        console.log("batch completet");
+                        console.log("batch complete");
                         io.emit("statusChange");
 
                     } else {
@@ -96,8 +82,20 @@ let task = cron.schedule('*/15 * * * * *', async function () {
         }
     } catch (error) {
         console.log(error);
-
     }
+}, {
+    scheduled: false
 });
 
-task.start();
+
+io.on("connection", function (socket) {
+    console.log("connection establish");
+    socket.on("cronStart", function () {
+        console.log("cron start");
+        task.start();
+    })
+    socket.on("cronStop", function () {
+        console.log("cron stop");
+        task.stop();
+    })
+})
