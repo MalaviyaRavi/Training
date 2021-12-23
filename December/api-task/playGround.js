@@ -3,6 +3,7 @@ const csv = require('@fast-csv/parse');
 
 
 csv.parseFile('./public/csvs/admin@admin.com1639652751327.csv', {
+        // headers: true,
         headers: headers => headers.map(function (value, index) {
             return "field" + (index + 1);
         }),

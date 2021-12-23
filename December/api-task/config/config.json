@@ -15,5 +15,20 @@
         "401" : "Invalid Credentials",
         "201" : "resources added successfully",
         "404" : "resources not found" 
+    },
+    "cron" : {
+        "scheduler":"on",
+        "files":{
+            "upload-csv":{
+                "time":"*/15 * * * * *",
+                "name":"upload-csv.js",
+                "active":true
+            },
+            "test-cron":{
+                "time":"*/5 * * * * *",
+                "name":"test-cron.js",
+                "active":false
+            }
+        }
     }
 }

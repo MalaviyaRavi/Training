@@ -113,8 +113,8 @@
                     </div>
                     <input class="checkBox form-check-input" type="checkbox" id="skipRow"> skip first row
                     <div class="modal-footer">
-                        {{!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        --}}
+                        <button type="button" class="btn btn-secondary" id="btnModelClose"
+                            data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="btnModalUpload">Upload</button>
                     </div>
 
@@ -127,10 +127,10 @@
 <div class="container mt-5">
     <div class="row justify-content-evenly">
         <div class="col-10 mt-5">
-            <div class="cronBtns text-center">
+            {{!-- <div class="cronBtns text-center">
                 <button id="btnStartCron" class="btn btn-primary">Start Cron</button>
                 <button id="btnStopCron" class="btn btn-danger d-none">Stop Cron</button>
-            </div>
+            </div> --}}
             <h3 class="text-center">File Status</h3>
             <table id="fileStatus" class="table table-striped" border="1" cellspacing="5" cellpadding="10">
             </table>

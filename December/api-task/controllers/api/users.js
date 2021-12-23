@@ -12,7 +12,7 @@ const {
 const csv = require("csvtojson");
 const path = require("path");
 const fs = require("fs");
-const validateCsvData = require("../../utility/csvUtil");
+// const validateCsvData = require("../../utility/csvUtil");
 const CsvMetaData = require("../../models/csvMetaData");
 const Field = require("../../models/field");
 
@@ -210,22 +210,17 @@ exports.createFileMetadata = async function (req, res, next) {
     let records = await csv({
       noheader: true
     }).fromFile(filePath);
-    console.log(skipRow, typeof skipRow);
-    if (skipRow == "true") {
-      records = records.slice(1);
-    }
 
-    // let cleanedData = await validateCsvData(records, fieldMap, fileId);
-    // console.log("cleanded", cleanedData);
+    console.log(records);
 
-    // let users = await User.insertMany(cleanedData.validRecords);
-    // let totalUploadedRecords = users.length;
+    console.log(skipRow, typeof skipRow, "lifdgulirdf");
 
+    let totalRecords = skipRow == "true" ? records.length - 1 : records.length;
     await CsvMetaData.updateOne({
       _id: fileId
     }, {
       $set: {
-        totalRecords: records.length,
+        totalRecords: totalRecords,
         filePath,
         FieldMapping: fieldMap,
         skipRow: skipRow
@@ -236,7 +231,7 @@ exports.createFileMetadata = async function (req, res, next) {
     res.json({
       type: "success",
       statusCode: 200,
-      message: `${file.name} uploaded successfully with fieldmapping`
+      message: `${file.Name} uploaded successfully with fieldmapping`
     })
 
   } catch (error) {
@@ -304,29 +299,33 @@ exports.getFiles = async function (req, res, next) {
   try {
 
     let files = await CsvMetaData.aggregate([{
-      $project: {
-        Name: "$Name",
-        status: "$status",
-        parsedRows: "$parsedRows",
-        duplicateRecords: "$duplicateRecords",
-        duplicateRecordsInCsv: "$duplicateRecordsInCsv",
-        discardredRecords: "$discardredRecords",
-        totalUploadedRecords: "$totalUploadedRecords",
-        totalRecords: "$totalRecords",
-        percentUpload: {
-          $round: [{
-            $multiply: [{
-              $divide: ["$parsedRows", "$totalRecords"]
-            }, 100]
-          }, 0]
-        },
-      }
-    }, ])
+        $match: {
+          FieldMapping: {
+            $ne: null
+          }
+        }
+      },
 
-
-    console.log(files);
-
-
+      {
+        $project: {
+          Name: "$Name",
+          status: "$status",
+          parsedRows: "$parsedRows",
+          duplicateRecords: "$duplicateRecords",
+          duplicateRecordsInCsv: "$duplicateRecordsInCsv",
+          discardredRecords: "$discardredRecords",
+          totalUploadedRecords: "$totalUploadedRecords",
+          totalRecords: "$totalRecords",
+          percentUpload: {
+            $round: [{
+              $multiply: [{
+                $divide: ["$parsedRows", "$totalRecords"]
+              }, 100]
+            }, 0]
+          },
+        }
+      },
+    ])
 
     res.json({
       type: "success",
@@ -341,73 +340,16 @@ exports.getFiles = async function (req, res, next) {
   }
 }
 
-
-// exports.uploadCsv = async function (req, res, next) {
-//   try {
-//     let fileName = req.file.filename;
-//     let filePath = path.join(__dirname, "..", "..", "public", "csvs", fileName);
-//     let fieldMapping = {
-//       Name: "name",
-//       Email: "email",
-//       "Mobile Number": "mobile",
-//     };
-//     let users = await csv().fromFile(filePath);
-//     let validUsersList = [];
-//     let validUsers = 0,
-//       inValidUsers = 0,
-//       duplicateUsers = 0;
-
-//     for (let userIndex = 0; userIndex < users.length; userIndex++) {
-//       let user = users[userIndex];
-
-//       if (user.Name && user.Email && user["Mobile Number"]) {
-//         let matchUser = await User.findOne({
-//           $or: [{
-//             email: user.Email
-//           }, {
-//             mobile: user["Mobile Number"]
-//           }],
-//         });
-
-//         let isExist = matchUser ? true : false;
-
-//         if (isExist) {
-//           duplicateUsers++;
-//         } else {
-//           validUsers++;
-//           let userObj = {};
-//           userObj[fieldMapping["Name"]] = user.Name;
-//           userObj[fieldMapping["Email"]] = user.Email;
-//           userObj[fieldMapping["Mobile Number"]] = user["Mobile Number"];
-//           validUsersList.push(userObj);
-//         }
-//       } else {
-//         inValidUsers++;
-//       }
-//     }
-
-
-//     fs.unlinkSync(filePath);
-
-//     if (validUsersList.length > 1000) {
-
-//     }
-
-//     let importedUsers = await User.insertMany(validUsersList);
-//     res.json({
-//       type: "success",
-//       statusCode: 200,
-//       message: config.errorMsgs["200"],
-//       importedUsers: importedUsers,
-//       duplicateUsers,
-//       validUsers,
-//       inValidUsers,
-//     });
-//   } catch (error) {
-//     return res.json({
-//       type: "error",
-//       statusCode: 500,
-//       message: config.errorMsgs["500"],
-//     });
-//   }
-// };
+exports.deleteFile = async function (req, res, next) {
+  let fileId = req.params.fileId
+  let fileMetaData = await CsvMetaData.findOneAndDelete({
+    _id: fileId
+  })
+  let filePath = path.join(__dirname, "..", "..", "public", "csvs", fileMetaData.Name)
+  fs.unlinkSync(filePath)
+  console.log("File Deleted");
+  res.json({
+    success: true,
+    message: "file deleted from server"
+  })
+}

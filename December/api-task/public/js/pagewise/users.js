@@ -1,7 +1,7 @@
 const usersEventHandler = function () {
   this.init = function () {
     _this.fieldMap = {};
-    _this.socket = io("http://localhost:4000", {
+    _this.socket = io("http://localhost:3000", {
       transports: ['websocket']
     });
     _this.socketEvents();
@@ -238,6 +238,12 @@ const usersEventHandler = function () {
         </tr>`
             $("#mappingDetails").append($row);
           }
+          console.log("beofre");
+          $('#fieldMapping').modal({
+            backdrop: 'static',
+            keyboard: false
+          })
+          console.log("after");
           $('#fieldMapping').modal('show');
         },
       });
@@ -246,17 +252,35 @@ const usersEventHandler = function () {
     $("#btnModalUpload").on("click", function (e) {
       $("#modelError").text("");
       let skipRow = $("#skipRow").prop("checked");
-
+      let selectedRows = [];
       $('.fieldRow').each(function (i) {
         let field = $(this).attr("id");
 
         let dbField = $(`#${field}-dropdown option:selected`).val();
-        console.log(dbField);
         if (dbField != "default") {
+          selectedRows.push(dbField);
           _this.fieldMap[dbField] = field
         }
 
       });
+      console.log(selectedRows, "sfdgjsdjlg");
+
+      if (!selectedRows.includes("email") || !selectedRows.includes("mobile") || !selectedRows.includes("name")) {
+        $.toast({
+          heading: 'Warning',
+          text: `please selectet required fields(name, email & mobile)`,
+          showHideTransition: 'plain',
+          icon: 'warning',
+          hideAfter: 2000,
+          allowToastClose: true,
+          stack: 3,
+          position: 'top-center',
+        })
+
+        return;
+      }
+
+
       $.ajax({
         url: "/api/fieldMap?fileId=" + _this.fileId + "&skipRow=" + skipRow,
         headers: {
@@ -277,7 +301,6 @@ const usersEventHandler = function () {
         }
       })
     })
-
 
     $(document).on("change", ".dbOption", function (e) {
       $this = $(this);
@@ -300,8 +323,7 @@ const usersEventHandler = function () {
             $(`<option value="${newField}">${newField}</option>`).insertBefore(".dbOption #addNewField")
             $this.val(newField).attr("selected", true);
             $this.attr('name', newField);
-            _this.selectedField[newField] = 1;
-
+            _this.selectedFields[newField] = 1;
           }
         })
         return;
@@ -372,6 +394,17 @@ const usersEventHandler = function () {
     $("#csvFile").change(function () {
       $("#error").text("");
     });
+
+    $("#btnModelClose").on("click", function () {
+      $.ajax({
+        url: "/api/files/" + _this.fileId,
+        method: "DELETE",
+        success: function (response) {
+          $("#mappingDetails").html("");
+        }
+      })
+    })
+
   };
 
   this.displayUploadStatusReport = function () {
@@ -438,24 +471,39 @@ const usersEventHandler = function () {
 
   this.socketEvents = function () {
 
-    $("#btnStartCron").on("click", function () {
-      console.log("start");
-      $(this).addClass("d-none");
-      $("#btnStopCron").removeClass("d-none");
-      _this.socket.emit("cronStart");
-    })
+    // $("#btnStartCron").on("click", function () {
+    //   console.log("start");
+    //   $(this).addClass("d-none");
+    //   $("#btnStopCron").removeClass("d-none");
+    //   _this.socket.emit("cronStart");
+    // })
 
-    $("#btnStopCron").on("click", function () {
-      console.log("stop");
-      $(this).addClass("d-none");
-      $("#btnStartCron").removeClass("d-none");
-      _this.socket.emit("cronStop");
-    })
+    // $("#btnStopCron").on("click", function () {
+    //   console.log("stop");
+    //   $(this).addClass("d-none");
+    //   $("#btnStartCron").removeClass("d-none");
+    //   _this.socket.emit("cronStop");
+    // })
 
 
 
     _this.socket.on("statusChange", function () {
-      _this.displayUploadStatusReport()
+      _this.displayUploadStatusReport();
+    })
+
+    _this.socket.on("cronStart", function () {
+      console.log("jo start");
+      $.toast({
+        text: `cron job start`,
+        icon: 'info',
+        showHideTransition: 'slide',
+        allowToastClose: true,
+        hideAfter: 3000,
+        stack: 3,
+        position: 'top-right',
+        textAlign: 'left',
+        loaderBg: '#174646',
+      });
     })
 
     _this.socket.on("fileProcessStart", function (payLoad) {

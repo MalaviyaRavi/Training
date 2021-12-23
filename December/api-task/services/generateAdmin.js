@@ -2,14 +2,6 @@ const User = require("../models/user");
 
 async function createAdmin() {
 
-  let AllDbFields = Object.keys(User.schema.paths);
-  let fieldsToBeIgnore = ["_id", "password", "__v", "addedBy"];
-  let dbFieldsForCsv = AllDbFields.filter(function (field) {
-    return !fieldsToBeIgnore.includes(field);
-  })
-
-  console.log(dbFieldsForCsv);
-
 
 
   let user = await User.findOne({

@@ -16,6 +16,58 @@ const usersRouter = require("./routes/users");
 const usersApiRouter = require("./routes/api/users");
 
 const app = express();
+const http = require('http');
+const server = http.Server(app);
+const io = require("socket.io")(server);
+
+io.on("connection", function (socket) {
+  console.log("socket connected");
+  global.socket = socket
+})
+
+
+const {
+  createClient
+} = require('redis');
+
+(async () => {
+  global.subscriber = createClient({
+    url: 'redis://localhost:6379/0'
+  });
+
+  subscriber.on('error', (err) => console.log('Redis Client Error', err));
+
+  await subscriber.connect();
+  console.log("app redis connected");
+
+  await subscriber.subscribe('cronNotification', (payLoad) => {
+    let {
+      message,
+      fileName
+    } = JSON.parse(payLoad);
+    if (message == "cronStart") {
+      socket.emit("cronStart")
+    }
+    if (message == "fileProcessStart") {
+      socket.emit("fileProcessStart", {
+        fileName
+      })
+    }
+    if (message == "fileProcessEnd") {
+      socket.emit("fileProcessEnd", {
+        fileName
+      })
+    }
+
+    if (message == "statusChange") {
+      socket.emit("statusChange");
+    }
+  });
+
+})();
+
+
+
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -44,11 +96,11 @@ async function connectDb() {
       `mongodb://${config.mongodb.username}:${config.mongodb.password}@${config.mongodb.host}:${config.mongodb.port}/${config.mongodb.database}`
     );
     console.log("database connected");
-    app.listen(config.port, async function () {
-      console.log("app started");
-      require("./services/generateAdmin");
-      // require("./cron-jobs/upload-csv");
-    });
+    // app.listen(config.port, async function () {
+    //   console.log("app started");
+    //   require("./services/generateAdmin");
+    // require("./cron-jobs/upload-csv");
+    // });
   } catch (error) {
     console.log(error);
     console.log("database connection failed");
@@ -76,4 +128,7 @@ app.use(function (err, req, res, next) {
 });
 
 connectDb();
-// module.exports = app;
+module.exports = {
+  "app": app,
+  "server": server
+}
