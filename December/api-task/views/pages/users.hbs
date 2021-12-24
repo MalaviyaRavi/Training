@@ -26,6 +26,10 @@
         display: inline-block;
         color: #000000;
     }
+
+    .modal {
+        height: 1000px;
+    }
 </style>
 
 
@@ -71,8 +75,8 @@
             <div>
                 <form id="uplosdCsv">
                     <div class="mb-3">
-                        <label for="csvFile" class="form-label">Select CSV File</label>
-                        <input class="form-control" type="file" id="csvFile" name="csvFile">
+                        <label for="csvFile" class="form-label">Select CSV Files</label>
+                        <input class="form-control" type="file" id="csvFile" name="csvFiles" multiple>
                     </div>
                     <p id="error" class="text text-danger">
                     </p>
@@ -92,8 +96,8 @@
             </table>
         </div>
 
-        <div class="modal" tabindex="-1" id="fieldMapping">
-            <div class="modal-dialog">
+        <div class="modal " tabindex="-1" id="fieldMapping">
+            <div class="modal-dialog modal-lg" style="height:1000px">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Upload CSV</h5>
@@ -101,17 +105,11 @@
                         <h5 id="modelError" class="text text-danger"></h5>
                     </div>
                     <div class="modal-body">
-                        <table id="mappingDetails" class="table table-bordered">
-                            <tr>
-                                <td>firstField</td>
-                                <td>secondField</td>
-                                <td>
-                                    DB Fields
-                                </td>
-                            </tr>
-                        </table>
+                        <div class="accordion mappingTable">
+
+                        </div>
                     </div>
-                    <input class="checkBox form-check-input" type="checkbox" id="skipRow"> skip first row
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="btnModelClose"
                             data-bs-dismiss="modal">Close</button>

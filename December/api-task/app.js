@@ -30,41 +30,6 @@ const {
   createClient
 } = require('redis');
 
-(async () => {
-  global.subscriber = createClient({
-    url: 'redis://localhost:6379/0'
-  });
-
-  subscriber.on('error', (err) => console.log('Redis Client Error', err));
-
-  await subscriber.connect();
-  console.log("app redis connected");
-
-  await subscriber.subscribe('cronNotification', (payLoad) => {
-    let {
-      message,
-      fileName
-    } = JSON.parse(payLoad);
-    if (message == "cronStart") {
-      socket.emit("cronStart")
-    }
-    if (message == "fileProcessStart") {
-      socket.emit("fileProcessStart", {
-        fileName
-      })
-    }
-    if (message == "fileProcessEnd") {
-      socket.emit("fileProcessEnd", {
-        fileName
-      })
-    }
-
-    if (message == "statusChange") {
-      socket.emit("statusChange");
-    }
-  });
-
-})();
 
 
 
@@ -128,6 +93,45 @@ app.use(function (err, req, res, next) {
 });
 
 connectDb();
+
+
+(async () => {
+  global.subscriber = createClient({
+    url: 'redis://localhost:6379/0'
+  });
+
+  subscriber.on('error', (err) => console.log('Redis Client Error', err));
+
+  await subscriber.connect();
+  console.log("app redis connected");
+
+  await subscriber.subscribe('cronNotification', (payLoad) => {
+    let {
+      message,
+      fileName
+    } = JSON.parse(payLoad);
+    if (message == "cronStart") {
+      socket.emit("cronStart")
+    }
+    if (message == "fileProcessStart") {
+      socket.emit("fileProcessStart", {
+        fileName
+      })
+    }
+    if (message == "fileProcessEnd") {
+      socket.emit("fileProcessEnd", {
+        fileName
+      })
+    }
+
+    if (message == "statusChange") {
+      socket.emit("statusChange");
+    }
+  });
+
+})();
+
+
 module.exports = {
   "app": app,
   "server": server

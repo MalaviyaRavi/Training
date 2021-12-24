@@ -18,6 +18,7 @@ const {
         url: 'redis://localhost:6379/0'
     });
 
+
     await publisher.connect();
     console.log("publisher connecteed");
 })();

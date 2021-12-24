@@ -21,13 +21,14 @@ const path = require("path");
 const multer = require("multer");
 
 //storage file
+
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     let uploadPath = path.join(__dirname, "..", "..", "public", "csvs");
     callback(null, uploadPath);
   },
   filename: (req, file, callback) => {
-    let suffix = Date.now()
+    let suffix = Date.now() + Math.floor(Math.random() * 10);
     callback(null, req.user.userEmail + suffix + ".csv");
   },
 });
@@ -51,7 +52,7 @@ router.get("/users/check", checkExistance);
 router.post(
   "/upload/csv",
   isAuthenticated,
-  upload.single("csvFile"),
+  upload.array("csvFiles"),
   uploadCsv
 );
 

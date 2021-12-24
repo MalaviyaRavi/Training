@@ -153,16 +153,35 @@ exports.logout = async function (req, res, next) {
 
 exports.uploadCsv = async function (req, res, next) {
   try {
+    console.log("req.files", req.files);
+    let fileIds = [];
+    let files = req.files;
+    let filesData = {};
+    let fileCount = 1;
+    for (const file of files) {
 
-    let fileName = req.file.filename;
-    let file = await CsvMetaData.create({
-      uploadBy: req.user.userId,
-      Name: fileName
-    })
-    let filePath = path.join(__dirname, "..", "..", "public", "csvs", fileName);
-    let users = await csv({
-      noheader: true
-    }).fromFile(filePath);
+
+      let records = await csv({
+        noheader: true
+      }).fromFile(file.path);
+
+      let fileDoc = await CsvMetaData.create({
+        uploadBy: req.user.userId,
+        Name: file.filename,
+        filePath: file.path,
+        totalRecords: records.length
+      })
+
+      fileIds.push(fileDoc._id);
+
+      filesData[`file${fileCount++}`] = {
+        fileId: fileDoc._id,
+        fileName: file.filename,
+        csvHeaderField: Object.keys(records[0]),
+        firstRow: Object.values(records[0]),
+        secondRow: Object.values(records[1]),
+      }
+    }
 
     let allDbFields = Object.keys(User.schema.paths);
     let fieldsToBeIgnore = ["_id", "password", "__v", "addedBy"];
@@ -179,10 +198,8 @@ exports.uploadCsv = async function (req, res, next) {
       type: "success",
       statusCode: 200,
       dbFields: dbFieldsForCsv,
-      csvHeaderField: Object.keys(users[0]),
-      firstRow: Object.values(users[0]),
-      secondRow: Object.values(users[1]),
-      fileId: file._id,
+      filesData: filesData,
+      fileIds: fileIds,
       message: config.errorMsgs["200"],
     });
   } catch (error) {
@@ -197,41 +214,39 @@ exports.uploadCsv = async function (req, res, next) {
 
 exports.createFileMetadata = async function (req, res, next) {
   try {
-    let {
-      fileId,
-      skipRow
-    } = req.query;
-    let fieldMap = req.body;
 
-    let file = await CsvMetaData.findOne({
-      _id: fileId
-    })
-    let filePath = path.join(__dirname, "..", "..", "public", "csvs", file.Name);
-    let records = await csv({
-      noheader: true
-    }).fromFile(filePath);
+    let filesData = JSON.parse(req.body.data);
 
-    console.log(records);
+    for (const filesDataKey in filesData) {
+      let fileData = filesData[filesDataKey];
+      await CsvMetaData.updateOne({
+        _id: fileData.fileId
+      }, {
+        $set: {
+          FieldMapping: fileData.fieldMap,
+          skipRow: fileData.skipRow
+        }
+      })
+    }
 
-    console.log(skipRow, typeof skipRow, "lifdgulirdf");
 
-    let totalRecords = skipRow == "true" ? records.length - 1 : records.length;
-    await CsvMetaData.updateOne({
-      _id: fileId
-    }, {
-      $set: {
-        totalRecords: totalRecords,
-        filePath,
-        FieldMapping: fieldMap,
-        skipRow: skipRow
-      }
-    })
+    // let file = await CsvMetaData.findOne({
+    //   _id: fileId
+    // })
+    // let filePath = path.join(__dirname, "..", "..", "public", "csvs", file.Name);
+    // let records = await csv({
+    //   noheader: true
+    // }).fromFile(filePath);
+
+    // console.log(records);
+
+    // console.log(skipRow, typeof skipRow, "lifdgulirdf");
 
 
     res.json({
       type: "success",
       statusCode: 200,
-      message: `${file.Name} uploaded successfully with fieldmapping`
+      message: `files uploaded successfully with fieldmapping`
     })
 
   } catch (error) {
@@ -341,13 +356,35 @@ exports.getFiles = async function (req, res, next) {
 }
 
 exports.deleteFile = async function (req, res, next) {
-  let fileId = req.params.fileId
-  let fileMetaData = await CsvMetaData.findOneAndDelete({
-    _id: fileId
+  console.log(req.body);
+
+  let fileIds = req.body['fileIds[]'];
+
+  let filesPath = await CsvMetaData.find({
+    _id: {
+      $in: fileIds
+    }
+  }).select("filePath -_id")
+
+
+  filesPath = filesPath.map(function (doc) {
+    return doc.filePath
   })
-  let filePath = path.join(__dirname, "..", "..", "public", "csvs", fileMetaData.Name)
-  fs.unlinkSync(filePath)
-  console.log("File Deleted");
+
+  console.log(filesPath);
+  await CsvMetaData.deleteMany({
+    _id: {
+      $in: fileIds
+    }
+  })
+
+
+  filesPath.map(function (path) {
+    fs.unlinkSync(path)
+  })
+
+
+  console.log("fileDelete");
   res.json({
     success: true,
     message: "file deleted from server"

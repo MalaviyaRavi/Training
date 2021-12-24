@@ -6,7 +6,7 @@ const usersEventHandler = function () {
     });
     _this.socketEvents();
     _this.selectedFields = {};
-    _this.fileId = null;
+    _this.fileId = [];
     _this.addUser();
     _this.displayUsers({});
     _this.exportToCsv();
@@ -180,6 +180,7 @@ const usersEventHandler = function () {
         $("#error").html("please upload csv file");
         return;
       }
+
       let formData = new FormData($("#uplosdCsv")[0]);
       $.ajax({
         url: "/api/upload/csv",
@@ -220,80 +221,128 @@ const usersEventHandler = function () {
           for (const field of dbFields) {
             optionString = optionString + `<option value="${field}">${field}</option>`;
           }
-          _this.fileId = response.fileId;
+          _this.fileId = response.fileIds;
 
-          for (let fieldIndex = 0; fieldIndex < response.firstRow.length; fieldIndex++) {
+          let filesData = response.filesData;
 
-            let $row = `<tr id="${response.csvHeaderField[fieldIndex]}" class="fieldRow">
-
-            <td>${response.firstRow[fieldIndex]}</td>
-            <td>${response.secondRow[fieldIndex]}</td>
-            <td>
-                <select name="default" id="${response.csvHeaderField[fieldIndex]}-dropdown" class="dbOption form-select">
-                    <option value="default" selected>select db field</option>
-                    ${optionString}
-                    <option value="add" id = "addNewField">Add New Field</option>
-                </select>
-            </td>
+          for (const file in filesData) {
+            let fileData = filesData[file];
+            let rows = `<tr>
+            <th>firstRow</th>
+            <th>secondRow</th>
+            <th>DB Fields</th>
         </tr>`
-            $("#mappingDetails").append($row);
+            for (let fieldIndex = 0; fieldIndex < fileData.csvHeaderField.length; fieldIndex++) {
+
+              rows = rows + `<tr id="${fileData.csvHeaderField[fieldIndex]}" class=${file}>
+  
+              <td>${fileData.firstRow[fieldIndex]}</td>
+              <td>${fileData.secondRow[fieldIndex]}</td>
+              <td>
+                  <select name="default" id="${fileData.csvHeaderField[fieldIndex]}-${file}-dropdown" class="dbOption form-select" data-file='${file}'>
+                      <option value="default" selected>select db field</option>
+                      ${optionString}
+                      <option value="add" id = "addNewField">Add New Field</option>
+                  </select>
+              </td>
+          </tr>`
+            }
+
+            let fileName = `<h4>File - ${fileData.fileName}</h4>`;
+
+
+            let accordianItem = `<div class="accordion-item fileItems" id ='${file}-item' data-fileid ='${fileData.fileId}'>
+            <h2 class="accordion-header"  >
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#${file}" aria-expanded="true" aria-controls="${file}">
+                    ${file}
+                </button>
+            </h2>
+            <div id="${file}" class="accordion-collapse collapse"
+                aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                <h4>${fileName}</h4>
+                <table  class="table table-bordered">
+                  ${rows}
+                </table>    
+                <input class="checkBox form-check-input" type="checkbox" id="${file}-skipRow"> skip
+                first row
+                </div>
+            </div>
+        </div>`
+
+
+            $(".mappingTable").append(accordianItem);
           }
-          console.log("beofre");
           $('#fieldMapping').modal({
             backdrop: 'static',
             keyboard: false
           })
-          console.log("after");
           $('#fieldMapping').modal('show');
+
         },
       });
     });
 
     $("#btnModalUpload").on("click", function (e) {
       $("#modelError").text("");
-      let skipRow = $("#skipRow").prop("checked");
-      let selectedRows = [];
-      $('.fieldRow').each(function (i) {
-        let field = $(this).attr("id");
+      // console.log("hello");
+      let filesMapObject = {};
+      let fileCount = 1;
+      $(".fileItems").each(function () {
+        let fileId = $(this).data("fileid");
 
-        let dbField = $(`#${field}-dropdown option:selected`).val();
-        if (dbField != "default") {
-          selectedRows.push(dbField);
-          _this.fieldMap[dbField] = field
+        let file = `file${fileCount++}`
+
+        filesMapObject[file] = {};
+        let tableId = $(this).attr("id").split("-")[0];
+        let skipRow = $(`#${tableId}-skipRow`).prop("checked");
+        filesMapObject[file] = {
+          fileId: fileId,
+          skipRow: skipRow,
+          fieldMap: {}
+        };
+        let selectedFields = [];
+        $(`.${tableId}`).each(function (i) {
+          let field = $(this).attr("id");
+          let dbField = $(`#${field}-${tableId}-dropdown option:selected`).val();
+          selectedFields.push(dbField);
+          if (dbField !== "default") {
+            filesMapObject[file].fieldMap[dbField] = field;
+          }
+        });
+        if (!selectedFields.includes("name") || !selectedFields.includes("email") || !selectedFields.includes("mobile")) {
+          $.toast({
+            heading: 'Warning',
+            text: `please selectet required fields(name, email & mobile) in ${tableId}`,
+            showHideTransition: 'plain',
+            icon: 'warning',
+            hideAfter: 2000,
+            allowToastClose: true,
+            stack: 3,
+            position: 'top-center',
+          })
+          return false;
         }
-
-      });
-      console.log(selectedRows, "sfdgjsdjlg");
-
-      if (!selectedRows.includes("email") || !selectedRows.includes("mobile") || !selectedRows.includes("name")) {
-        $.toast({
-          heading: 'Warning',
-          text: `please selectet required fields(name, email & mobile)`,
-          showHideTransition: 'plain',
-          icon: 'warning',
-          hideAfter: 2000,
-          allowToastClose: true,
-          stack: 3,
-          position: 'top-center',
-        })
-
-        return;
-      }
-
+      })
+      console.log("map", filesMapObject);
 
       $.ajax({
-        url: "/api/fieldMap?fileId=" + _this.fileId + "&skipRow=" + skipRow,
+        url: "/api/fieldMap",
         headers: {
           Authorization: $(document)[0].cookie.split("=")[1]
         },
         type: "POST",
-        data: _this.fieldMap,
+        data: {
+          data: JSON.stringify(filesMapObject)
+        },
         success: function (response) {
           console.log(response);
           if (response.type == "success") {
             $("#mappingDetails").html("");
             $('#fieldMapping').modal('hide');
             $("#progress-wrp").css("display", "none");
+            _this.selectedField = {};
             $.alert(response.message);
           } else {
             $.alert(response.message);
@@ -302,8 +351,15 @@ const usersEventHandler = function () {
       })
     })
 
+
     $(document).on("change", ".dbOption", function (e) {
+      let fileName = $(this).data("file");
       $this = $(this);
+
+      if (!_this.selectedFields.hasOwnProperty(fileName)) {
+        _this.selectedFields[fileName] = {}
+      }
+
 
       if ($(this).val() === "add") {
         let newField = prompt("enter new field");
@@ -323,7 +379,7 @@ const usersEventHandler = function () {
             $(`<option value="${newField}">${newField}</option>`).insertBefore(".dbOption #addNewField")
             $this.val(newField).attr("selected", true);
             $this.attr('name', newField);
-            _this.selectedFields[newField] = 1;
+            _this.selectedFields[fileName][newField] = 1;
           }
         })
         return;
@@ -333,7 +389,7 @@ const usersEventHandler = function () {
       let prevValue = $this.attr("name");
       let current = $this.val();
 
-      if (_this.selectedFields.hasOwnProperty(current)) {
+      if (_this.selectedFields[fileName].hasOwnProperty(current)) {
         $.toast({
           heading: 'Warning',
           text: `${current} already selected try new one`,
@@ -348,10 +404,10 @@ const usersEventHandler = function () {
       } else {
         $this.attr("name", current)
         if (current !== "default") {
-          delete _this.selectedFields[prevValue];
-          _this.selectedFields[current] = 1;
+          delete _this.selectedFields[fileName][prevValue];
+          _this.selectedFields[fileName][current] = 1;
         } else {
-          delete _this.selectedFields[prevValue];
+          delete _this.selectedFields[fileName][prevValue];
         }
       }
 
@@ -390,6 +446,8 @@ const usersEventHandler = function () {
       }*/
 
     })
+
+
     //file select change event
     $("#csvFile").change(function () {
       $("#error").text("");
@@ -399,12 +457,14 @@ const usersEventHandler = function () {
       $.ajax({
         url: "/api/files/" + _this.fileId,
         method: "DELETE",
+        data: {
+          fileIds: _this.fileId
+        },
         success: function (response) {
           $("#mappingDetails").html("");
         }
       })
     })
-
   };
 
   this.displayUploadStatusReport = function () {

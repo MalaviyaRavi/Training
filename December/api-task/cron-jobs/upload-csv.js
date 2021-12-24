@@ -40,10 +40,8 @@ module.exports = function (time) {
                     }
                 })
                 let rowsToBeUploaded = [];
-                let batchSize = 2;
+                let batchSize = 1000;
                 let skipRows = fileMetadata.parsedRows;
-                console.log("skipwors", skipRows, "fileid : *------------", fileMetadata._id);
-                console.log("filePath", fileMetadata.filePath);
                 csv.parseFile(fileMetadata.filePath, {
                         headers: headers => headers.map(function (value, index) {
                             return "field" + (index + 1);
