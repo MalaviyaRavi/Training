@@ -1,15 +1,15 @@
-function XOR_hex(a, b) {
-    var res = "",
-        i = a.length,
-        j = b.length;
-    while (i-- > 0 && j-- > 0)
-        res = (parseInt(a.charAt(i), 32) ^ parseInt(b.charAt(j), 32)).toString(32) + res;
-    return res;
-}
+// function XOR_hex(a, b) {
+//     var res = "",
+//         i = a.length,
+//         j = b.length;
+//     while (i-- > 0 && j-- > 0)
+//         res = (parseInt(a.charAt(i), 32) ^ parseInt(b.charAt(j), 32)).toString(32) + res;
+//     return res;
+// }
 
 
-let x = 3 ^ 4 ^ 5
-console.log(x ^ 6);
+// let x = 3 ^ 4 ^ 5
+// console.log(x ^ 6);
 
 
 // let value = XOR_hex("abc", "xyz");
@@ -41,3 +41,39 @@ console.log(x ^ 6);
 // }
 
 // console.log(output);
+
+
+const csv = require('csv-parser');
+const fs = require('fs');
+
+const filepath = "./demo.csv"
+let readStream = fs.createReadStream(filepath, {
+    autoClose: true,
+});
+let MAX_LINE = 0;
+console.log("app file", process.pid);
+
+readStream.on('error', (e) => {
+        console.log(e);
+        console.log("error");
+    })
+
+    .pipe(csv())
+    .on('data', (row) => {
+
+        console.log(process.ppid);
+
+        if (MAX_LINE == 2) {
+            process.kill(process.pid, 'SIGTERM')
+        }
+        // console.log("not 2");
+        MAX_LINE++
+        console.log(row);
+    })
+
+    .on('end', () => {
+        // handle end of CSV
+        console.log("read done");
+    }).on("close", function () {
+        console.log("closed");
+    })

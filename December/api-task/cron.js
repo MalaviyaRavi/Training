@@ -1,13 +1,13 @@
-const express = require('express');
-const CronJob = require('cron').CronJob;
+// const express = require('express');
+// const CronJob = require('cron').CronJob;
 const config = require("./config/config.json")
 const mongoose = require('mongoose');
-const app = express();
-const http = require('http');
-const server = http.createServer(app);
-const {
-    Server
-} = require("socket.io");
+// const app = express();
+// const http = require('http');
+// const server = http.createServer(app);
+// const {
+//     Server
+// } = require("socket.io");
 
 const {
     createClient
@@ -22,7 +22,6 @@ const {
     await publisher.connect();
     console.log("publisher connecteed");
 })();
-
 
 let cronSchedule = config.cron.scheduler
 // console.log(typeof cronSchedule);
@@ -51,7 +50,6 @@ async function connectDb() {
                 require(`./cron-jobs/${file.name}`)(file.time);
             }
         }
-
     } catch (error) {
         console.log(error);
         console.log("database connection failed");

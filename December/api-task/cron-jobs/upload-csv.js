@@ -40,7 +40,7 @@ module.exports = function (time) {
                     }
                 })
                 let rowsToBeUploaded = [];
-                let batchSize = 1000;
+                let batchSize = 3;
                 let skipRows = fileMetadata.parsedRows;
                 csv.parseFile(fileMetadata.filePath, {
                         headers: headers => headers.map(function (value, index) {
@@ -48,11 +48,11 @@ module.exports = function (time) {
                         }),
                         skipRows: skipRows,
                         maxRows: batchSize,
-                        renameHeaders: !fileMetadata.skipRows
+                        // renameHeaders: !fileMetadata.skipRows
                     })
                     .on('data', function (row) {
                         if (row) {
-                            rowsToBeUploaded.push(row)
+                            rowsToBeUploaded.push(row);
                         }
                     })
                     .on('end', async function (rowCount) {
