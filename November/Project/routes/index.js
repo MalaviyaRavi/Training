@@ -7,8 +7,9 @@ const userModel = require("../models/user");
 router.get("/", async function (req, res, next) {
   try {
     let users = await userModel.find().lean();
+    // res.locals.user = "ravi";
 
-    res.render("pages/index", { title: "Express", users: users });
+    res.render("pages/index", { title: "Users", users: users });
   } catch (error) {
     console.log(error);
   }
@@ -19,42 +20,34 @@ router.post("/", async function (req, res, next) {
   let users = [];
 
   try {
+    let user = {};
     for (
       let fieldIndex = 0;
       fieldIndex < Object.keys(usersData).length;
-      fieldIndex += 2
+      fieldIndex++
     ) {
-      let user = {};
-      let field1 = Object.keys(usersData)[fieldIndex].split("-")[0];
-      let field2 = Object.keys(usersData)[fieldIndex + 1].split("-")[0];
-      user[field1] = usersData[Object.keys(usersData)[fieldIndex]];
-      user[field2] = usersData[Object.keys(usersData)[fieldIndex + 1]];
-      users.push(user);
+      if (fieldIndex == 0) {
+        let field = Object.keys(usersData)[fieldIndex].split("-")[0];
+        user[field] = usersData[Object.keys(usersData)[fieldIndex]];
+        continue;
+      }
+
+      if (fieldIndex % 2 == 0 && fieldIndex != 0) {
+        let field = Object.keys(usersData)[fieldIndex].split("-")[0];
+        user[field] = usersData[Object.keys(usersData)[fieldIndex]];
+      } else {
+        let field = Object.keys(usersData)[fieldIndex].split("-")[0];
+        user[field] = usersData[Object.keys(usersData)[fieldIndex]];
+        users.push(user);
+        user = {};
+      }
     }
 
     await userModel.insertMany(users);
-    res.redirect("/");
+    // res.redirect("/");
   } catch (error) {
     console.log(error);
   }
 });
 
 module.exports = router;
-
-// if (Array.isArray(username) && Array.isArray(password)) {
-//   for (
-//     let usernameIndex = 0, passwordIndex = 0;
-//     usernameIndex < username.length, passwordIndex < password.length;
-//     usernameIndex++, passwordIndex++
-//   ) {
-//     users[usernameIndex] = {
-//       username: username[usernameIndex],
-//       password: password[passwordIndex],
-//     };
-//   }
-// } else {
-//   users[0] = {
-//     username,
-//     password,
-//   };
-// }

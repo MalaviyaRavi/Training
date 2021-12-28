@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+ 
+<head>
+    <title>
+        Bubbling Event in Javascript
+    </title>
+
+    <style>
+        #parent{
+            height:200px;
+            width: 200px;
+            background-color:rgb(210, 223, 37);
+
+        }
+
+        #child{
+            height:100px;
+            width:80px;
+            background-color:rgb(145, 28, 28);
+
+        }
+    </style>
+</head>
+ 
+<body>
+ 
+  
+ 
+    <div id="parent">
+          <h2>Parent</h2>
+      <div id="child">
+        <h2 id="product">Child</h2>
+      </div>
+    </div><br>
+ 
+ 
+    <script>
+ 
+        document.body.addEventListener("click", function (e) {
+
+            console.log(e);
+        
+        // if(e.target.tagName.toUpperCase() == 'BODY'){
+        //     alert("body clicked")
+        // }
+
+        
+        if(e.srcElement.id == "child")
+        {
+            alert("child clicked")
+        }
+        if(e.srcElement.id == "parent")
+        { 
+            alert("parent clicked")
+        }
+       
+        });
+    </script>
+ 
+</body>
+ 
+</html>

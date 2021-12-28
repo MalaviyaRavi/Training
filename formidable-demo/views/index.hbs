@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="row">
+        <label for="input">Search Box
+            <input id="input" type="text" class="form-control" placeholder="Type something here..." />
+        </label>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+
+<script>
+
+    $(document).ready(function () {
+        function delay(callback, ms) {
+            let timer = 0;
+            return function () {
+                let context = this, args = arguments;
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    callback.apply(context, args);
+                }, ms || 0);
+            };
+        }
+        $('#input').keyup(delay(function (e) {
+            alert(this.value);
+        }, 2000));
+    })
+
+</script>

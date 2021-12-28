@@ -1,6 +1,9 @@
 <div class="container">
+
+
     <div class="row justify-content-center">
         <form method="POST" id="mainForm">
+
             <div class="col-5 mt-5 text-center border p-3" id="form-1">
 
                 <div class="mb-3">
@@ -75,7 +78,13 @@
              }
          })*/
 
-        $("#mainForm").validate();
+        $("#mainForm").validate({
+            submitHandler: function (form) {
+                console.log($("#mainForm").serialize());
+
+                form.submit();
+            }
+        });
         $("input").each(function () {
             let currentField = $(this)
             $(this).rules("add", {
@@ -91,8 +100,8 @@
         let formCount = 1;
         $("#plus").click(function () {
             formCount++;
-            let formToBeApppend = `<div class="col-5 mt-5 text-center border p-3" id="form-1">
-
+            let formToBeApppend = `<div class="col-5 mt-5 text-center border p-3" id="form-${formCount}">
+                <button type="button" class="btn btn-danger removeForm">-</button>
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" name="username-${formCount}">
@@ -104,7 +113,7 @@
                 </div>
             </div>`
 
-            $(formToBeApppend).insertBefore('#btns');
+            $(formToBeApppend).insertBefore('#btns').show('slow');
             $("input").each(function () {
                 let currentField = $(this)
                 $(this).rules("add", {
@@ -115,6 +124,12 @@
                 });
             });
 
+        })
+
+
+        $(document).on("click", ".removeForm", function () {
+            console.log("removed");
+            $(this).parent().remove();
         })
 
 

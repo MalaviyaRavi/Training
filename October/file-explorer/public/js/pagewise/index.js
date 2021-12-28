@@ -8,8 +8,6 @@ const userEventHandler = function () {
       url: "/files",
       type: "get",
       success: function (res) {
-        console.log("response");
-        console.log(res);
         $("#files").modal("show");
       },
     });

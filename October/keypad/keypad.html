@@ -138,20 +138,17 @@
         let fixOutString = "";
         let outputString = "";
         document.getElementById("input").addEventListener("keyup", function(e){  
-            if(lastUpTime > 2000){
-                outputString = tempOutString +  getString(e.target.value.substr(tempInString.length,1));
+            if(lastUpTime > 3000){
+                outputString = tempOutString +  getString(e.key);
                 fixOutString = outputString;
+                tempOutString = outputString;
                 tempInString = e.target.value;
-            
-               
             }else{
                 if(fixOutString){
-                    outputString = fixOutString + getString(e.target.value.substr(tempInString.length, e.target.value.length));
-                    tempOutString = outputString;
-                    fixOutString = outputString;
-                    tempInString = e.target.value;
+                    outputString = fixOutString + getString(e.target.value.substring(tempInString.length, e.target.value.length));
+                    console.log("after", outputString, e.target.value.substr(tempInString.length, e.target.value.length));
+                    tempOutString = outputString;     
                 }else{
-                    
                     outputString = getString(e.target.value);
                     tempInString = e.target.value;
                     tempOutString = outputString;
