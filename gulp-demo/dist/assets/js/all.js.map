@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.js","popup.js","Animations/animations.js"],"names":["console","log"],"mappings":"AAAAA,QAAAC,IAAA,SCAAD,QAAAC,IAAA,SCAAD,QAAAC,IAAA","file":"all.js","sourcesContent":["console.log('index');\n","console.log('popup');\n","console.log('animation');\n"]}
